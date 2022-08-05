@@ -7,6 +7,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TestModule } from './modules/test/test.module';
+import { SignUpController } from './sign-up/sign-up.controller';
+import { SignUpModule } from './sign-up/sign-up.module';
 
 @Module({
   imports: [
@@ -33,8 +35,9 @@ import { TestModule } from './modules/test/test.module';
     }),
     ConfigModule.forRoot(),
     TestModule,
+    SignUpModule,
   ],
-  controllers: [AppController, AuthController],
+  controllers: [AppController, AuthController, SignUpController],
   providers: [AppService, AuthService],
 })
 export class AppModule {}
