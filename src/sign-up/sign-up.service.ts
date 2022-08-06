@@ -3,7 +3,6 @@ import { SignUpDto } from './dto/sign-up.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SignUp } from '../entities/signUp.entity';
 import { Repository } from 'typeorm';
-
 const bcrypt = require('bcryptjs');
 
 @Injectable()
@@ -19,8 +18,6 @@ export class SignUpService {
     const { password, email } = createMessageDTO;
     const isUsed = await this.usersRepository.findOneBy({ email });
 
-    const newpassword = await bcrypt.hash(password, 8);
-
     if (isUsed) {
       throw new HttpException(
         {
@@ -31,7 +28,7 @@ export class SignUpService {
       );
     }
 
-    console.log(newpassword);
-    return await this.usersRepository.save({ email, newpassword });
+    const hashedPassword = await bcrypt.hash(password, 8);
+    return await this.usersRepository.save({ email, password: hashedPassword });
   }
 }
