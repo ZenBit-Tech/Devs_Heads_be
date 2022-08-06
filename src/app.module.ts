@@ -8,11 +8,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TestModule } from './modules/test/test.module';
 import { SignUpModule } from './sign-up/sign-up.module';
+import { SignInModule } from './sign-in/sign-in.module';
 
 @Module({
   imports: [
     AuthModule,
     SignUpModule,
+    SignInModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule, SignUpModule],
       useFactory: (configService: ConfigService) => ({
