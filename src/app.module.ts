@@ -7,14 +7,14 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TestModule } from './modules/test/test.module';
-import { SignUpController } from './sign-up/sign-up.controller';
 import { SignUpModule } from './sign-up/sign-up.module';
 
 @Module({
   imports: [
     AuthModule,
+    SignUpModule,
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule, SignUpModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: configService.get<string>('MYSQL_HOST'),
@@ -35,9 +35,8 @@ import { SignUpModule } from './sign-up/sign-up.module';
     }),
     ConfigModule.forRoot(),
     TestModule,
-    SignUpModule,
   ],
-  controllers: [AppController, AuthController, SignUpController],
+  controllers: [AppController, AuthController],
   providers: [AppService, AuthService],
 })
 export class AppModule {}
