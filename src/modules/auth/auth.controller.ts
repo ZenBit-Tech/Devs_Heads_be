@@ -10,8 +10,4 @@ export class AuthController {
   signUp(@Body() authDto: AuthDto): Promise<User> {
     return this.feedbackService.signUp(authDto);
   }
-  @Post('sign-in')
-  signIn(@Body() authDto: AuthDto): Promise<User> {
-    return this.feedbackService.signUp(authDto);
-  }
 }
