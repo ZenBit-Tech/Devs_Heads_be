@@ -9,3 +9,8 @@ export class AuthDto {
   @IsNotEmpty()
   password: string;
 }
+
+export interface TokenTypes {
+  token: string;
+  userId: string;
+}
