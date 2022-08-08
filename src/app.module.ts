@@ -1,12 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthController } from './modules/auth/auth.controller';
-import { AuthService } from './modules/auth/auth.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TestModule } from './modules/test/test.module';
 
 @Module({
   imports: [
@@ -31,7 +28,6 @@ import { TestModule } from './modules/test/test.module';
       inject: [ConfigService],
     }),
     ConfigModule.forRoot(),
-    TestModule,
   ],
   controllers: [AppController],
   providers: [AppService],
