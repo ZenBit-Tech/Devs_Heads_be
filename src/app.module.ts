@@ -7,14 +7,12 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TestModule } from './modules/test/test.module';
-import { SignUpModule } from './sign-up/sign-up.module';
 
 @Module({
   imports: [
     AuthModule,
-    SignUpModule,
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule, SignUpModule],
+      imports: [ConfigModule, AuthModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: configService.get<string>('MYSQL_HOST'),
@@ -22,11 +20,10 @@ import { SignUpModule } from './sign-up/sign-up.module';
         username: configService.get<string>('MYSQL_USERNAME'),
         password: configService.get<string>('MYSQL_PASSWORD'),
         database: configService.get<string>('MYSQL_DATABASE'),
-        entities: [__dirname + '/entities/**/*.entity{.ts,.js}'],
+        autoLoadEntities: true,
         migrations: [__dirname + '/migrations/*{.ts,.js}'],
-        logging: true,
         migrationsRun: false,
-        synchronize: true,
+        synchronize: false,
         ssl: {
           rejectUnauthorized: false,
         },
@@ -36,7 +33,7 @@ import { SignUpModule } from './sign-up/sign-up.module';
     ConfigModule.forRoot(),
     TestModule,
   ],
-  controllers: [AppController, AuthController],
-  providers: [AppService, AuthService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
