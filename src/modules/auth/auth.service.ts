@@ -2,9 +2,9 @@ import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities/user.entity';
 import { Repository } from 'typeorm';
-const jwt = require('jsonwebtoken');
+import { AuthDto, TokenTypes } from './dto/auth.dto';
 const bcrypt = require('bcrypt');
-import { AuthDto, TokenTypes } from "./dto/auth.dto";
+const jwt = require('jsonwebtoken');
 
 @Injectable()
 export class AuthService {
@@ -31,7 +31,7 @@ export class AuthService {
   }
   async signIn(@Body() AuthDto: AuthDto): Promise<TokenTypes> {
     const { email, password } = AuthDto;
-    const user: any = await this.usersRepository.findOneBy({ email });
+    const user: User = await this.usersRepository.findOneBy({ email });
 
     if (!user) {
       throw new HttpException(

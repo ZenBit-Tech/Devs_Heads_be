@@ -12,5 +12,5 @@ export class AuthDto {
 
 export interface TokenTypes {
   token: string;
-  userId: string;
+  userId: number;
 }
