@@ -1,18 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthController } from './modules/auth/auth.controller';
-import { AuthService } from './modules/auth/auth.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TestModule } from './modules/test/test.module';
 
 @Module({
   imports: [
     AuthModule,
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule, AuthModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: configService.get<string>('MYSQL_HOST'),
@@ -24,7 +21,7 @@ import { TestModule } from './modules/test/test.module';
         migrations: [__dirname + '/migrations/*{.ts,.js}'],
         logging: true,
         migrationsRun: false,
-        synchronize: true,
+        synchronize: false,
         ssl: {
           rejectUnauthorized: false,
         },
@@ -32,9 +29,8 @@ import { TestModule } from './modules/test/test.module';
       inject: [ConfigService],
     }),
     ConfigModule.forRoot(),
-    TestModule,
   ],
-  controllers: [AppController, AuthController],
-  providers: [AppService, AuthService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
