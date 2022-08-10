@@ -5,9 +5,11 @@ export class AuthDto {
   @IsString()
   @IsNotEmpty()
   email: string;
+
   @IsString()
-  @IsNotEmpty()
   password: string;
+
+  googleId: string;
 }
 
 export interface TokenTypes {
