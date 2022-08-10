@@ -6,7 +6,7 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [JwtModule.register({ secret: 'hard!to-guess_secret' }), TypeOrmModule.forFeature([User])],
+  imports: [JwtModule.register({ secret: process.env.JWT_SECRET }), TypeOrmModule.forFeature([User])],
   providers: [AuthService],
   controllers: [AuthController],
 })
