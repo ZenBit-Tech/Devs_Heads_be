@@ -5,9 +5,9 @@ export class ProfileSkillsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'integer' })
   skills_id: number;
 
-  @Column()
+  @Column({ type: 'integer' })
   profile_id: number;
 }

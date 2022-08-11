@@ -7,38 +7,38 @@ export class ProfileEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'integer' })
   user_id: number;
 
-  @Column()
+  @Column({ type: 'blob' })
   photo: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   position: string;
 
   @OneToMany(() => CategoryEntity, (category) => category.id)
   @JoinColumn()
   category: CategoryEntity[];
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   price: string;
 
-  @Column()
+  @Column({ type: 'integer' })
   availible_hours_peer_week: number;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   hour_rate: string;
 
   @OneToMany(() => EnglishLevelEntity, (english_level) => english_level.id)
   @Column()
   english_level: EnglishLevelEntity[];
 
-  @Column()
+  @Column({ type: 'varchar', length: 1000 })
   description: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 1000 })
   education: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 1000 })
   experience: string;
 }
