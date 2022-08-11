@@ -4,7 +4,9 @@ import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { GoogleStrategy } from './google.strategy';
 import { ProfileModule } from './modules/profile/profile.module';
+
 
 @Module({
   imports: [
@@ -32,6 +34,6 @@ import { ProfileModule } from './modules/profile/profile.module';
     ConfigModule.forRoot(),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, GoogleStrategy],
 })
 export class AppModule {}
