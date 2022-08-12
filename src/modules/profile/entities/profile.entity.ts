@@ -17,7 +17,7 @@ export class ProfileEntity {
 
   @Column({
     type: 'enum',
-    enum: ['Pre intermediate', 'Intermediate', 'Upper intermediate'],
+    enum: ['Pre_intermediate', 'Intermediate', 'Upper_intermediate'],
   })
   englishLevel: string;
 
