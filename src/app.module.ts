@@ -7,7 +7,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { GoogleStrategy } from './google.strategy';
 import { ProfileModule } from './modules/profile/profile.module';
 
-
 @Module({
   imports: [
     AuthModule,

@@ -1,13 +1,17 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ProfileEntity } from './profile.entity';
+import { SkillsEntity } from './skills.entity';
 
 @Entity('profileSkills')
 export class ProfileSkillsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'integer' })
-  skills_id: number;
+  @ManyToOne(() => ProfileEntity, (profile) => profile.id)
+  @JoinColumn()
+  profile_id: ProfileEntity[];
 
-  @Column({ type: 'integer' })
-  profile_id: number;
+  @OneToMany(() => SkillsEntity, (skills) => skills.id)
+  @JoinColumn()
+  skills_id: SkillsEntity[];
 }
