@@ -1,7 +1,7 @@
 export class ProfileDto {
   id: number;
   photo: string;
-  position: number;
+  position: string;
   price: number;
   englishLevel: string;
   availible_hours_peer_week: number;

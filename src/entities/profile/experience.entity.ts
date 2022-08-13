@@ -1,8 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ProfileEntity } from './profile.entity';
 
-@Entity('education')
-export class EducationEntity {
+@Entity('experience')
+export class ExperiencenEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ type: 'varchar', length: 1000 })
   description: string;
 
@@ -14,5 +17,5 @@ export class EducationEntity {
 
   @ManyToOne(() => ProfileEntity, (profile) => profile.id)
   @JoinColumn()
-  user_id: ProfileEntity[];
+  profile: ProfileEntity[];
 }

@@ -1,4 +1,4 @@
-import { Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ProfileEntity } from './profile.entity';
 import { SkillsEntity } from './skills.entity';
 
@@ -11,7 +11,7 @@ export class ProfileSkillsEntity {
   @JoinColumn()
   profile_id: ProfileEntity[];
 
-  @OneToMany(() => SkillsEntity, (skills) => skills.id)
+  @ManyToOne(() => SkillsEntity, (skills) => skills.id)
   @JoinColumn()
   skills_id: SkillsEntity[];
 }
