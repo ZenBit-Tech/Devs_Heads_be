@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ProfileEntity } from './profile.entity';
 
 @Entity('education')
@@ -16,6 +16,5 @@ export class EducationEntity {
   endDate: Date;
 
   @ManyToOne(() => ProfileEntity, (profile) => profile.id)
-  @JoinColumn()
-  profile: ProfileEntity[];
+  profile: ProfileEntity;
 }

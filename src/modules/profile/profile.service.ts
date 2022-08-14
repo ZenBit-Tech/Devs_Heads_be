@@ -54,7 +54,9 @@ export class ProfileService {
   }
 
   async saveProfile(profileDto: ProfileDto) {
-    const profile = await this.profileRepository.save(profileDto);
-    return profile;
+    // const newProfile = new ProfileEntity();
+    // newProfile.price = profileDto.price;
+    // const profile = await this.profileRepository.save({ profileDto });
+    // return profile;
   }
 }

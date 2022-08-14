@@ -9,7 +9,7 @@ export class ProfileSkillsEntity {
 
   @ManyToOne(() => ProfileEntity, (profile) => profile.id)
   @JoinColumn()
-  profile_id: ProfileEntity[];
+  profile_id: ProfileEntity;
 
   @ManyToOne(() => SkillsEntity, (skills) => skills.id)
   @JoinColumn()

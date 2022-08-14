@@ -1,5 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, JoinColumn, OneToMany, ManyToOne } from 'typeorm';
 import { CategoryEntity } from './category.entity';
+import { EducationEntity } from './education.entity';
+import { ExperiencenEntity } from './experience.entity';
+import { ProfileSkillsEntity } from './profile_skills.entity';
 
 @Entity('profile')
 export class ProfileEntity {
@@ -32,5 +35,14 @@ export class ProfileEntity {
 
   @ManyToOne(() => CategoryEntity, (category) => category.id)
   @JoinColumn()
-  category_id: CategoryEntity[];
+  category_id: CategoryEntity;
+
+  @OneToMany(() => EducationEntity, (education) => education.profile)
+  educatioin: EducationEntity[];
+
+  @OneToMany(() => ExperiencenEntity, (experience) => experience.profile)
+  experience: ExperiencenEntity[];
+
+  @OneToMany(() => ProfileSkillsEntity, (profileSkills) => profileSkills.profile_id)
+  profileSkills: ProfileSkillsEntity[];
 }
