@@ -6,8 +6,8 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [JwtModule.register({ secret: process.env.JWT_SECRET }), TypeOrmModule.forFeature([User])],
-  providers: [AuthService],
+  imports: [TypeOrmModule.forFeature([User]), JwtModule.register({ secret: process.env.JWT_SECRET })],
   controllers: [AuthController],
+  providers: [AuthService],
 })
 export class AuthModule {}

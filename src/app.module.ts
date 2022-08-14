@@ -22,7 +22,8 @@ import { GoogleStrategy } from './google.strategy';
         migrations: [__dirname + '/migrations/*{.ts,.js}'],
         logging: true,
         migrationsRun: false,
-        synchronize: false,
+        autoLoadEntities: true,
+        synchronize: true,
         ssl: {
           rejectUnauthorized: false,
         },
