@@ -22,7 +22,7 @@ import { ProfileModule } from './modules/profile/profile.module';
         migrations: [__dirname + '/migrations/*{.ts,.js}'],
         logging: true,
         migrationsRun: false,
-        synchronize: false,
+        synchronize: true,
         ssl: {
           rejectUnauthorized: false,
         },
