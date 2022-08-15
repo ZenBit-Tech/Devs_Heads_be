@@ -15,7 +15,7 @@ export class ExperiencenEntity {
   @Column()
   endDate: Date;
 
-  @ManyToOne(() => ProfileEntity, (profile) => profile.id)
+  @ManyToOne(() => ProfileEntity, (profile) => profile.experience)
   @JoinColumn()
   profile: ProfileEntity;
 }

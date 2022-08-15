@@ -9,6 +9,6 @@ export class SkillsEntity {
   @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @OneToMany(() => ProfileSkillsEntity, (profileSkills) => profileSkills.skills_id)
+  @OneToMany(() => ProfileSkillsEntity, (profileSkills) => profileSkills.skills)
   profileSkills: ProfileSkillsEntity;
 }

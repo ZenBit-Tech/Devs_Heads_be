@@ -9,6 +9,6 @@ export class CategoryEntity {
   @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @OneToMany(() => ProfileEntity, (profile) => profile.category_id)
+  @OneToMany(() => ProfileEntity, (profile) => profile.category)
   profile: ProfileEntity[];
 }

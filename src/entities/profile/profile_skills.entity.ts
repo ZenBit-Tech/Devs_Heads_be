@@ -7,11 +7,11 @@ export class ProfileSkillsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => ProfileEntity, (profile) => profile.id)
+  @ManyToOne(() => ProfileEntity, (profile) => profile.profileSkills)
   @JoinColumn()
-  profile_id: ProfileEntity;
+  profile: ProfileEntity[];
 
-  @ManyToOne(() => SkillsEntity, (skills) => skills.id)
+  @ManyToOne(() => SkillsEntity, (skills) => skills.profileSkills)
   @JoinColumn()
-  skills_id: SkillsEntity[];
+  skills: SkillsEntity[];
 }

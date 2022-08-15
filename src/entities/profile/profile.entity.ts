@@ -33,16 +33,16 @@ export class ProfileEntity {
   @Column({ type: 'varchar', length: 1000 })
   description: string;
 
-  @ManyToOne(() => CategoryEntity, (category) => category.id)
+  @ManyToOne(() => CategoryEntity, (category) => category.profile)
   @JoinColumn()
-  category_id: CategoryEntity;
+  category: CategoryEntity;
 
   @OneToMany(() => EducationEntity, (education) => education.profile)
-  educatioin: EducationEntity[];
+  educations: EducationEntity[];
 
   @OneToMany(() => ExperiencenEntity, (experience) => experience.profile)
   experience: ExperiencenEntity[];
 
-  @OneToMany(() => ProfileSkillsEntity, (profileSkills) => profileSkills.profile_id)
+  @OneToMany(() => ProfileSkillsEntity, (profileSkills) => profileSkills.profile)
   profileSkills: ProfileSkillsEntity[];
 }
