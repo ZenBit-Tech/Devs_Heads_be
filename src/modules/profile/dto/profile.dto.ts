@@ -4,7 +4,6 @@ import { ExperiencenEntity } from 'src/entities/profile/experience.entity';
 import { ProfileSkillsEntity } from 'src/entities/profile/profile_skills.entity';
 
 export class ProfileDto {
-  id?: number;
   photo: string;
   position: string;
   price: number;
@@ -12,8 +11,8 @@ export class ProfileDto {
   availible_hours_peer_week: number;
   hour_rate: string;
   description: string;
-  category_id: CategoryEntity;
-  educations: EducationEntity;
-  experience: ExperiencenEntity;
-  profileSkills: ProfileSkillsEntity;
+  categoryId: number;
+  educations: number[];
+  experience: number[];
+  profileSkills: number[];
 }

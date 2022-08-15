@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CategoryEntity } from 'src/entities/profile/category.entity';
@@ -26,7 +26,7 @@ export class ProfileService {
     private skillsRepository: Repository<SkillsEntity>,
   ) {}
 
-  async getAllCategories() {
+  async getAllCategories(): Promise<CategoryEntity[]> {
     const allCategories = await this.categoryRepository.find();
     return allCategories;
   }
@@ -39,24 +39,35 @@ export class ProfileService {
   async getProfileSettings(id: number) {
     const profileSettings = await this.profileRepository
       .createQueryBuilder('profile')
-      .leftJoinAndSelect('profile.photo', 'photo')
-      .leftJoinAndSelect('profile.position', 'position')
-      .leftJoinAndSelect('profile.price', 'price')
-      .leftJoinAndSelect('profile.englishLevel', 'englishLevel')
-      .leftJoinAndSelect('profile.availible_hours_peer_week', 'availible_hours_peer_week')
-      .leftJoinAndSelect('profile.hour_rate', 'hour_rate')
-      .leftJoinAndSelect('profile.description', 'description')
-      .leftJoinAndSelect('profile.category_id', 'category_id')
-      .where('profile.id= :id', { id })
+      .leftJoinAndSelect('profile.educations', 'educations')
+      .leftJoinAndSelect('profile.category', 'category')
+      .leftJoinAndSelect('profile.experience', 'experience')
+      .leftJoinAndSelect('profile.profileSkills', 'profileSkills')
+      .where('profile.id = :id', { id })
       .getOne();
 
     return profileSettings;
   }
 
   async saveProfile(profileDto: ProfileDto) {
-    // const newProfile = new ProfileEntity();
-    // newProfile.price = profileDto.price;
-    // const profile = await this.profileRepository.save({ profileDto });
-    // return profile;
+    try {
+      console.log(profileDto);
+      const newProfile = new ProfileEntity();
+      newProfile.photo = profileDto.photo;
+      newProfile.price = profileDto.price;
+      newProfile.englishLevel = profileDto.englishLevel;
+      newProfile.availible_hours_peer_week = profileDto.availible_hours_peer_week;
+      newProfile.hour_rate = profileDto.hour_rate;
+      newProfile.description = profileDto.description;
+      newProfile.categoryId.id = profileDto.categoryId;
+      newProfile.educations[0].id = profileDto.educations[0];
+      newProfile.experience[0].id = profileDto.experience[0];
+      newProfile.profileSkills[0].id = profileDto.profileSkills[0];
+      const profile = await this.profileRepository.save(newProfile);
+      console.log(profile);
+      return profile;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

@@ -33,9 +33,8 @@ export class ProfileEntity {
   @Column({ type: 'varchar', length: 1000 })
   description: string;
 
-  @ManyToOne(() => CategoryEntity, (category) => category.profile)
-  @JoinColumn()
-  category: CategoryEntity;
+  @ManyToOne(() => CategoryEntity, (category) => category.id)
+  categoryId: CategoryEntity;
 
   @OneToMany(() => EducationEntity, (education) => education.profile)
   educations: EducationEntity[];
