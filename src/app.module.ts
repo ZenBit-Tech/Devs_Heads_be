@@ -6,10 +6,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GoogleStrategy } from './google.strategy';
 import { ProfileModule } from './modules/profile/profile.module';
+import { UsersModule } from './modules/users/users.module';
+import { UsersService } from './modules/users/users.service';
 
 @Module({
   imports: [
-    AuthModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule, AuthModule, ProfileModule],
       useFactory: (configService: ConfigService) => ({

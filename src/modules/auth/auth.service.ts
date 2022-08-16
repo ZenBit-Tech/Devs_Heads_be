@@ -4,21 +4,18 @@ import { User } from '../../entities/user.entity';
 import { Repository } from 'typeorm';
 import { AuthDto } from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
+import { UsersService } from '../users/users.service';
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 @Injectable()
 export class AuthService {
-  constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
-    private readonly jwtService: JwtService,
-  ) {}
+  constructor(private usersService: UsersService, private readonly jwtService: JwtService) {}
 
   async signUp(@Body() AuthDto: AuthDto): Promise<User> {
     const { password, email } = AuthDto;
-    const isUsed = await this.usersRepository.findOneBy({ email });
+    const isUsed = await this.usersService.findOne(email);
     console.log(isUsed, 'isUsed');
     if (isUsed) {
       throw new HttpException(
@@ -30,20 +27,29 @@ export class AuthService {
       );
     }
     const hashedPassword = await bcrypt.hash(password, 8);
-    return await this.usersRepository.save({ email, password: hashedPassword, googleId: '' });
+    return await this.usersService.save({ email, password: hashedPassword, googleId: '' });
   }
-
+  async validateUser({ email, password }): Promise<any> {
+    const user = await this.usersService.findOne(email);
+    const isMatch = bcrypt.compareSync(password, user.password);
+    if (user && isMatch) {
+      const { password, ...result } = user;
+      return result;
+    }
+    return null;
+  }
   async signIn(@Body() AuthDto: AuthDto): Promise<any> {
     const { email, password } = AuthDto;
-    const user: User = await this.usersRepository.findOneBy({ email });
+    const user = await this.usersService.findOne(email);
+    console.log(user, 'isEmpty');
     if (!user) {
-      throw new HttpException(
+      /*      throw new HttpException(
         {
           status: HttpStatus.BAD_REQUEST,
           error: 'No such account',
         },
         HttpStatus.BAD_REQUEST,
-      );
+      );*/
     }
     const isMatch = bcrypt.compareSync(password, user.password); // unhash password
     if (!isMatch || user.password) {
@@ -60,7 +66,7 @@ export class AuthService {
     return { token, userId: user.id };
   }
 
-  async googleSignUp(req) {
+  /*async googleSignUp(req) {
     const { googleId, email } = req.user;
     const user = await this.usersRepository.findOneBy({ googleId });
     if (user) return this.googleSignIn(user);
@@ -80,5 +86,5 @@ export class AuthService {
       ),
       userId: user.id,
     };
-  }
+  }*/
 }
