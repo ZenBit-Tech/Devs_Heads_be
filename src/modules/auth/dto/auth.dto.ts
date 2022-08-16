@@ -12,8 +12,3 @@ export class AuthDto {
 
   googleId: string;
 }
-
-export interface TokenTypes {
-  token: string;
-  userId: number;
-}

@@ -12,7 +12,7 @@ import { UsersService } from './modules/users/users.service';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule, AuthModule, ProfileModule],
+      imports: [ConfigModule, AuthModule, ProfileModule, UsersModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: configService.get<string>('MYSQL_HOST'),
@@ -24,7 +24,7 @@ import { UsersService } from './modules/users/users.service';
         migrations: [__dirname + '/migrations/*{.ts,.js}'],
         logging: true,
         migrationsRun: false,
-        synchronize: false,
+        synchronize: true,
         ssl: {
           rejectUnauthorized: false,
         },

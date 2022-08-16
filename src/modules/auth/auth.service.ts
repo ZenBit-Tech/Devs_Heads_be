@@ -1,7 +1,5 @@
 import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities/user.entity';
-import { Repository } from 'typeorm';
 import { AuthDto } from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
@@ -16,7 +14,6 @@ export class AuthService {
   async signUp(@Body() AuthDto: AuthDto): Promise<User> {
     const { password, email } = AuthDto;
     const isUsed = await this.usersService.findOne(email);
-    console.log(isUsed, 'isUsed');
     if (isUsed) {
       throw new HttpException(
         {
@@ -27,53 +24,50 @@ export class AuthService {
       );
     }
     const hashedPassword = await bcrypt.hash(password, 8);
-    return await this.usersService.save({ email, password: hashedPassword, googleId: '' });
+    return await this.usersService.save({ email, password: hashedPassword, googleId: null });
   }
-  async validateUser({ email, password }): Promise<any> {
+
+  async validateUser({ email, password }): Promise<Pick<User, 'id' | 'email' | 'googleId'>> {
     const user = await this.usersService.findOne(email);
-    const isMatch = bcrypt.compareSync(password, user.password);
-    if (user && isMatch) {
-      const { password, ...result } = user;
-      return result;
+    console.log(user, 'user');
+    if (user && user.password) {
+      const isMatch = bcrypt.compareSync(password, user.password);
+      console.log(isMatch, 'isMatch');
+      if (isMatch) {
+        const { password, ...result } = user;
+        return result;
+      } else {
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error: 'Incorrect password',
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
     }
+
     return null;
   }
-  async signIn(@Body() AuthDto: AuthDto): Promise<any> {
-    const { email, password } = AuthDto;
-    const user = await this.usersService.findOne(email);
-    console.log(user, 'isEmpty');
-    if (!user) {
-      /*      throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST,
-          error: 'No such account',
-        },
-        HttpStatus.BAD_REQUEST,
-      );*/
-    }
-    const isMatch = bcrypt.compareSync(password, user.password); // unhash password
-    if (!isMatch || user.password) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST,
-          error: 'Incorrect password',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+
+  async signIn(@Body() user): Promise<{ token: string; userId: string }> {
+    console.log(user);
     const jwtSecret = process.env.JWT_SECRET;
     const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '1h' });
     return { token, userId: user.id };
   }
 
-  /*async googleSignUp(req) {
+  async googleSignUp(req) {
     const { googleId, email } = req.user;
-    const user = await this.usersRepository.findOneBy({ googleId });
+
+    const user = await this.usersService.findOne(googleId);
     if (user) return this.googleSignIn(user);
-    const newUser = await this.usersRepository.save({ email, googleId, password: '' });
+    console.log(req);
+    const newUser = await this.usersService.save({ email, password: null, googleId });
     return this.googleSignIn(newUser);
   }
-  async googleSignIn(user) {
+
+  async googleSignIn(user): Promise<{ token: string; userId: string }> {
     return {
       token: this.jwtService.sign(
         {
@@ -86,5 +80,5 @@ export class AuthService {
       ),
       userId: user.id,
     };
-  }*/
+  }
 }
