@@ -1,8 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ProfileEntity } from './profile.entity';
 
 @Entity('education')
 export class EducationEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ type: 'varchar', length: 1000 })
   description: string;
 
@@ -12,7 +15,7 @@ export class EducationEntity {
   @Column()
   endDate: Date;
 
-  @ManyToOne(() => ProfileEntity, (profile) => profile.id)
+  @ManyToOne(() => ProfileEntity, (profile) => profile.educations)
   @JoinColumn()
-  user_id: ProfileEntity[];
+  profile: ProfileEntity;
 }

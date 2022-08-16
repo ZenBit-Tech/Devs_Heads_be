@@ -1,14 +1,18 @@
+import { CategoryEntity } from 'src/entities/profile/category.entity';
+import { EducationEntity } from 'src/entities/profile/education.entity';
+import { ExperiencenEntity } from 'src/entities/profile/experience.entity';
+import { ProfileSkillsEntity } from 'src/entities/profile/profile_skills.entity';
+
 export class ProfileDto {
-  id: number;
   photo: string;
-  position: number;
+  position: string;
   price: number;
   englishLevel: string;
   availible_hours_peer_week: number;
   hour_rate: string;
-  english_level_id: string;
   description: string;
-  education: string;
-  experience: string;
-  category_id: number;
+  categoryId: number;
+  educations: number[];
+  experience: number[];
+  profileSkills: number[];
 }

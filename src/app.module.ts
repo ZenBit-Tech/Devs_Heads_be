@@ -9,7 +9,6 @@ import { ProfileModule } from './modules/profile/profile.module';
 
 @Module({
   imports: [
-    AuthModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule, AuthModule, ProfileModule],
       useFactory: (configService: ConfigService) => ({
@@ -23,7 +22,7 @@ import { ProfileModule } from './modules/profile/profile.module';
         migrations: [__dirname + '/migrations/*{.ts,.js}'],
         logging: true,
         migrationsRun: false,
-        synchronize: false,
+        synchronize: true,
         ssl: {
           rejectUnauthorized: false,
         },
