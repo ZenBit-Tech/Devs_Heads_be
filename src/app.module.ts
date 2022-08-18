@@ -6,11 +6,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GoogleStrategy } from './google.strategy';
 import { ProfileModule } from './modules/profile/profile.module';
+import { SettingsInfoModule } from './modules/settingsInfo/settingsInfo.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule, AuthModule, ProfileModule],
+      imports: [ConfigModule, AuthModule, ProfileModule, SettingsInfoModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: configService.get<string>('MYSQL_HOST'),
