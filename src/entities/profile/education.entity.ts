@@ -15,7 +15,7 @@ export class EducationEntity {
   @Column()
   endDate: Date;
 
-  @ManyToOne(() => ProfileEntity, (profile) => profile.educations)
+  @ManyToOne(() => ProfileEntity, (profile) => profile.education)
   @JoinColumn()
   profile: ProfileEntity;
 }

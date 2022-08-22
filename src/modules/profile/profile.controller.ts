@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param } from '@nestjs/common';
 import { CategoryEntity } from 'src/entities/profile/category.entity';
 import { ProfileDto } from './dto/profile.dto';
 import { ProfileService } from './profile.service';
@@ -13,13 +13,13 @@ export class ProfileController {
   }
 
   @Get('skills')
-  getAllSkils() {
-    return this.profileService.getAllSkils();
+  getAllSkills() {
+    return this.profileService.getAllSkills();
   }
 
-  @Get()
-  getProfileSettings() {
-    return this.profileService.getProfileSettings(1);
+  @Get(':id')
+  getProfileSettings(@Param('id') id: number) {
+    return this.profileService.getProfileSettings(Number(id));
   }
 
   @Post()

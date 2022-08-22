@@ -1,8 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn, JoinColumn, OneToMany, ManyToOne } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
 import { CategoryEntity } from './category.entity';
 import { EducationEntity } from './education.entity';
-import { ExperiencenEntity } from './experience.entity';
-import { ProfileSkillsEntity } from './profile_skills.entity';
+import { ExperienceEntity } from './experience.entity';
+import { SkillsEntity } from './skills.entity';
 
 @Entity('profile')
 export class ProfileEntity {
@@ -24,24 +24,19 @@ export class ProfileEntity {
   })
   englishLevel: string;
 
-  @Column({ type: 'integer' })
-  availible_hours_peer_week: number;
-
-  @Column({ type: 'varchar', length: 255 })
-  hour_rate: string;
-
   @Column({ type: 'varchar', length: 1000 })
   description: string;
 
-  @ManyToOne(() => CategoryEntity, (category) => category.id)
-  categoryId: CategoryEntity;
+  @ManyToOne(() => CategoryEntity, (category) => category.id, { cascade: true })
+  category: CategoryEntity;
 
-  @OneToMany(() => EducationEntity, (education) => education.profile)
-  educations: EducationEntity[];
+  @ManyToMany(() => SkillsEntity, { cascade: true })
+  @JoinTable()
+  skills: SkillsEntity[];
 
-  @OneToMany(() => ExperiencenEntity, (experience) => experience.profile)
-  experience: ExperiencenEntity[];
+  @OneToMany(() => EducationEntity, (education) => education.profile, { cascade: true })
+  education: EducationEntity[];
 
-  @OneToMany(() => ProfileSkillsEntity, (profileSkills) => profileSkills.profile)
-  profileSkills: ProfileSkillsEntity[];
+  @OneToMany(() => ExperienceEntity, (experience) => experience.profile, { cascade: true })
+  experience: ExperienceEntity[];
 }
