@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 't
 import { ProfileEntity } from './profile.entity';
 
 @Entity('experience')
-export class ExperiencenEntity {
+export class ExperienceEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

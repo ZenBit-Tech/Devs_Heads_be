@@ -4,7 +4,13 @@ services:
     image: mysql:8.0
     restart: always
     environment:
-      - MYSQL_DATABASE=mysqldb
-      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
     ports:
-      - '3306:3306'
+      - ${MYSQL_PORT}:3306
+    env_file:
+      - .env
+    volumes:
+      - db:/var/lib/mysql
+volumes:
+  db:
