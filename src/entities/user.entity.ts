@@ -6,7 +6,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
@@ -14,7 +14,4 @@ export class User {
 
   @Column({ nullable: true })
   googleId: string;
-
-  @OneToMany(() => ForgotPassword, (forgotPassword: ForgotPassword) => forgotPassword.user)
-  forgotPassword: ForgotPassword[];
 }
