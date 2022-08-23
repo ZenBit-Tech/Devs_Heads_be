@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Param } from '@nestjs/common';
 import { SettingsInfoDto } from './dto/settingsInfo.dto';
 import { SettingsInfoService } from './settingsInfo.service';
 
@@ -6,8 +6,12 @@ import { SettingsInfoService } from './settingsInfo.service';
 export class SettingsInfoController {
   constructor(private readonly settingsInfoService: SettingsInfoService) {}
 
-  @Post()
-  create(@Body() settingsInfoDto: SettingsInfoDto) {
-    return this.settingsInfoService.saveUserSettings(settingsInfoDto);
+  @Post(':id')
+  create(
+    @Param('id') id: number,
+    @Body()
+    settingsInfoDto: SettingsInfoDto,
+  ) {
+    return this.settingsInfoService.saveUserSettings(Number(id), settingsInfoDto);
   }
 }

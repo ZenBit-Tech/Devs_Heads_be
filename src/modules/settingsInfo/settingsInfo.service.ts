@@ -11,20 +11,18 @@ export class SettingsInfoService {
     private userRepository: Repository<User>,
   ) {}
 
-  async saveUserSettings(settingsInfoDto: SettingsInfoDto) {
-    const { email } = settingsInfoDto;
+  async saveUserSettings(id: number, settingsInfoDto: SettingsInfoDto) {
+    const currentUserSettings = await this.userRepository.findOneBy({ id: id });
 
-    const findedUser = await this.userRepository.findOneBy({ email: email });
-
-    if (!findedUser)
+    if (!currentUserSettings)
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: `Not find user with ${email}`,
+          error: `Not find user with ${id}`,
         },
         HttpStatus.NOT_FOUND,
       );
 
-    return await this.userRepository.save({ ...findedUser, ...settingsInfoDto });
+    return await this.userRepository.save({ id, ...settingsInfoDto });
   }
 }
