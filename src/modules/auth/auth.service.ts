@@ -12,7 +12,7 @@ import { randomBytes } from 'crypto';
 import * as bcrypt from 'bcrypt';
 
 const jwt = require('jsonwebtoken');
-const saltNumber = 8;
+const SALT_NUMBER = 8;
 @Injectable()
 export class AuthService {
   constructor(
@@ -37,7 +37,7 @@ export class AuthService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const hashedPassword = await bcrypt.hash(password, saltNumber);
+    const hashedPassword = await bcrypt.hash(password, SALT_NUMBER);
     return await this.usersRepository.save({ email, password: hashedPassword, googleId: '' });
   }
 
@@ -129,7 +129,7 @@ export class AuthService {
     });
 
     if (user) {
-      const newPassword = bcrypt.hashSync(password, saltNumber);
+      const newPassword = bcrypt.hashSync(password, SALT_NUMBER);
       const updatedUser = await this.usersRepository.update({ id: user.id }, { password: newPassword });
 
       if (updatedUser) {
