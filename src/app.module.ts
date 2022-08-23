@@ -6,11 +6,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GoogleStrategy } from './google.strategy';
 import { ProfileModule } from './modules/profile/profile.module';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule, AuthModule, ProfileModule],
+      imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: configService.get<string>('MYSQL_HOST'),
@@ -29,7 +30,24 @@ import { ProfileModule } from './modules/profile/profile.module';
       }),
       inject: [ConfigService],
     }),
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        transport: {
+          host: 'smtp.sendgrid.net',
+          port: 587,
+          auth: {
+            user: 'apikey',
+            pass: configService.get<string>('SENDGRID_PASSWORD'),
+          },
+        },
+      }),
+      inject: [ConfigService],
+    }),
     ConfigModule.forRoot(),
+    ConfigModule,
+    AuthModule,
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService, GoogleStrategy],
