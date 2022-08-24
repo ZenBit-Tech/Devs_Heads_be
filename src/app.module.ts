@@ -6,6 +6,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GoogleStrategy } from './google.strategy';
 import { ProfileModule } from './modules/profile/profile.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { SettingsInfoModule } from './modules/settingsInfo/settingsInfo.module';
 
 @Module({
   imports: [
@@ -47,6 +49,7 @@ import { ProfileModule } from './modules/profile/profile.module';
     ConfigModule,
     AuthModule,
     ProfileModule,
+    SettingsInfoModule,
   ],
   controllers: [AppController],
   providers: [AppService, GoogleStrategy],
