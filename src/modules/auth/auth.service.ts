@@ -4,16 +4,24 @@ import { User } from '../../entities/user.entity';
 import { Repository } from 'typeorm';
 import { AuthDto } from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { MailerService } from '@nestjs-modules/mailer';
+import { ForgotPassword } from '../../entities/forgot-password.entity';
+import { RestorePasswordDto } from './dto/restore-password.dto';
+import { randomBytes } from 'crypto';
+import * as bcrypt from 'bcrypt';
 
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+const SALT_NUMBER = 8;
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    private readonly usersRepository: Repository<User>,
     private readonly jwtService: JwtService,
+    private readonly mailerService: MailerService,
+    @InjectRepository(ForgotPassword)
+    private readonly forgotPasswordRepository: Repository<ForgotPassword>,
   ) {}
 
   async signUp(@Body() AuthDto: AuthDto): Promise<User> {
@@ -29,7 +37,7 @@ export class AuthService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const hashedPassword = await bcrypt.hash(password, 8);
+    const hashedPassword = await bcrypt.hash(password, SALT_NUMBER);
     return await this.usersRepository.save({ email, password: hashedPassword, googleId: '' });
   }
 
@@ -46,8 +54,7 @@ export class AuthService {
       );
     }
     const isMatch = bcrypt.compareSync(password, user.password); // unhash password
-
-    if (!isMatch) {
+    if (!isMatch || user.password) {
       throw new HttpException(
         {
           status: HttpStatus.BAD_REQUEST,
@@ -81,5 +88,62 @@ export class AuthService {
       ),
       userId: user.id,
     };
+  }
+
+  async forgotPassword({ email }: ForgotPasswordDto) {
+    const user = await this.usersRepository.findOneBy({ email });
+    if (!user) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Email address is not valid',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    } else {
+      const hash = randomBytes(20).toString('hex'); //create random hashed link
+
+      await this.forgotPasswordRepository.save({
+        user: user,
+        link: hash,
+      });
+
+      const url = process.env.RESET_PASSWORD_URL + '?token=' + hash;
+
+      return await this.mailerService.sendMail({
+        to: email,
+        subject: 'Devs Heads restore password',
+        from: 'surkovdavid@gmail.com',
+        html: `<h1>Change password</h1><p>If you want to reset your password click:</p><a href="${url}">${url}</a>`,
+      });
+    }
+  }
+  async restorePassword({ token, password }: RestorePasswordDto) {
+    const { user } = await this.forgotPasswordRepository.findOne({
+      where: {
+        link: token,
+      },
+      relations: {
+        user: true,
+      },
+    });
+
+    if (user) {
+      const newPassword = bcrypt.hashSync(password, SALT_NUMBER);
+      const updatedUser = await this.usersRepository.update({ id: user.id }, { password: newPassword });
+
+      if (updatedUser) {
+        await this.forgotPasswordRepository.delete({ link: token });
+      }
+      return updatedUser;
+    } else {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Wrong link',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }
