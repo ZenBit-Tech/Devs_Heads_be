@@ -54,7 +54,7 @@ export class AuthService {
       );
     }
     const isMatch = bcrypt.compareSync(password, user.password); // unhash password
-    if (!isMatch || user.password) {
+    if (!isMatch) {
       throw new HttpException(
         {
           status: HttpStatus.BAD_REQUEST,

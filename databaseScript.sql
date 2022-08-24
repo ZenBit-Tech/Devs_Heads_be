@@ -52,5 +52,6 @@ CREATE TABLE Head_devs_db.skills(
 
 CREATE TABLE Head_devs_db.forgot_password(
     id INTEGER NOT NULL AUTO_INCREMENT,
-    link VARCHAR(1000)
+    link VARCHAR(1000),
+    CONSTRAINT PRIMARY KEY(id)
 ) engine = InnoDB;
