@@ -33,7 +33,7 @@ export class AuthController {
     return this.authService.forgotPassword(forgotPasswordDto);
   }
 
-  @Patch('restore-password')
+  @Post('restore-password')
   async restorePassword(@Body() restorePasswordDto: RestorePasswordDto) {
     return this.authService.restorePassword(restorePasswordDto);
   }

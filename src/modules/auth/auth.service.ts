@@ -108,7 +108,7 @@ export class AuthService {
         link: hash,
       });
 
-      const url = process.env.RESET_PASSWORD_URL + '?token=' + hash;
+      const url = process.env.RESET_PASSWORD_URL + hash;
 
       return await this.mailerService.sendMail({
         to: email,
