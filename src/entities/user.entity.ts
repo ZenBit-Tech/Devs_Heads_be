@@ -14,5 +14,7 @@ export class User {
 
   @Column({ nullable: true })
   googleId: string;
-  forgotPassword: any;
+
+  @OneToMany(() => ForgotPassword, (forgotPassword: ForgotPassword) => forgotPassword.user)
+  forgotPassword: ForgotPassword[];
 }
