@@ -1,5 +1,5 @@
-import { CategoryEntity } from "src/entities/category.entity";
-import { SkillsEntity } from "src/entities/skills.entity";
+import { CategoryEntity } from 'src/entities/category.entity';
+import { SkillsEntity } from 'src/entities/skills.entity';
 
 export class JobPostDto {
   jobTitle: string;
@@ -9,4 +9,5 @@ export class JobPostDto {
   toHourRate: number;
   jobDuration: string;
   jobDescription: string;
+  dateTime: Date;
 }
