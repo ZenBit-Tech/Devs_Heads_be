@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from 'typeorm';
 import { ForgotPassword } from './forgot-password.entity';
+import { ProfileEntity } from './profile/profile.entity';
 
 @Entity({ name: 'user', schema: 'public' })
 export class User {
@@ -17,4 +18,7 @@ export class User {
 
   @OneToMany(() => ForgotPassword, (forgotPassword: ForgotPassword) => forgotPassword.user)
   forgotPassword: ForgotPassword[];
+
+  @OneToOne(() => ProfileEntity, (profile) => profile.id)
+  profile: ProfileEntity;
 }

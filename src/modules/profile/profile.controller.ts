@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Param } from '@nestjs/common';
-import { CategoryEntity } from 'src/entities/profile/category.entity';
+import { CategoryEntity } from 'src/entities/category.entity';
 import { ProfileDto } from './dto/profile.dto';
 import { ProfileService } from './profile.service';
 
@@ -7,7 +7,7 @@ import { ProfileService } from './profile.service';
 export class ProfileController {
   constructor(private profileService: ProfileService) {}
 
-  @Get('categories')
+  @Get('category')
   getAllCategories(): Promise<CategoryEntity[]> {
     return this.profileService.getAllCategories();
   }
