@@ -24,7 +24,7 @@ export class JobPostService {
     throw new NotFoundException(id);
   }
 
-  async getJobPostByUser(userId) {
+  async getJobPostByUser(userId: number) {
     const jobByUser = await this.jobPostRepository.findOne({
       where: { userId: userId },
     });

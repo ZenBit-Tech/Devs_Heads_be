@@ -1,11 +1,8 @@
-import { Body, Controller, Get, Post, Param, createParamDecorator } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param } from '@nestjs/common';
 import { CategoryEntity } from 'src/entities/category.entity';
 import { JobPostDto } from './dto/jobPost.dto';
 import { JobPostService } from './jobPost.service';
 
-export const User = createParamDecorator((data, req) => {
-  return req.user.id;
-});
 @Controller('jobPost')
 export class JobPostController {
   constructor(private jobPostService: JobPostService) {}
@@ -15,9 +12,9 @@ export class JobPostController {
     return this.jobPostService.getJobPost(Number(id));
   }
 
-  @Get()
-  getJobPostByUser(@User('userId') userId: number) {
-    return this.jobPostService.getJobPostByUser(Number(userId));
+  @Get('/user/:id')
+  getJobPostByUser(@Param('userId') userId: number) {
+    return this.jobPostService.getJobPostByUser(userId);
   }
 
   @Post()
