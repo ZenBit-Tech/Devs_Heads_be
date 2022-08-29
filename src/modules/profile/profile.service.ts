@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CategoryEntity } from 'src/entities/profile/category.entity';
+import { CategoryEntity } from 'src/entities/category.entity';
 import { ProfileEntity } from 'src/entities/profile/profile.entity';
-import { SkillsEntity } from 'src/entities/profile/skills.entity';
+import { SkillsEntity } from 'src/entities/skills.entity';
 import { ProfileDto } from './dto/profile.dto';
 
 @Injectable()

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CategoryEntity } from 'src/entities/profile/category.entity';
+import { CategoryEntity } from 'src/entities/category.entity';
 import { EducationEntity } from 'src/entities/profile/education.entity';
 import { ExperienceEntity } from 'src/entities/profile/experience.entity';
 import { ProfileEntity } from 'src/entities/profile/profile.entity';
-import { SkillsEntity } from 'src/entities/profile/skills.entity';
+import { SkillsEntity } from 'src/entities/skills.entity';
 import { ProfileController } from './profile.controller';
 import { ProfileService } from './profile.service';
 
