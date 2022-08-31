@@ -31,7 +31,7 @@ export class JobPostEntity {
   jobDescription: string;
 
   @ManyToOne(() => User, (user) => user.id, { cascade: true })
-  user: number;
+  userId: number;
 
   @Column({
     nullable: false,
