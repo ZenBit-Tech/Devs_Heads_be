@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinTable, ManyToMany } from 'typeorm';
-import { CategoryEntity } from './category.entity'; 
-import { SkillsEntity } from './skills.entity'; 
+import { CategoryEntity } from './category.entity';
+import { SkillsEntity } from './skills.entity';
 
 @Entity()
 export class JobPostEntity {

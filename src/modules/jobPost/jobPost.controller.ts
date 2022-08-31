@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Post, Param } from '@nestjs/common';
-import { CategoryEntity } from 'src/entities/category.entity';
 import { JobPostDto } from './dto/jobPost.dto';
 import { JobPostService } from './jobPost.service';
 
