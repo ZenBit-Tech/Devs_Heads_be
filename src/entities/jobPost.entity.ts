@@ -3,6 +3,7 @@ import { CategoryEntity } from './category.entity';
 import { SkillsEntity } from './skills.entity';
 import { User } from './user.entity';
 
+
 @Entity()
 export class JobPostEntity {
   @PrimaryGeneratedColumn()
