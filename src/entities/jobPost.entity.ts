@@ -30,8 +30,8 @@ export class JobPostEntity {
   @Column({ type: 'varchar', length: 5000 })
   jobDescription: string;
 
-  @ManyToOne(() => User, (user) => user.id)
-  userId: number;
+  @ManyToOne(() => User, (user) => user.id, { cascade: true })
+  user: number;
 
   @Column({
     nullable: false,

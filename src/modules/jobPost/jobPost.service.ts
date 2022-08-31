@@ -24,14 +24,14 @@ export class JobPostService {
     throw new NotFoundException(id);
   }
 
-  async getJobPostByUser(userId: number) {
+  async getJobPostByUser(id: number) {
     const jobByUser = await this.jobPostRepository.findOne({
-      where: { userId: userId },
+      where: { user: id },
     });
     if (jobByUser) {
       return jobByUser;
     }
-    throw new NotFoundException(userId);
+    throw new NotFoundException(id);
   }
 
   async saveJobPost(jobPostDto: JobPostDto) {
@@ -46,6 +46,7 @@ export class JobPostService {
       newJob.jobDuration = jobPostDto.jobDuration;
       newJob.jobDescription = jobPostDto.jobDescription;
       newJob.dateTime = jobPostDto.dateTime;
+      newJob.user = jobPostDto.user;
       const job = await this.jobPostRepository.save(newJob);
       console.log(job);
       return job;

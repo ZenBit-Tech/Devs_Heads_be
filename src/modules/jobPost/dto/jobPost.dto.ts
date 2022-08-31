@@ -10,4 +10,5 @@ export class JobPostDto {
   jobDuration: string;
   jobDescription: string;
   dateTime: Date;
+  user: number;
 }

@@ -146,4 +146,9 @@ export class AuthService {
       );
     }
   }
+
+  async getUser() {
+    const user = await this.usersRepository.find();
+    return user;
+  }
 }

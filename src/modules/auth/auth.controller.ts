@@ -37,4 +37,9 @@ export class AuthController {
   async restorePassword(@Body() restorePasswordDto: RestorePasswordDto) {
     return this.authService.restorePassword(restorePasswordDto);
   }
+
+  @Get('user')
+  async getUser() {
+    return this.authService.getUser();
+  }
 }

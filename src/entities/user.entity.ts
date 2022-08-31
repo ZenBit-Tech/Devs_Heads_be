@@ -20,7 +20,7 @@ export class User {
   @OneToMany(() => ForgotPassword, (forgotPassword: ForgotPassword) => forgotPassword.user)
   forgotPassword: ForgotPassword[];
 
-  @OneToMany(() => JobPostEntity, (jobPost: JobPostEntity) => jobPost.userId)
+  @OneToMany(() => JobPostEntity, (jobPost: JobPostEntity) => jobPost.user)
   jobPost: JobPostEntity;
 
   @OneToOne(() => ProfileEntity, (profile) => profile.id)
