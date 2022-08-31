@@ -2,7 +2,7 @@ import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities/user.entity';
 import { Repository } from 'typeorm';
-import { AuthDto } from './dto/auth.dto';
+import { AuthDto, TokenTypes } from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { MailerService } from '@nestjs-modules/mailer';
@@ -41,7 +41,7 @@ export class AuthService {
     return await this.usersRepository.save({ email, password: hashedPassword, googleId: '' });
   }
 
-  async signIn(@Body() AuthDto: AuthDto): Promise<any> {
+  async signIn(@Body() AuthDto: AuthDto): Promise<TokenTypes> {
     const { email, password } = AuthDto;
     const user: User = await this.usersRepository.findOneBy({ email });
     if (!user) {
@@ -145,5 +145,10 @@ export class AuthService {
         HttpStatus.BAD_REQUEST,
       );
     }
+  }
+
+  async getUser() {
+    const user = await this.usersRepository.find();
+    return user;
   }
 }

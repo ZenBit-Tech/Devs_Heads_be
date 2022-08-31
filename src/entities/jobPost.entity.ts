@@ -1,6 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinTable, ManyToMany } from 'typeorm';
 import { CategoryEntity } from './category.entity';
 import { SkillsEntity } from './skills.entity';
+import { User } from './user.entity';
+
 
 @Entity()
 export class JobPostEntity {
@@ -28,4 +30,14 @@ export class JobPostEntity {
 
   @Column({ type: 'varchar', length: 5000 })
   jobDescription: string;
+
+  @ManyToOne(() => User, (user) => user.id, { cascade: true })
+  userId: number;
+
+  @Column({
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP',
+    type: 'timestamp',
+  })
+  dateTime: Date;
 }

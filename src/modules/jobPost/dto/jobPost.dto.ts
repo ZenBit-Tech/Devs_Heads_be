@@ -9,4 +9,6 @@ export class JobPostDto {
   toHourRate: number;
   jobDuration: string;
   jobDescription: string;
+  dateTime: Date;
+  userId: number;
 }
