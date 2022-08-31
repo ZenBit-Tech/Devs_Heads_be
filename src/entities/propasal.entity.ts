@@ -1,3 +1,6 @@
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToOne } from 'typeorm';
+import { JobPostEntity } from './jobPost.entity';
+import { User } from './user.entity';
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { JobPostEntity } from './jobPost.entity';
 
@@ -6,8 +9,13 @@ export class ProposalPostEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => JobPostEntity, (jobPost) => jobPost.id, { cascade: true })
-  jobPost: JobPostEntity;
+  @Column({ type: 'integer' })
+  @OneToOne(() => JobPostEntity, (jobPost) => jobPost.id, { cascade: true })
+  jobPost: number;
+
+  @Column({ type: 'integer' })
+  @OneToOne(() => User, (user) => user.id, { cascade: true })
+  userId: number;
 
   @Column({ type: 'integer' })
   price: number;

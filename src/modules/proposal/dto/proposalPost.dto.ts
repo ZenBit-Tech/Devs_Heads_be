@@ -1,8 +1,7 @@
-import { JobPostEntity } from 'src/entities/jobPost.entity';
-
 export class ProposalPostDto {
   id: number;
-  jobPost: JobPostEntity;
+  userId: number;
+  jobPost: number;
   price: number;
   message: string;
 }
