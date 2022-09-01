@@ -12,8 +12,8 @@ export class JobPostController {
   }
 
   @Get('user/:id')
-  getJobPostByUser(@Param('id') id: number) {
-    return this.jobPostService.getJobPostByUser(Number(id));
+  getJobPostByUser(@Param('id') userId: number) {
+    return this.jobPostService.getJobPostByUser(Number(userId));
   }
 
   @Post()

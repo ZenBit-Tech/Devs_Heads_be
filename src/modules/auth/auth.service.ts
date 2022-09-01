@@ -13,6 +13,8 @@ import * as bcrypt from 'bcrypt';
 
 const jwt = require('jsonwebtoken');
 const SALT_NUMBER = 8;
+
+const sgMail = require('@sendgrid/mail');
 @Injectable()
 export class AuthService {
   constructor(
@@ -109,13 +111,22 @@ export class AuthService {
       });
 
       const url = process.env.RESET_PASSWORD_URL + hash;
-
-      return await this.mailerService.sendMail({
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+      const msg = {
         to: email,
+        from: 'silvagabis162@gmail.com',
         subject: 'Devs Heads restore password',
-        from: 'surkovdavid@gmail.com',
         html: `<h1>Change password</h1><p>If you want to reset your password click:</p><a href="${url}">${url}</a>`,
-      });
+      };
+
+      sgMail
+        .send(msg)
+        .then(() => {
+          console.log('Email sent');
+        })
+        .catch((e) => {
+          console.error(e);
+        });
     }
   }
   async restorePassword({ token, password }: RestorePasswordDto) {

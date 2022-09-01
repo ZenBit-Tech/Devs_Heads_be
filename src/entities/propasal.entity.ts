@@ -1,8 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToOne } from 'typeorm';
 import { JobPostEntity } from './jobPost.entity';
 import { User } from './user.entity';
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { JobPostEntity } from './jobPost.entity';
 
 @Entity('propasal')
 export class ProposalPostEntity {

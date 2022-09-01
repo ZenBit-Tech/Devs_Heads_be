@@ -1,5 +1,4 @@
 import { Body, Controller, Post, Get, Param } from '@nestjs/common';
-import { Body, Controller, Post } from '@nestjs/common';
 import { ProposalPostDto } from './dto/proposalPost.dto';
 import { ProposalPostService } from './proposal.service';
 

@@ -3,7 +3,6 @@ import { CategoryEntity } from './category.entity';
 import { SkillsEntity } from './skills.entity';
 import { User } from './user.entity';
 
-
 @Entity()
 export class JobPostEntity {
   @PrimaryGeneratedColumn()
@@ -31,6 +30,7 @@ export class JobPostEntity {
   @Column({ type: 'varchar', length: 5000 })
   jobDescription: string;
 
+  @Column({ type: 'integer' })
   @ManyToOne(() => User, (user) => user.id, { cascade: true })
   userId: number;
 

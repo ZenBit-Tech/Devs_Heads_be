@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JobPostEntity } from 'src/entities/jobPost.entity';
@@ -28,10 +28,16 @@ export class JobPostService {
     const jobByUser = await this.jobPostRepository.findOne({
       where: { userId: userId },
     });
-    if (jobByUser) {
-      return jobByUser;
+    if (!jobByUser) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'user post not found',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
     }
-    throw new NotFoundException(userId);
+    return jobByUser;
   }
 
   async saveJobPost(jobPostDto: JobPostDto) {
