@@ -25,7 +25,7 @@ export class JobPostService {
   }
 
   async getJobPostByUser(userId: number) {
-    const jobByUser = await this.jobPostRepository.findOne({
+    const jobByUser = await this.jobPostRepository.find({
       where: { userId: userId },
     });
     if (!jobByUser) {
