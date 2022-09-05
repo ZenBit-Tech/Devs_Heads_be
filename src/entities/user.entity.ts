@@ -17,7 +17,10 @@ export class User {
   @Column({ nullable: true })
   googleId: string;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: ['client', 'freelancer'],
+  })
   role: string;
 
   @OneToMany(() => ForgotPassword, (forgotPassword: ForgotPassword) => forgotPassword.user)
