@@ -27,7 +27,7 @@ export class AuthService {
   ) {}
 
   async signUp(@Body() AuthDto: AuthDto): Promise<User> {
-    const { password, email } = AuthDto;
+    const { password, email, role } = AuthDto;
     const isUsed = await this.usersRepository.findOneBy({ email });
     console.log(isUsed, 'isUsed');
     if (isUsed) {
@@ -40,7 +40,7 @@ export class AuthService {
       );
     }
     const hashedPassword = await bcrypt.hash(password, SALT_NUMBER);
-    return await this.usersRepository.save({ email, password: hashedPassword, googleId: '' });
+    return await this.usersRepository.save({ email, password: hashedPassword, googleId: '', role });
   }
 
   async signIn(@Body() AuthDto: AuthDto): Promise<TokenTypes> {
@@ -66,8 +66,8 @@ export class AuthService {
       );
     }
     const jwtSecret = process.env.JWT_SECRET;
-    const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '1h' });
-    return { token, userId: user.id };
+    const access_token = jwt.sign({ userId: user.id, email: user.email }, jwtSecret);
+    return { access_token, userId: user.id, role: user.role };
   }
 
   async googleSignUp(req) {

@@ -40,6 +40,11 @@ export class JobPostService {
     return jobByUser;
   }
 
+  async getJobPosts() {
+    const job = await this.jobPostRepository.find();
+    return job;
+  }
+
   async saveJobPost(jobPostDto: JobPostDto) {
     try {
       console.log(jobPostDto);
