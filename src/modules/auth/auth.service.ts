@@ -1,4 +1,4 @@
-import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Body, HttpException, HttpStatus, Injectable, Param } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities/user.entity';
 import { Repository } from 'typeorm';
@@ -41,6 +41,13 @@ export class AuthService {
     }
     const hashedPassword = await bcrypt.hash(password, SALT_NUMBER);
     return await this.usersRepository.save({ email, password: hashedPassword, googleId: '', role });
+  }
+
+  async update(@Body() authDto: Partial<AuthDto>): Promise<User> {
+    const { email, role } = authDto;
+    const user = await this.usersRepository.findOneBy({ email });
+    user.role = role;
+    return await this.usersRepository.save(user);
   }
 
   async signIn(@Body() AuthDto: AuthDto): Promise<TokenTypes> {
