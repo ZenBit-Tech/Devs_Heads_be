@@ -47,6 +47,14 @@ export class JobPostService {
     return allPosts;
   }
 
+  async findJobPostByUserId(userId: number) {
+    const getAllByUserId = await this.jobPostRepository.find({
+      where: { userId: userId },
+      relations: ['jobSkills', 'jobCategory'],
+    });
+    return getAllByUserId;
+  }
+
   async saveJobPost(jobPostDto: JobPostDto) {
     try {
       console.log(jobPostDto);

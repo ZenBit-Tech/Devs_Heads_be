@@ -21,6 +21,11 @@ export class JobPostController {
     return this.jobPostService.getAllJobPost();
   }
 
+  @Get('skill/:id')
+  findJobPostByUserId(@Param('id') userId: number) {
+    return this.jobPostService.findJobPostByUserId(Number(userId));
+  }
+
   @Post()
   saveJobPost(@Body() jobPostDto: JobPostDto) {
     return this.jobPostService.saveJobPost(jobPostDto);
