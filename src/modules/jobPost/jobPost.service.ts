@@ -40,6 +40,24 @@ export class JobPostService {
     return jobByUser;
   }
 
+  async searchJobByTitle(query: object) {
+    const { jobTitle, jobDescription }: any = query;
+    const [searchTitle] = await this.jobPostRepository.find({
+      where: { jobTitle: jobTitle, jobDescription: jobDescription },
+    });
+
+    if (!searchTitle) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Title or description not found',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return searchTitle;
+  }
+
   async saveJobPost(jobPostDto: JobPostDto) {
     try {
       console.log(jobPostDto);
