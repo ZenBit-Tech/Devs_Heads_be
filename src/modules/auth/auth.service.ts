@@ -10,6 +10,7 @@ import { ForgotPassword } from '../../entities/forgot-password.entity';
 import { RestorePasswordDto } from './dto/restore-password.dto';
 import { randomBytes } from 'crypto';
 import * as bcrypt from 'bcrypt';
+import { AnyARecord } from 'dns';
 
 const jwt = require('jsonwebtoken');
 const SALT_NUMBER = 8;
@@ -43,6 +44,13 @@ export class AuthService {
     return await this.usersRepository.save({ email, password: hashedPassword, googleId: '' });
   }
 
+  async update(@Body() authDto: Partial<AuthDto>): Promise<User> {
+    const { email, role } = authDto;
+    const user = await this.usersRepository.findOneBy({ email });
+    user.role = role;
+    return await this.usersRepository.save(user);
+  }
+
   async signIn(@Body() AuthDto: AuthDto): Promise<TokenTypes> {
     const { email, password } = AuthDto;
     const user: User = await this.usersRepository.findOneBy({ email });
@@ -66,8 +74,8 @@ export class AuthService {
       );
     }
     const jwtSecret = process.env.JWT_SECRET;
-    const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '1h' });
-    return { token, userId: user.id };
+    const access_token = jwt.sign({ userId: user.id, email: user.email }, jwtSecret);
+    return { access_token, userId: user.id, role: user.role };
   }
 
   async googleSignUp(req) {
