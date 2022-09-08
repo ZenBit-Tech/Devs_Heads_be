@@ -27,7 +27,7 @@ export class AuthService {
   ) {}
 
   async signUp(@Body() AuthDto: AuthDto): Promise<User> {
-    const { password, email, role } = AuthDto;
+    const { password, email } = AuthDto;
     const isUsed = await this.usersRepository.findOneBy({ email });
     console.log(isUsed, 'isUsed');
     if (isUsed) {
@@ -40,7 +40,7 @@ export class AuthService {
       );
     }
     const hashedPassword = await bcrypt.hash(password, SALT_NUMBER);
-    return await this.usersRepository.save({ email, password: hashedPassword, googleId: '', role });
+    return await this.usersRepository.save({ email, password: hashedPassword, googleId: '' });
   }
 
   async update(@Body() authDto: Partial<AuthDto>): Promise<User> {
