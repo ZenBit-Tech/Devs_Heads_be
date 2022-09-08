@@ -1,15 +1,10 @@
-import { Body, Controller, Get, Post, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param } from '@nestjs/common';
 import { JobPostDto } from './dto/jobPost.dto';
 import { JobPostService } from './jobPost.service';
 
 @Controller('jobPost')
 export class JobPostController {
   constructor(private jobPostService: JobPostService) {}
-
-  @Get('search')
-  searchJobByTitle(@Query() query: object) {
-    return this.jobPostService.searchJobByTitle(query);
-  }
 
   @Get(':id')
   getJobPost(@Param('id') id: number) {
@@ -19,6 +14,11 @@ export class JobPostController {
   @Get('user/:id')
   getJobPostByUser(@Param('id') userId: number) {
     return this.jobPostService.getJobPostByUser(Number(userId));
+  }
+
+  @Get()
+  getAllJobPost() {
+    return this.jobPostService.getAllJobPost();
   }
 
   @Post()
