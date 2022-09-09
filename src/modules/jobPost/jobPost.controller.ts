@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Param } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Patch, Delete } from '@nestjs/common';
 import { JobPostDto } from './dto/jobPost.dto';
 import { JobPostService } from './jobPost.service';
 
@@ -16,8 +16,23 @@ export class JobPostController {
     return this.jobPostService.getJobPostByUser(Number(userId));
   }
 
+  @Get()
+  async getJobPosts() {
+    return this.jobPostService.getJobPosts();
+  }
+
   @Post()
   saveJobPost(@Body() jobPostDto: JobPostDto) {
     return this.jobPostService.saveJobPost(jobPostDto);
+  }
+
+  @Patch(':id')
+  updatePost(@Param('id') id: number, @Body() jobPostDto: JobPostDto) {
+    return this.jobPostService.updatePost(id, jobPostDto);
+  }
+
+  @Delete(':id')
+  deletePost(@Param('id') id: number) {
+    return this.jobPostService.deletePost(id);
   }
 }

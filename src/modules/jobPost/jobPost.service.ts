@@ -24,6 +24,11 @@ export class JobPostService {
     throw new NotFoundException(id);
   }
 
+  async getJobPosts() {
+    const job = await this.jobPostRepository.find();
+    return job;
+  }
+
   async getJobPostByUser(userId: number) {
     const jobByUser = await this.jobPostRepository.find({
       where: { userId: userId },
@@ -59,5 +64,38 @@ export class JobPostService {
     } catch (error) {
       console.log(error);
     }
+  }
+  async updatePost(id: number, jobPostDto: JobPostDto) {
+    const findedPost = await this.jobPostRepository.findOneBy({ id });
+    if (!findedPost) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: `user post with id:${id} not found`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    try {
+      const updatedPost = await this.jobPostRepository.update(id, jobPostDto);
+      return updatedPost;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async deletePost(id: number) {
+    const deletedPost = await this.jobPostRepository.delete(id);
+
+    if (deletedPost.affected === 0) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: `user post with id:${id} not found`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return deletedPost;
   }
 }
