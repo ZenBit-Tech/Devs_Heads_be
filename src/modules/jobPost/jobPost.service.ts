@@ -25,9 +25,13 @@ export class JobPostService {
   }
 
   async getJobPostByUser(userId: number) {
-    const jobByUser = await this.jobPostRepository.find({
-      where: { userId: userId },
-    });
+    const jobByUser = await this.jobPostRepository
+      .createQueryBuilder('JobPost')
+      .leftJoinAndSelect('JobPost.jobSkills', 'jobSkills')
+      .leftJoinAndSelect('JobPost.jobCategory', 'jobCategory')
+      .where('JobPost.userId = :userId', { userId })
+      .getMany();
+
     if (!jobByUser) {
       throw new HttpException(
         {
@@ -41,18 +45,13 @@ export class JobPostService {
   }
 
   async getAllJobPost() {
-    const allPosts = await this.jobPostRepository.find({
-      relations: ['jobSkills', 'jobCategory'],
-    });
-    return allPosts;
-  }
+    const jobPost = await this.jobPostRepository
+      .createQueryBuilder('JobPost')
+      .leftJoinAndSelect('JobPost.jobSkills', 'jobSkills')
+      .leftJoinAndSelect('JobPost.jobCategory', 'jobCategory')
+      .getMany();
 
-  async findJobPostByUserId(userId: number) {
-    const getAllByUserId = await this.jobPostRepository.find({
-      where: { userId: userId },
-      relations: ['jobSkills', 'jobCategory'],
-    });
-    return getAllByUserId;
+    return jobPost;
   }
 
   async saveJobPost(jobPostDto: JobPostDto) {
