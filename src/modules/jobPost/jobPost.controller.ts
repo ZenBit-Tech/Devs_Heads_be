@@ -17,8 +17,8 @@ export class JobPostController {
   }
 
   @Get()
-  async getJobPosts() {
-    return this.jobPostService.getJobPosts();
+  getAllJobPost() {
+    return this.jobPostService.getAllJobPost();
   }
 
   @Post()

@@ -20,7 +20,7 @@ export class User {
   @Column({
     type: 'enum',
     enum: ['client', 'freelancer'],
-    nullable: true
+    nullable: true,
   })
   role: string;
 
