@@ -15,13 +15,18 @@ export class AuthController {
   }
 
   @Put('sign-up/update')
-  signInUpdate(@Body() authDto: AuthDto): Promise<User> {
+  signUpUpdate(@Body() authDto: AuthDto): Promise<User> {
     return this.authService.update(authDto);
   }
 
   @Post('sign-in')
   signIn(@Body() authDto: AuthDto): Promise<TokenTypes> {
     return this.authService.signIn(authDto);
+  }
+
+  @Put('sign-in/update')
+  signInUpdate(@Body() authDto: AuthDto): Promise<User> {
+    return this.authService.update(authDto);
   }
 
   @Get()

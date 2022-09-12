@@ -40,6 +40,13 @@ export class JobPostService {
     return jobByUser;
   }
 
+  async getJobPosts() {
+    const job = await this.jobPostRepository.find({
+      relations: ['jobSkills', 'jobCategory'],
+    });
+    return job;
+  }
+
   async saveJobPost(jobPostDto: JobPostDto) {
     try {
       console.log(jobPostDto);

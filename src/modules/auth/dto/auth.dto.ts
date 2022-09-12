@@ -9,6 +9,8 @@ export class AuthDto {
   password: string;
   role: string;
   googleId: string;
+
+  role: string;
 }
 export interface TokenTypes {
   access_token: string;

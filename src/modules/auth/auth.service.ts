@@ -10,7 +10,6 @@ import { ForgotPassword } from '../../entities/forgot-password.entity';
 import { RestorePasswordDto } from './dto/restore-password.dto';
 import { randomBytes } from 'crypto';
 import * as bcrypt from 'bcrypt';
-import { AnyARecord } from 'dns';
 
 const jwt = require('jsonwebtoken');
 const SALT_NUMBER = 8;
@@ -85,7 +84,6 @@ export class AuthService {
     const newUser = await this.usersRepository.save({ email, googleId, password: '' });
     return this.googleSignIn(newUser);
   }
-
   async googleSignIn(user) {
     return {
       token: this.jwtService.sign(
@@ -125,13 +123,13 @@ export class AuthService {
         to: email,
         from: 'silvagabis162@gmail.com',
         subject: 'Devs Heads restore password',
-        html: `<h1>Change password</h1><p>If you want to reset your password click:</p><a href="${url}" target="_self">${url}</a>`,
+        html: `<h1>Change password</h1><p>If you want to reset your password click:</p><a href="${url}">${url}</a>`,
       };
 
       sgMail
         .send(msg)
         .then(() => {
-          console.log('sent email');
+          console.log('Email sent');
         })
         .catch((e) => {
           console.error(e);
@@ -151,6 +149,7 @@ export class AuthService {
     if (user) {
       const newPassword = bcrypt.hashSync(password, SALT_NUMBER);
       const updatedUser = await this.usersRepository.update({ id: user.id }, { password: newPassword });
+
       if (updatedUser) {
         await this.forgotPasswordRepository.delete({ link: token });
       }
