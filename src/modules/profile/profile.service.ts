@@ -39,7 +39,15 @@ export class ProfileService {
       relations: ['experience', 'education', 'skills', 'category'],
     });
     if (profile) {
-      return profile;
+      const setting = await this.settingRepository
+        .createQueryBuilder('Setting')
+        .leftJoin(`Setting.userId`, 'profile')
+        .where('Setting.user = :userId', { userId: profile?.userId })
+        .getOne();
+      return {
+        profile: profile,
+        setting: setting,
+      };
     }
     throw new NotFoundException(id);
   }
