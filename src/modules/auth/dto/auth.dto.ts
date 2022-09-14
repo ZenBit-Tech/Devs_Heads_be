@@ -1,14 +1,12 @@
-import { IsString, IsNotEmpty, IsEmail, IsEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
 export class AuthDto {
+  password?: string;
+  role?: string;
+  googleId?: string;
   @IsEmail()
   @IsString()
   @IsNotEmpty()
   email: string;
-  @IsString()
-  @IsNotEmpty()
-  password: string;
-  role: string;
-  googleId: string;
 }
 export interface TokenTypes {
   access_token: string;
