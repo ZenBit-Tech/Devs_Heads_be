@@ -23,12 +23,6 @@ export class AuthController {
   signIn(@Body() authDto: AuthDto): Promise<TokenTypes> {
     return this.authService.signIn(authDto);
   }
-
-  @Put('sign-in/update')
-  signInUpdate(@Body() authDto: AuthDto): Promise<User> {
-    return this.authService.update(authDto);
-  }
-
   @Get()
   @UseGuards(AuthGuard('google'))
   async googleAuth(@Req() req) {}
