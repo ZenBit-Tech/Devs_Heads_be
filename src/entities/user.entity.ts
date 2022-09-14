@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from 'typ
 import { ForgotPassword } from './forgot-password.entity';
 import { ProfileEntity } from './profile/profile.entity';
 import { JobPostEntity } from './jobPost.entity';
+import { SettingEntity } from './profile/setting-profile.entity';
 
 @Entity({ name: 'user', schema: 'public' })
 export class User {
@@ -29,6 +30,9 @@ export class User {
 
   @OneToMany(() => JobPostEntity, (jobPost: JobPostEntity) => jobPost.userId)
   jobPost: JobPostEntity;
+
+  @OneToOne(() => SettingEntity, (setting) => setting.id)
+  setting: SettingEntity;
 
   @OneToOne(() => ProfileEntity, (profile) => profile.id)
   profile: ProfileEntity;

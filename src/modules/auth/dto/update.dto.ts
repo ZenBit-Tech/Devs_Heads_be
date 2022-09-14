@@ -1,15 +1,17 @@
-import { IsString, IsNotEmpty, IsEmail, IsEmpty } from 'class-validator';
-export class AuthDto {
+import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
+
+export class UpdateDto {
   @IsEmail()
   @IsString()
   @IsNotEmpty()
   email: string;
+
   @IsString()
   @IsNotEmpty()
-  password: string;
   role: string;
   googleId: string;
 }
+
 export interface TokenTypes {
   access_token: string;
   userId: number;
