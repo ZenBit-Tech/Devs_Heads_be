@@ -4,9 +4,6 @@ import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typ
 
 @Entity()
 export class inviteTalentEntity {
-  createQueryBuilder() {
-    throw new Error('Method not implemented.');
-  }
   @PrimaryGeneratedColumn()
   id: number;
 
