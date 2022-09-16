@@ -3,7 +3,7 @@ import { InviteTalentDto } from 'src/modules/inviteTalent/dto/inviteTalent.dto';
 import { InviteTalentService } from 'src/modules/inviteTalent/inviteTalent.service';
 
 @Controller('invite-talent')
-export class InviteTallentController {
+export class InviteTalentController {
   constructor(private inviteTalentService: InviteTalentService) {}
 
   @Post()
