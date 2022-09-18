@@ -1,35 +1,38 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { SettingsInfoDto } from './dto/settingsInfo.dto';
-import { SettingEntity } from 'src/entities/profile/setting-profile.entity';
 
 @Injectable()
 export class SettingsInfoService {
   constructor(
-    @InjectRepository(SettingEntity)
-    private settingRepository: Repository<SettingEntity>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
   async saveUserSettings(id: number, settingsInfoDto: SettingsInfoDto) {
-    try {
-      console.log(settingsInfoDto);
-      const newSetting = new SettingEntity();
-      newSetting.firstName = settingsInfoDto.firstName;
-      newSetting.lastName = settingsInfoDto.lastName;
-      newSetting.email = settingsInfoDto.email;
-      newSetting.phone = settingsInfoDto.phone;
-      newSetting.user = id;
-      const profile = await this.settingRepository.save(newSetting);
-      console.log(profile);
-      return profile;
-    } catch (error) {
-      console.log(error);
+    const currentUserSettings = await this.userRepository.findOneBy({ id: id });
+    if (!currentUserSettings) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: `Not find user with ${id}`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
     }
+    currentUserSettings.firstName = settingsInfoDto.firstName;
+    currentUserSettings.lastName = settingsInfoDto.lastName;
+    currentUserSettings.phone = settingsInfoDto.phone;
+    currentUserSettings.user = id;
+    const profile = await this.userRepository.save(currentUserSettings);
+    console.log(profile);
+    return profile;
   }
 
-  async getAllSettings(): Promise<SettingEntity[]> {
-    const allSetting = await this.settingRepository.find();
+  async getAllSettings(): Promise<User[]> {
+    const allSetting = await this.userRepository.find();
     return allSetting;
   }
 }

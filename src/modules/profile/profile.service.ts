@@ -1,12 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConsoleLogger, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { CategoryEntity } from 'src/entities/category.entity';
 import { ProfileEntity } from 'src/entities/profile/profile.entity';
 import { SkillsEntity } from 'src/entities/skills.entity';
 import { ProfileDto } from './dto/profile.dto';
-import { SettingEntity } from 'src/entities/profile/setting-profile.entity';
 import { CreateUserDto } from './profile-filter.dto';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class ProfileService {
@@ -17,8 +17,8 @@ export class ProfileService {
     private categoryRepository: Repository<CategoryEntity>,
     @InjectRepository(SkillsEntity)
     private skillsRepository: Repository<SkillsEntity>,
-    @InjectRepository(SettingEntity)
-    private settingRepository: Repository<SettingEntity>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
   async getAllCategories(): Promise<CategoryEntity[]> {
@@ -30,6 +30,10 @@ export class ProfileService {
     const allSkills = await this.skillsRepository.find();
     return allSkills;
   }
+  async getAllProfile(): Promise<ProfileEntity[]> {
+    const allProfile = await this.profileRepository.find();
+    return allProfile;
+  }
 
   async getProfileSettings(id: number) {
     const profile = await this.profileRepository.findOne({
@@ -39,7 +43,7 @@ export class ProfileService {
       relations: ['experience', 'education', 'skills', 'category'],
     });
     if (profile) {
-      const setting = await this.settingRepository
+      const setting = await this.userRepository
         .createQueryBuilder('Setting')
         .leftJoin(`Setting.userId`, 'profile')
         .where('Setting.user = :userId', { userId: profile?.userId })
@@ -62,13 +66,14 @@ export class ProfileService {
   }
 
   async queryBuilderUser(alias: string) {
-    return this.settingRepository.createQueryBuilder(alias).leftJoin(`${alias}.userId`, 'profile');
+    return this.userRepository.createQueryBuilder(alias).leftJoin(`${alias}.userId`, 'profile');
   }
 
   async paginationFilter(query: CreateUserDto, profile: SelectQueryBuilder<ProfileEntity>) {
     const skillQuery = query.skills ? query.skills.split(',') : null;
     const search = `%${query.search}%`;
     const category = query.category;
+
     profile
       .where(search ? 'skillsprofile.position LIKE :search OR skillsprofile.description LIKE :search' : 'TRUE', {
         search,
@@ -79,6 +84,7 @@ export class ProfileService {
       .andHaving(query.skills ? 'skills.name IN (:skills)' : 'TRUE', {
         skills: skillQuery,
       });
+
     return profile;
   }
 

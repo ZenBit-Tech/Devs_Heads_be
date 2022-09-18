@@ -1,8 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, ManyToOne } from 'typeorm';
 import { ForgotPassword } from './forgot-password.entity';
 import { ProfileEntity } from './profile/profile.entity';
 import { JobPostEntity } from './jobPost.entity';
-import { SettingEntity } from './profile/setting-profile.entity';
 
 @Entity({ name: 'user', schema: 'public' })
 export class User {
@@ -12,11 +11,26 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ default: 'default' })
   password: string;
 
   @Column({ nullable: true })
   googleId: string;
+
+  @Column({ type: 'varchar', default: 'default' })
+  firstName: string;
+
+  @Column({ type: 'varchar', default: 'default' })
+  lastName: string;
+
+  @Column({ type: 'varchar', default: 'default' })
+  phone: string;
+
+  @Column({ type: 'integer', default: 0 })
+  user: number;
+
+  @ManyToOne(() => ProfileEntity, (profile) => profile.user, { cascade: true })
+  userId: ProfileEntity;
 
   @Column({
     type: 'enum',
@@ -30,10 +44,4 @@ export class User {
 
   @OneToMany(() => JobPostEntity, (jobPost: JobPostEntity) => jobPost.userId)
   jobPost: JobPostEntity;
-
-  @OneToOne(() => SettingEntity, (setting) => setting.id)
-  setting: SettingEntity;
-
-  @OneToOne(() => ProfileEntity, (profile) => profile.id)
-  profile: ProfileEntity;
 }

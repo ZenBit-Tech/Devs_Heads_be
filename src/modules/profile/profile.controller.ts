@@ -18,18 +18,22 @@ export class ProfileController {
     return this.profileService.getAllSkills();
   }
 
+  @Get('allItem')
+  getAllProfile() {
+    return this.profileService.getAllProfile();
+  }
+
   @Get('filter')
   async findAll(@Query() userQuery: CreateUserDto) {
     const profileInfo = await this.profileService.queryBuilderSkills('skillsprofile');
-    const user = await this.profileService.queryBuilderUser('userprofile');
     const filterProfile = await this.profileService.paginationFilter(userQuery, profileInfo);
+    const user = await this.profileService.queryBuilderUser('userprofile');
 
     if (userQuery.sort) {
       filterProfile.orderBy('skillsprofile.price', 'ASC');
     }
-
-    const filter = await filterProfile.getMany();
     const users = await user.getMany();
+    const filter = await filterProfile.getMany();
     let result = [];
 
     filter.map((el) => {
@@ -63,7 +67,6 @@ export class ProfileController {
       page: singlePage?.page,
       last_page: Math.ceil(singlePage?.total / singlePage?.limit),
       limit: 6,
-      query: user.getMany(),
     };
   }
 
