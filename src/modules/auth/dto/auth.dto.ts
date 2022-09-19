@@ -1,12 +1,10 @@
 import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
-import { ProfileEntity } from 'src/entities/profile/profile.entity';
 
 export class AuthDto {
   firstName?: string;
   lastName?: string;
   phone?: string;
-  user?: number;
-  userId?: ProfileEntity;
+  userId?: number;
   password?: string;
   role?: string;
   googleId?: string;

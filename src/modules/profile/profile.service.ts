@@ -46,7 +46,7 @@ export class ProfileService {
       const setting = await this.userRepository
         .createQueryBuilder('Setting')
         .leftJoin(`Setting.userId`, 'profile')
-        .where('Setting.user = :userId', { userId: profile?.userId })
+        .where('Setting.userId = :userId', { userId: profile?.userId })
         .getOne();
       return {
         profile: profile,

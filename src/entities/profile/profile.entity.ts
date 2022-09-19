@@ -51,12 +51,8 @@ export class ProfileEntity {
   @OneToMany(() => ExperienceEntity, (experience) => experience.profile, { cascade: true })
   experience: ExperienceEntity[];
 
-  @OneToMany(() => User, (user) => user.userId)
-  @JoinColumn()
-  user: User[];
-
   @Column({ type: 'integer' })
   @JoinColumn()
-  @ManyToOne(() => User, (user) => user.id, { cascade: true })
+  @ManyToOne(() => User, (user) => user.userId, { cascade: true })
   userId: number;
 }

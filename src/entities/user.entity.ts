@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, ManyToOne, JoinColumn } from 'typeorm';
 import { ForgotPassword } from './forgot-password.entity';
 import { ProfileEntity } from './profile/profile.entity';
 import { JobPostEntity } from './jobPost.entity';
@@ -26,11 +26,10 @@ export class User {
   @Column({ type: 'varchar', default: 'default' })
   phone: string;
 
-  @Column({ type: 'integer', default: 0 })
-  user: number;
-
-  @ManyToOne(() => ProfileEntity, (profile) => profile.user, { cascade: true })
-  userId: ProfileEntity;
+  @Column({ type: 'integer' })
+  @JoinColumn()
+  @ManyToOne(() => ProfileEntity, (profile) => profile.userId)
+  userId: number;
 
   @Column({
     type: 'enum',

@@ -38,7 +38,7 @@ export class ProfileController {
 
     filter.map((el) => {
       users.map((user) => {
-        if (el.userId === user.user && user.user > 0) {
+        if (el.userId === user.userId && user.userId > 0) {
           result.push({ filter: el, user: user });
         }
       });
@@ -63,6 +63,7 @@ export class ProfileController {
 
     return {
       profile: result,
+      filter: filterProfile.getMany(),
       total: singlePage?.total,
       page: singlePage?.page,
       last_page: Math.ceil(singlePage?.total / singlePage?.limit),
