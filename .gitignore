@@ -37,3 +37,4 @@ lerna-debug.log*
 #Custom
 *.envsendgrid.env
 .env
+sendgrid.env
