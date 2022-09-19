@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Param, Patch, Delete } from '@nestjs/common';
 import { JobPostDto } from './dto/jobPost.dto';
 import { JobPostService } from './jobPost.service';
+import { UpdateJobPostDto } from './dto/update-job-post';
 
 @Controller('jobPost')
 export class JobPostController {
@@ -27,8 +28,8 @@ export class JobPostController {
   }
 
   @Patch(':id')
-  updatePost(@Param('id') id: number, @Body() jobPostDto: JobPostDto) {
-    return this.jobPostService.updatePost(id, jobPostDto);
+  updatePost(@Param('id') id: number, @Body() updateJobPostDto: UpdateJobPostDto) {
+    return this.jobPostService.updatePost(id, updateJobPostDto);
   }
 
   @Delete(':id')

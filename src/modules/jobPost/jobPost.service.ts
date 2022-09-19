@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JobPostEntity } from 'src/entities/jobPost.entity';
 import { JobPostDto } from './dto/jobPost.dto';
+import { UpdateJobPostDto } from './dto/update-job-post';
 
 @Injectable()
 export class JobPostService {
@@ -65,7 +66,7 @@ export class JobPostService {
       console.log(error);
     }
   }
-  async updatePost(id: number, jobPostDto: JobPostDto) {
+  async updatePost(id: number, updateJobPostDto: UpdateJobPostDto) {
     const findedPost = await this.jobPostRepository.findOneBy({ id });
     if (!findedPost) {
       throw new HttpException(
@@ -77,7 +78,7 @@ export class JobPostService {
       );
     }
     try {
-      const updatedPost = await this.jobPostRepository.update(id, jobPostDto);
+      const updatedPost = await this.jobPostRepository.update(id, updateJobPostDto);
       return updatedPost;
     } catch (error) {
       console.log(error);
