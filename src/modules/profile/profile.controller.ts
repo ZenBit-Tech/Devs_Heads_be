@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Param, Query } from '@nestjs/common';
 import { CategoryEntity } from 'src/entities/category.entity';
 import { ProfileDto } from './dto/profile.dto';
 import { ProfileService } from './profile.service';
-import { CreateUserDto } from './profile-filter.dto';
+import { FindUserDto } from './profile-filter.dto';
 
 @Controller('profile')
 export class ProfileController {
@@ -24,7 +24,7 @@ export class ProfileController {
   }
 
   @Get('filter')
-  async findAll(@Query() userQuery: CreateUserDto) {
+  async findAll(@Query() userQuery: FindUserDto) {
     const profileInfo = await this.profileService.queryBuilderSkills('skillsprofile');
     const filterProfile = await this.profileService.paginationFilter(userQuery, profileInfo);
     const user = await this.profileService.queryBuilderUser('userprofile');

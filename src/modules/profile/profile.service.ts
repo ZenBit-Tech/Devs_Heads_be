@@ -5,7 +5,7 @@ import { CategoryEntity } from 'src/entities/category.entity';
 import { ProfileEntity } from 'src/entities/profile/profile.entity';
 import { SkillsEntity } from 'src/entities/skills.entity';
 import { ProfileDto } from './dto/profile.dto';
-import { CreateUserDto } from './profile-filter.dto';
+import { FindUserDto } from './profile-filter.dto';
 import { User } from 'src/entities/user.entity';
 
 @Injectable()
@@ -69,7 +69,7 @@ export class ProfileService {
     return this.userRepository.createQueryBuilder(alias).leftJoin(`${alias}.userId`, 'profile');
   }
 
-  async paginationFilter(query: CreateUserDto, profile: SelectQueryBuilder<ProfileEntity>) {
+  async paginationFilter(query: FindUserDto, profile: SelectQueryBuilder<ProfileEntity>) {
     const skillQuery = query.skills ? query.skills.split(',') : null;
     const search = `%${query.search}%`;
     const category = query.category;
