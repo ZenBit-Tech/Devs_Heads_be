@@ -62,11 +62,9 @@ export class ProfileService {
       .innerJoinAndSelect(`${alias}.skills`, 'skills')
       .addSelect('skills.name')
       .innerJoinAndSelect(`${alias}.category`, 'category')
-      .addSelect('category.name');
-  }
-
-  async queryBuilderUser(alias: string) {
-    return this.userRepository.createQueryBuilder(alias).leftJoin(`${alias}.userId`, 'profile');
+      .addSelect('category.name')
+      .innerJoinAndSelect(`${alias}.userId`, 'user')
+      .where(`${alias}.userId = :userId`, { userId: 'user.userId' });
   }
 
   async paginationFilter(query: FindUserDto, profile: SelectQueryBuilder<ProfileEntity>) {

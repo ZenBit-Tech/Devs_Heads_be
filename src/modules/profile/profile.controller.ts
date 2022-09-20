@@ -27,31 +27,20 @@ export class ProfileController {
   async findAll(@Query() userQuery: FindUserDto) {
     const profileInfo = await this.profileService.queryBuilderSkills('skillsprofile');
     const filterProfile = await this.profileService.paginationFilter(userQuery, profileInfo);
-    const user = await this.profileService.queryBuilderUser('userprofile');
 
     if (userQuery.sort) {
       filterProfile.orderBy('skillsprofile.price', 'ASC');
     }
-    const users = await user.getMany();
-    const filter = await filterProfile.getMany();
-    let result = [];
-
-    filter.map((el) => {
-      users.map((user) => {
-        if (el.userId === user.userId && user.userId > 0) {
-          result.push({ filter: el, user: user });
-        }
-      });
-    });
+    let filter = await filterProfile.getMany();
 
     const Paginate = async () => {
-      if (userQuery.page && filterProfile && result) {
+      if (userQuery.page && filterProfile) {
         const limit = 6;
         const page = parseInt(userQuery.page) || 1;
-        const total = result.length;
+        const total = filter.length;
         const lastProfileIndex = page * limit;
         const firstProfileIndex = lastProfileIndex - limit;
-        result = result?.slice(firstProfileIndex, lastProfileIndex);
+        filter = filter?.slice(firstProfileIndex, lastProfileIndex);
         return {
           total,
           page,
@@ -62,8 +51,7 @@ export class ProfileController {
     const singlePage = await Paginate();
 
     return {
-      profile: result,
-      filter: filterProfile.getMany(),
+      profile: filter,
       total: singlePage?.total,
       page: singlePage?.page,
       last_page: Math.ceil(singlePage?.total / singlePage?.limit),
