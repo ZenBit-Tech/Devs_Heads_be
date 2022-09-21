@@ -11,7 +11,6 @@ import { RestorePasswordDto } from './dto/restore-password.dto';
 import { randomBytes } from 'crypto';
 import * as bcrypt from 'bcrypt';
 
-const jwt = require('jsonwebtoken');
 const SALT_NUMBER = 8;
 
 const sgMail = require('@sendgrid/mail');
@@ -72,8 +71,13 @@ export class AuthService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const jwtSecret = process.env.JWT_SECRET;
-    const access_token = jwt.sign({ userId: user.id, email: user.email }, jwtSecret);
+    const access_token = this.jwtService.sign(
+      { userId: user.id, email: user.email },
+      {
+        secret: process.env.JWT_SECRET,
+        expiresIn: process.env.JWT_EXPIRE_TIME,
+      },
+    );
     return { access_token, userId: user.id, role: user.role };
   }
 
