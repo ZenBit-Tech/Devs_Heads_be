@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, ManyToOne,
 import { ForgotPassword } from './forgot-password.entity';
 import { ProfileEntity } from './profile/profile.entity';
 import { JobPostEntity } from './jobPost.entity';
+import { IsOptional } from 'class-validator';
 
 @Entity({ name: 'user', schema: 'public' })
 export class User {
@@ -26,7 +27,8 @@ export class User {
   @Column({ type: 'varchar', default: 'default' })
   phone: string;
 
-  @Column({ type: 'integer' })
+  @Column({ type: 'integer', nullable: true })
+  @IsOptional()
   @JoinColumn()
   @ManyToOne(() => ProfileEntity, (profile) => profile.userId)
   userId: number;
