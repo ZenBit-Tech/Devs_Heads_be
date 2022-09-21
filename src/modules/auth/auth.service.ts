@@ -1,4 +1,4 @@
-import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Body, ConsoleLogger, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities/user.entity';
 import { Repository } from 'typeorm';
@@ -10,6 +10,7 @@ import { ForgotPassword } from '../../entities/forgot-password.entity';
 import { RestorePasswordDto } from './dto/restore-password.dto';
 import { randomBytes } from 'crypto';
 import * as bcrypt from 'bcrypt';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 const jwt = require('jsonwebtoken');
 const SALT_NUMBER = 8;
@@ -165,6 +166,30 @@ export class AuthService {
     }
   }
 
+  async changePassword({ email, oldPassword, newPassword }: ChangePasswordDto) {
+    const user = await this.usersRepository.findOneBy({ email: email });
+    const isMatch = bcrypt.compareSync(oldPassword, user.password); // hash password
+    if (!isMatch) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          message: 'Incorrect old password',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (oldPassword === newPassword) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          message: 'Old and new password the same',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const password = bcrypt.hashSync(newPassword, SALT_NUMBER);
+    await this.usersRepository.update({ id: user.id }, { password: password });
+  }
   async getUser() {
     const user = await this.usersRepository.find();
     return user;
