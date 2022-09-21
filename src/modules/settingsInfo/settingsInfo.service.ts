@@ -13,8 +13,7 @@ export class SettingsInfoService {
 
   async saveUserSettings(id: number, settingsInfoDto: SettingsInfoDto) {
     const currentUserSettings = await this.userRepository.findOneBy({ id: id });
-
-    if (!currentUserSettings)
+    if (!currentUserSettings) {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
@@ -22,7 +21,18 @@ export class SettingsInfoService {
         },
         HttpStatus.NOT_FOUND,
       );
+    }
+    currentUserSettings.firstName = settingsInfoDto.firstName;
+    currentUserSettings.lastName = settingsInfoDto.lastName;
+    currentUserSettings.phone = settingsInfoDto.phone;
+    currentUserSettings.userId = id;
+    const profile = await this.userRepository.save(currentUserSettings);
+    console.log(profile);
+    return profile;
+  }
 
-    return await this.userRepository.save({ id, ...settingsInfoDto });
+  async getAllSettings(): Promise<User[]> {
+    const allSetting = await this.userRepository.find();
+    return allSetting;
   }
 }

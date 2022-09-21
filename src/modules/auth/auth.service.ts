@@ -10,6 +10,7 @@ import { ForgotPassword } from '../../entities/forgot-password.entity';
 import { RestorePasswordDto } from './dto/restore-password.dto';
 import { randomBytes } from 'crypto';
 import * as bcrypt from 'bcrypt';
+import { UpdateDto } from './dto/update.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 
 const SALT_NUMBER = 8;
@@ -43,7 +44,7 @@ export class AuthService {
     return await this.usersRepository.save({ email, password: hashedPassword, googleId: '', role });
   }
 
-  async update(@Body() authDto: Partial<AuthDto>): Promise<User> {
+  async update(@Body() authDto: Partial<UpdateDto>): Promise<User> {
     const { email, role } = authDto;
     const user = await this.usersRepository.findOneBy({ email });
     user.role = role;

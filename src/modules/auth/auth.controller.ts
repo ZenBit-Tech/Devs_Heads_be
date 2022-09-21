@@ -24,12 +24,6 @@ export class AuthController {
   signIn(@Body() authDto: AuthDto): Promise<TokenTypes> {
     return this.authService.signIn(authDto);
   }
-
-  @Put('sign-in/update')
-  signInUpdate(@Body() authDto: AuthDto): Promise<User> {
-    return this.authService.update(authDto);
-  }
-
   @Get()
   @UseGuards(AuthGuard('google'))
   async googleAuth(@Req() req) {}
@@ -38,7 +32,7 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   googleAuthRedirect(@Req() req, @Res() res) {
     this.authService.googleSignUp(req);
-    res.redirect('http://localhost:3001/role-selection');
+    res.redirect(`http://localhost:3001/role-selection/${req.user.email}`);
   }
 
   @Post('forgot-password')

@@ -1,10 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConsoleLogger, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { CategoryEntity } from 'src/entities/category.entity';
 import { ProfileEntity } from 'src/entities/profile/profile.entity';
 import { SkillsEntity } from 'src/entities/skills.entity';
 import { ProfileDto } from './dto/profile.dto';
+import { FindUserDto } from './profile-filter.dto';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class ProfileService {
@@ -15,6 +17,8 @@ export class ProfileService {
     private categoryRepository: Repository<CategoryEntity>,
     @InjectRepository(SkillsEntity)
     private skillsRepository: Repository<SkillsEntity>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
   async getAllCategories(): Promise<CategoryEntity[]> {
@@ -26,6 +30,10 @@ export class ProfileService {
     const allSkills = await this.skillsRepository.find();
     return allSkills;
   }
+  async getAllProfile(): Promise<ProfileEntity[]> {
+    const allProfile = await this.profileRepository.find();
+    return allProfile;
+  }
 
   async getProfileSettings(id: number) {
     const profile = await this.profileRepository.findOne({
@@ -35,14 +43,51 @@ export class ProfileService {
       relations: ['experience', 'education', 'skills', 'category'],
     });
     if (profile) {
-      return profile;
+      const setting = await this.userRepository
+        .createQueryBuilder('Setting')
+        .leftJoin(`Setting.userId`, 'profile')
+        .where('Setting.userId = :userId', { userId: profile?.userId })
+        .getOne();
+      return {
+        profile: profile,
+        setting: setting,
+      };
     }
     throw new NotFoundException(id);
   }
 
+  async queryBuilderSkills(alias: string) {
+    return this.profileRepository
+      .createQueryBuilder(alias)
+      .innerJoinAndSelect(`${alias}.skills`, 'skills')
+      .addSelect('skills.name')
+      .innerJoinAndSelect(`${alias}.category`, 'category')
+      .addSelect('category.name')
+      .innerJoinAndSelect(`${alias}.userId`, 'user')
+      .where(`${alias}.userId = :userId`, { userId: 'user.userId' });
+  }
+
+  async paginationFilter(query: FindUserDto, profile: SelectQueryBuilder<ProfileEntity>) {
+    const skillQuery = query.skills ? query.skills.split(',') : null;
+    const search = `%${query.search}%`;
+    const category = query.category;
+
+    profile
+      .where(search ? 'skillsprofile.position LIKE :search OR skillsprofile.description LIKE :search' : 'TRUE', {
+        search,
+      })
+      .andHaving(category ? 'category.name LIKE :category' : 'TRUE', {
+        category: category,
+      })
+      .andHaving(query.skills ? 'skills.name IN (:skills)' : 'TRUE', {
+        skills: skillQuery,
+      });
+
+    return profile;
+  }
+
   async saveProfile(profileDto: ProfileDto) {
     try {
-      console.log(profileDto);
       const newProfile = new ProfileEntity();
       newProfile.photo = profileDto.photo;
       newProfile.position = profileDto.position;
@@ -53,6 +98,7 @@ export class ProfileService {
       newProfile.education = profileDto.education;
       newProfile.experience = profileDto.experience;
       newProfile.skills = profileDto.skills;
+      newProfile.userId = profileDto.userId;
       const profile = await this.profileRepository.save(newProfile);
       console.log(profile);
       return profile;
