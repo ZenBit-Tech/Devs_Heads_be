@@ -166,9 +166,8 @@ export class AuthService {
     }
   }
 
-  async changePassword({ token, oldPassword, newPassword }: ChangePasswordDto) {
-    const userData = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
-    const user = await this.usersRepository.findOneBy({ email: userData.email });
+  async changePassword({ email, oldPassword, newPassword }: ChangePasswordDto) {
+    const user = await this.usersRepository.findOneBy({ email: email });
     const isMatch = bcrypt.compareSync(oldPassword, user.password); // hash password
     if (!isMatch) {
       throw new HttpException(
