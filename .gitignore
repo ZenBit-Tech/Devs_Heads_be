@@ -38,4 +38,3 @@ lerna-debug.log*
 *.envsendgrid.env
 .env
 sendgrid.env
-.vercel
