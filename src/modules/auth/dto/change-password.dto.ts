@@ -2,7 +2,7 @@ import { IsString, IsNotEmpty, MinLength } from 'class-validator';
 
 export class ChangePasswordDto {
   @IsString()
-  readonly token: string;
+  readonly email: string;
 
   @IsString()
   @IsNotEmpty()

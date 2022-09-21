@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JobPostEntity } from 'src/entities/jobPost.entity';
 import { JobPostDto } from './dto/jobPost.dto';
+import { UpdateJobPostDto } from './dto/update-job-post';
 
 @Injectable()
 export class JobPostService {
@@ -22,6 +23,11 @@ export class JobPostService {
       return job;
     }
     throw new NotFoundException(id);
+  }
+
+  async getJobPosts() {
+    const job = await this.jobPostRepository.find();
+    return job;
   }
 
   async getJobPostByUser(userId: number) {
@@ -73,5 +79,38 @@ export class JobPostService {
     } catch (error) {
       console.log(error);
     }
+  }
+  async updatePost(id: number, updateJobPostDto: UpdateJobPostDto) {
+    const findedPost = await this.jobPostRepository.findOneBy({ id });
+    if (!findedPost) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: `user post with id:${id} not found`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    try {
+      const updatedPost = await this.jobPostRepository.update(id, updateJobPostDto);
+      return updatedPost;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async deletePost(id: number) {
+    const deletedPost = await this.jobPostRepository.delete(id);
+
+    if (deletedPost.affected === 0) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: `user post with id:${id} not found`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return deletedPost;
   }
 }
