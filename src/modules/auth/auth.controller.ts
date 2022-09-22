@@ -5,6 +5,7 @@ import { AuthDto, TokenTypes } from './dto/auth.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { RestorePasswordDto } from './dto/restore-password.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -32,12 +33,17 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   googleAuthRedirect(@Req() req, @Res() res) {
     this.authService.googleSignUp(req);
-    res.redirect('http://localhost:3001/role-selection');
+    res.redirect(`http://localhost:3001/role-selection/${req.user.email}`);
   }
 
   @Post('forgot-password')
   async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
     return this.authService.forgotPassword(forgotPasswordDto);
+  }
+
+  @Put('change-password')
+  async changePassword(@Body() changePasswordDto: ChangePasswordDto) {
+    return this.authService.changePassword(changePasswordDto);
   }
 
   @Post('restore-password')

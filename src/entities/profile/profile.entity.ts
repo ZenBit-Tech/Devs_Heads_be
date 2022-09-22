@@ -1,15 +1,26 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToOne,
+  ManyToMany,
+  JoinTable,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 import { CategoryEntity } from '../category.entity';
 import { EducationEntity } from './education.entity';
 import { ExperienceEntity } from './experience.entity';
 import { SkillsEntity } from '../skills.entity';
+import { User } from '../user.entity';
 
 @Entity('profile')
 export class ProfileEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'longtext' })
   photo: string;
 
   @Column({ type: 'varchar', length: 255 })
@@ -39,4 +50,9 @@ export class ProfileEntity {
 
   @OneToMany(() => ExperienceEntity, (experience) => experience.profile, { cascade: true })
   experience: ExperienceEntity[];
+
+  @Column({ type: 'integer' })
+  @JoinColumn()
+  @ManyToOne(() => User, (user) => user.userId, { cascade: true })
+  userId: number;
 }

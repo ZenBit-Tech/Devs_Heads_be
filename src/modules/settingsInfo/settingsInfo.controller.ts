@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Param } from '@nestjs/common';
+import { Body, Controller, Post, Param, Get } from '@nestjs/common';
 import { SettingsInfoDto } from './dto/settingsInfo.dto';
 import { SettingsInfoService } from './settingsInfo.service';
 
@@ -13,5 +13,10 @@ export class SettingsInfoController {
     settingsInfoDto: SettingsInfoDto,
   ) {
     return this.settingsInfoService.saveUserSettings(Number(id), settingsInfoDto);
+  }
+
+  @Get('setting')
+  getAllSkills() {
+    return this.settingsInfoService.getAllSettings();
   }
 }

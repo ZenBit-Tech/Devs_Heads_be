@@ -1,4 +1,4 @@
-import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Body, ConsoleLogger, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities/user.entity';
 import { Repository } from 'typeorm';
@@ -10,8 +10,9 @@ import { ForgotPassword } from '../../entities/forgot-password.entity';
 import { RestorePasswordDto } from './dto/restore-password.dto';
 import { randomBytes } from 'crypto';
 import * as bcrypt from 'bcrypt';
+import { UpdateDto } from './dto/update.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
-const jwt = require('jsonwebtoken');
 const SALT_NUMBER = 8;
 
 const sgMail = require('@sendgrid/mail');
@@ -27,7 +28,7 @@ export class AuthService {
   ) {}
 
   async signUp(@Body() AuthDto: AuthDto): Promise<User> {
-    const { password, email } = AuthDto;
+    const { password, email, role } = AuthDto;
     const isUsed = await this.usersRepository.findOneBy({ email });
     console.log(isUsed, 'isUsed');
     if (isUsed) {
@@ -40,10 +41,10 @@ export class AuthService {
       );
     }
     const hashedPassword = await bcrypt.hash(password, SALT_NUMBER);
-    return await this.usersRepository.save({ email, password: hashedPassword, googleId: '' });
+    return await this.usersRepository.save({ email, password: hashedPassword, googleId: '', role });
   }
 
-  async update(@Body() authDto: Partial<AuthDto>): Promise<User> {
+  async update(@Body() authDto: Partial<UpdateDto>): Promise<User> {
     const { email, role } = authDto;
     const user = await this.usersRepository.findOneBy({ email });
     user.role = role;
@@ -72,8 +73,13 @@ export class AuthService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const jwtSecret = process.env.JWT_SECRET;
-    const access_token = jwt.sign({ userId: user.id, email: user.email }, jwtSecret);
+    const access_token = this.jwtService.sign(
+      { userId: user.id, email: user.email },
+      {
+        secret: process.env.JWT_SECRET,
+        expiresIn: process.env.JWT_EXPIRE_TIME,
+      },
+    );
     return { access_token, userId: user.id, role: user.role };
   }
 
@@ -165,6 +171,30 @@ export class AuthService {
     }
   }
 
+  async changePassword({ email, oldPassword, newPassword }: ChangePasswordDto) {
+    const user = await this.usersRepository.findOneBy({ email: email });
+    const isMatch = bcrypt.compareSync(oldPassword, user.password); // hash password
+    if (!isMatch) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          message: 'Incorrect old password',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (oldPassword === newPassword) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          message: 'Old and new password the same',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const password = bcrypt.hashSync(newPassword, SALT_NUMBER);
+    await this.usersRepository.update({ id: user.id }, { password: password });
+  }
   async getUser() {
     const user = await this.usersRepository.find();
     return user;

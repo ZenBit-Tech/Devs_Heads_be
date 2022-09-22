@@ -17,11 +17,7 @@ import { ProposalPostModule } from './modules/proposal/proposal.module';
       imports: [ConfigModule, AuthModule, ProfileModule, JobPostModule, ProposalPostModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        host: configService.get<string>('MYSQL_HOST'),
-        port: configService.get<number>('MYSQL_PORT'),
-        username: configService.get<string>('MYSQL_USERNAME'),
-        password: configService.get<string>('MYSQL_PASSWORD'),
-        database: configService.get<string>('MYSQL_DATABASE'),
+        url: process.env.CLEARDB_DATABASE_URL,
         entities: [__dirname + '/entities/**/*.entity{.ts,.js}'],
         migrations: [__dirname + '/migrations/*{.ts,.js}'],
         logging: true,
