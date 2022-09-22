@@ -10,11 +10,12 @@ import { MailerModule } from '@nestjs-modules/mailer/dist/mailer.module';
 import { SettingsInfoModule } from './modules/settingsInfo/settingsInfo.module';
 import { JobPostModule } from './modules/jobPost/jobPost.module';
 import { ProposalPostModule } from './modules/proposal/proposal.module';
+import { ChatModule } from './modules/chat/chat.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule, AuthModule, ProfileModule, JobPostModule, ProposalPostModule],
+      imports: [ConfigModule, AuthModule, ProfileModule, JobPostModule, ProposalPostModule, ChatModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: configService.get<string>('MYSQL_HOST'),
