@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Query, Put } from '@nestjs/common';
 import { CategoryEntity } from 'src/entities/category.entity';
 import { ProfileDto } from './dto/profile.dto';
 import { ProfileService } from './profile.service';
@@ -59,10 +59,45 @@ export class ProfileController {
     };
   }
 
+  @Get('savedTalent')
+  async findSavedTalent(@Query('page') page: string) {
+    let savedTalent = await (await this.profileService.querySavedTalent('savedtalent')).getMany();
+
+    const Paginate = async () => {
+      if (page) {
+        const limit = 6;
+        const pageInt = parseInt(page) || 1;
+        const total = savedTalent.length;
+        const lastProfileIndex = pageInt * limit;
+        const firstProfileIndex = lastProfileIndex - limit;
+        savedTalent = savedTalent?.slice(firstProfileIndex, lastProfileIndex);
+        return {
+          total,
+          page,
+          limit,
+        };
+      }
+    };
+    const singlePage = await Paginate();
+
+    return {
+      profile: savedTalent,
+      total: singlePage?.total,
+      page: singlePage?.page,
+      limit: 6,
+    };
+  }
+
   @Get(':id')
   getProfileSettings(@Param('id') id: number) {
     return this.profileService.getProfileSettings(Number(id));
   }
+
+  @Put(':id/:saved')
+  updateSingleProfile(@Param('id') id: number, @Param('saved') saved: string) {
+    return this.profileService.updateSingleProfile(Number(id), String(saved));
+  }
+
   @Post()
   saveProfile(@Body() profileDto: ProfileDto) {
     return this.profileService.saveProfile(profileDto);
