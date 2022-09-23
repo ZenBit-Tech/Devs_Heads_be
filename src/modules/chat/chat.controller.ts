@@ -1,5 +1,4 @@
-import { Controller, Body } from '@nestjs/common';
-import { Post } from '@overnightjs/core';
+import { Controller, Body, Post, Get } from '@nestjs/common';
 import { Chat } from 'src/entities/chat.entity';
 import { ChatService } from './chat.service';
 import { ChatDto } from './dto/chat.dto';
@@ -8,8 +7,8 @@ import { ChatDto } from './dto/chat.dto';
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
-  @Post()
-  createMessage(@Body() message: ChatDto): Promise<Chat> {
-    return this.chatService.createMessage(message);
+  @Get()
+  getMessages() {
+    return this.chatService.getMessages();
   }
 }
