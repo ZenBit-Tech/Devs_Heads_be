@@ -1,4 +1,4 @@
-// import { ProfileEntity } from 'src/entities/profile/profile.entity';
+import { ProfileEntity } from 'src/entities/profile/profile.entity';
 import { JobPostEntity } from 'src/entities/jobPost.entity';
 import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -10,9 +10,11 @@ export class inviteTalentEntity {
   @Column({ type: 'varchar', length: 255 })
   message: string;
 
+  @Column({ type: 'integer' })
   // @OneToOne(() => ProfileEntity, (profile) => profile.userId)
-  // profile: ProfileEntity;
+  userId: number;
 
-  @OneToMany(() => JobPostEntity, (jobPost) => jobPost.jobTitle, { cascade: true })
-  jobTitle: JobPostEntity;
+  @Column({ type: 'varchar', length: 255 })
+  // @OneToMany(() => JobPostEntity, (jobPost) => jobPost.jobTitle, { cascade: true })
+  jobTitle: string;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { inviteTalentEntity } from 'src/entities/inviteTalent';
+import { inviteTalentEntity } from 'src/entities/inviteTalent.entity';
 import { InviteTalentDto } from 'src/modules/inviteTalent/dto/inviteTalent.dto';
 import { Repository } from 'typeorm';
 
@@ -12,12 +12,14 @@ export class InviteTalentService {
   ) {}
 
   async saveInviteMessage(InviteTalentDto: InviteTalentDto) {
+    console.log(InviteTalentDto);
     try {
       const newMessage = new inviteTalentEntity();
       newMessage.message = InviteTalentDto.message;
+      newMessage.userId = InviteTalentDto.userId;
       newMessage.jobTitle = InviteTalentDto.jobTitle;
-      // newMessage.userId = InviteTalentDto.userId;
       const invitation = await this.inviteTalentRepository.save(newMessage);
+      console.log(invitation);
       return invitation;
     } catch (e) {
       console.log(e);
