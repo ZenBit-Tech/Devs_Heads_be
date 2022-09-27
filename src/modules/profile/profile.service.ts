@@ -35,6 +35,15 @@ export class ProfileService {
     return allProfile;
   }
 
+  async updateSingleProfile(id: number, save: { saved: boolean }) {
+    const { saved } = save;
+    if (id && save) {
+      await this.profileRepository.update({ id: id }, { saved: saved });
+      return save;
+    }
+    throw new NotFoundException(id);
+  }
+
   async getProfileSettings(id: number) {
     const profile = await this.profileRepository.findOne({
       where: {
@@ -49,14 +58,13 @@ export class ProfileService {
         .where('Setting.userId = :userId', { userId: profile?.userId })
         .getOne();
       return {
-        profile: profile,
-        setting: setting,
+        profile,
+        setting,
       };
     }
     throw new NotFoundException(id);
   }
-
-  async queryBuilderSkills(alias: string) {
+  async getProfile(alias: string) {
     return this.profileRepository
       .createQueryBuilder(alias)
       .innerJoinAndSelect(`${alias}.skills`, 'skills')
@@ -65,6 +73,12 @@ export class ProfileService {
       .addSelect('category.name')
       .innerJoinAndSelect(`${alias}.userId`, 'user')
       .where(`${alias}.userId = :userId`, { userId: 'user.userId' });
+  }
+  async queryBuilderSkills(alias: string) {
+    return this.getProfile(alias);
+  }
+  async querySavedTalent(alias: string) {
+    return (await this.getProfile(alias)).where(`${alias}.saved = :saved`, { saved: true });
   }
 
   async paginationFilter(query: FindUserDto, profile: SelectQueryBuilder<ProfileEntity>) {
