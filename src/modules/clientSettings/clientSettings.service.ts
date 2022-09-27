@@ -66,7 +66,7 @@ export class ClientSettingsService {
   async updateClientInfo(id: number, updateClientSettingsDto: ClientSettingsDto) {
     const findedInfo = await this.clientSettingsRepository.findOne({
       where: {
-        userId: id,
+        id: id,
       },
     });
     if (!findedInfo) {
