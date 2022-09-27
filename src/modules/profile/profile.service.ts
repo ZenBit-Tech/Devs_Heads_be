@@ -78,7 +78,7 @@ export class ProfileService {
     return this.getProfile(alias);
   }
   async querySavedTalent(alias: string) {
-    return (await this.getProfile(alias)).where(`${alias}.savedProfile = :saved`, { saved: 'true' });
+    return (await this.getProfile(alias)).where(`${alias}.saved = :saved`, { saved: true });
   }
 
   async paginationFilter(query: FindUserDto, profile: SelectQueryBuilder<ProfileEntity>) {
