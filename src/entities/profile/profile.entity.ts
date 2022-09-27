@@ -29,8 +29,8 @@ export class ProfileEntity {
   @Column({ type: 'integer' })
   price: number;
 
-  @Column({ type: 'varchar', default: 'false' })
-  savedProfile: string;
+  @Column({ type: 'boolean', default: false })
+  saved: boolean;
 
   @Column({
     type: 'enum',

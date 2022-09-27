@@ -35,9 +35,10 @@ export class ProfileService {
     return allProfile;
   }
 
-  async updateSingleProfile(id: number, save: string) {
+  async updateSingleProfile(id: number, save: { saved: boolean }) {
+    const { saved } = save;
     if (id && save) {
-      await this.profileRepository.update({ id: id }, { savedProfile: save });
+      await this.profileRepository.update({ id: id }, { saved: saved });
       return save;
     }
     throw new NotFoundException(id);

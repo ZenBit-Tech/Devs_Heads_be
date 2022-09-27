@@ -93,9 +93,9 @@ export class ProfileController {
     return this.profileService.getProfileSettings(Number(id));
   }
 
-  @Put(':id/:saved')
-  updateSingleProfile(@Param('id') id: number, @Param('saved') saved: string) {
-    return this.profileService.updateSingleProfile(Number(id), String(saved));
+  @Put(':id')
+  updateSingleProfile(@Param('id') id: number, @Body() saved: { saved: boolean }) {
+    return this.profileService.updateSingleProfile(Number(id), saved);
   }
 
   @Post()
