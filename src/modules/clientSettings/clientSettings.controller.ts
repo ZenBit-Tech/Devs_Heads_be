@@ -23,7 +23,7 @@ export class ClientSettingsController {
 
   @Post()
   saveClientInfo(@Body() clientSettingsDto: ClientSettingsDto) {
-    return this.clientSetttingsService.saveJobPost(clientSettingsDto);
+    return this.clientSetttingsService.saveClientInfo(clientSettingsDto);
   }
 
   @Patch(':id')

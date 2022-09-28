@@ -27,7 +27,7 @@ export class ClientSettingsService {
     const clientInfoByUser = await this.clientSettingsRepository
       .createQueryBuilder('ClientSettings')
       .where('ClientSettings.userId = :userId', { userId })
-      .getMany();
+      .getOne();
 
     if (!clientInfoByUser) {
       throw new HttpException(
@@ -43,11 +43,10 @@ export class ClientSettingsService {
 
   async getAllClientsInfo() {
     const clientInfo = await this.clientSettingsRepository.createQueryBuilder('ClientSettings').getMany();
-
     return clientInfo;
   }
 
-  async saveJobPost(clientInfoDto: ClientSettingsDto) {
+  async saveClientInfo(clientInfoDto: ClientSettingsDto) {
     try {
       const newClientInfo = new ClientSettingsEntity();
       newClientInfo.name = clientInfoDto.name;
