@@ -12,7 +12,6 @@ export class InviteTalentService {
   ) {}
 
   async saveInviteMessage(InviteTalentDto: InviteTalentDto) {
-    console.log(InviteTalentDto);
     try {
       const newMessage = new InviteTalentEntity();
       newMessage.message = InviteTalentDto.message;
