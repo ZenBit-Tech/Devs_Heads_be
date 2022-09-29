@@ -11,11 +11,12 @@ import { SettingsInfoModule } from './modules/settingsInfo/settingsInfo.module';
 import { JobPostModule } from './modules/jobPost/jobPost.module';
 import { ProposalPostModule } from './modules/proposal/proposal.module';
 import { ClientSettingsModule } from './modules/clientSettings/clientSettings.module';
+import { InviteTalentModule } from 'src/modules/inviteTalent/inviteTalent.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule, AuthModule, ProfileModule, JobPostModule, ProposalPostModule, ClientSettingsModule],
+      imports: [ConfigModule, AuthModule, ProfileModule, JobPostModule, ProposalPostModule, InviteTalentModule, ClientSettingsModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: configService.get<string>('MYSQL_HOST'),
