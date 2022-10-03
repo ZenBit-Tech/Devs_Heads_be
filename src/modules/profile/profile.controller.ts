@@ -59,9 +59,9 @@ export class ProfileController {
     };
   }
 
-  @Get('savedTalent')
-  async findSavedTalent(@Query('page') page: string) {
-    let savedTalent = await (await this.profileService.querySavedTalent('savedtalent')).getMany();
+  @Get(':id/savedTalent')
+  async findSavedTalent(@Param('id') id: number, @Query('page') page: string) {
+    let savedTalent = await (await this.profileService.querySavedTalent('savedtalent', id)).getMany();
 
     const Paginate = async () => {
       if (page) {
@@ -88,13 +88,13 @@ export class ProfileController {
     };
   }
 
-  @Get(':id')
-  getProfileSettings(@Param('id') id: number) {
-    return this.profileService.getProfileSettings(Number(id));
+  @Get(':id/:clientId')
+  getProfileSettings(@Param('id') id: number, @Param('clientId') clientId: number) {
+    return this.profileService.getProfileSettings(Number(id), Number(clientId));
   }
 
   @Put(':id')
-  updateSingleProfile(@Param('id') id: number, @Body() saved: { saved: boolean }) {
+  updateSingleProfile(@Param('id') id: number, @Body() saved: { saved: boolean; clientId: number }) {
     return this.profileService.updateSingleProfile(Number(id), saved);
   }
 

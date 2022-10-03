@@ -1,4 +1,4 @@
-import { ConsoleLogger, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { CategoryEntity } from 'src/entities/category.entity';
@@ -7,6 +7,8 @@ import { SkillsEntity } from 'src/entities/skills.entity';
 import { ProfileDto } from './dto/profile.dto';
 import { FindUserDto } from './profile-filter.dto';
 import { User } from 'src/entities/user.entity';
+import { StatusDto } from './dto/status.dto';
+import { StatusEntity } from 'src/entities/profile/status.entity';
 
 @Injectable()
 export class ProfileService {
@@ -19,6 +21,8 @@ export class ProfileService {
     private skillsRepository: Repository<SkillsEntity>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(StatusEntity)
+    private statusRepository: Repository<StatusEntity>,
   ) {}
 
   async getAllCategories(): Promise<CategoryEntity[]> {
@@ -35,19 +39,32 @@ export class ProfileService {
     return allProfile;
   }
 
-  async updateSingleProfile(id: number, save: { saved: boolean }) {
-    const { saved } = save;
-    if (id && save) {
-      await this.profileRepository.update({ id: id }, { saved: saved });
+  async updateSingleProfile(id: number, save: StatusDto) {
+    const { saved, clientId } = save;
+    const profile = await this.statusRepository
+      .createQueryBuilder('StatusUpdating')
+      .leftJoin('StatusUpdating.profileId', 'profile')
+      .where('StatusUpdating.clientId = :id', { id: clientId })
+      .andHaving('StatusUpdating.profileId = :userId', { userId: id })
+      .getOne();
+
+    if (profile) {
+      await this.statusRepository.update({ profileId: id, clientId: clientId }, { saved: saved });
       return save;
+    } else {
+      const status = new StatusEntity();
+      status.profileId = id;
+      status.clientId = clientId;
+      status.saved = saved;
+      await this.statusRepository.save(status);
+      return status;
     }
-    throw new NotFoundException(id);
   }
 
-  async getProfileSettings(id: number) {
+  async getProfileSettings(id: number, clientId: number) {
     const profile = await this.profileRepository.findOne({
       where: {
-        userId: id,
+        id: id,
       },
       relations: ['experience', 'education', 'skills', 'category'],
     });
@@ -57,9 +74,16 @@ export class ProfileService {
         .leftJoin(`Setting.userId`, 'profile')
         .where('Setting.userId = :userId', { userId: profile?.userId })
         .getOne();
+      const status = await this.statusRepository
+        .createQueryBuilder('Status')
+        .leftJoin(`Status.profileId`, 'profile')
+        .where('Status.profileId = :id', { id: id })
+        .andHaving('Status.clientId = :clientId', { clientId: clientId })
+        .getOne();
       return {
         profile,
         setting,
+        status,
       };
     }
     throw new NotFoundException(id);
@@ -74,11 +98,14 @@ export class ProfileService {
       .innerJoinAndSelect(`${alias}.userId`, 'user')
       .where(`${alias}.userId = :userId`, { userId: 'user.userId' });
   }
+  async querySavedTalent(alias: string, clientId: number) {
+    return (await this.getProfile(alias))
+      .leftJoinAndSelect(`${alias}.id`, 'status')
+      .where(`status.saved = :saved`, { saved: true })
+      .andHaving(`status.clientId = :clientId`, { clientId: clientId });
+  }
   async queryBuilderSkills(alias: string) {
     return this.getProfile(alias);
-  }
-  async querySavedTalent(alias: string) {
-    return (await this.getProfile(alias)).where(`${alias}.saved = :saved`, { saved: true });
   }
 
   async paginationFilter(query: FindUserDto, profile: SelectQueryBuilder<ProfileEntity>) {
@@ -121,3 +148,17 @@ export class ProfileService {
     }
   }
 }
+
+// const profile = await this.profileRepository.findOne({
+//   where: {
+//     id: id,
+//   },
+//   relations: ['experience', 'education', 'skills', 'category'],
+// });
+// const a = {cid: 0,  status: true};
+// const newClients = profile.clients.filter(el => el.cid !== a.cid);
+// newClients.push(a);
+// await this.profileRepository.update({ id: id }, { clients: newClients });
+
+// const zalupa = clents[{}].find(el => el.cid === userid)
+// setstate(zalupa.status)

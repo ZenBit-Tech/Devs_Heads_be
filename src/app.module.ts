@@ -16,7 +16,15 @@ import { InviteTalentModule } from 'src/modules/inviteTalent/inviteTalent.module
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule, AuthModule, ProfileModule, JobPostModule, ProposalPostModule, InviteTalentModule, ClientSettingsModule],
+      imports: [
+        ConfigModule,
+        AuthModule,
+        ProfileModule,
+        JobPostModule,
+        ProposalPostModule,
+        InviteTalentModule,
+        ClientSettingsModule,
+      ],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: configService.get<string>('MYSQL_HOST'),
