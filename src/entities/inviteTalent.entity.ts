@@ -13,6 +13,10 @@ export class InviteTalentEntity {
   @OneToOne(() => ProfileEntity, (profile) => profile.userId)
   userId: number;
 
+  @Column({ nullable: false, type: 'integer' })
+  @OneToOne(() => ProfileEntity, (profile) => profile.id)
+  profileId: number;
+
   @Column({ nullable: false, type: 'varchar', length: 255 })
   jobTitle: string;
 }
