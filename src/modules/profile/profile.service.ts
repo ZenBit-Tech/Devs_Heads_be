@@ -148,17 +148,3 @@ export class ProfileService {
     }
   }
 }
-
-// const profile = await this.profileRepository.findOne({
-//   where: {
-//     id: id,
-//   },
-//   relations: ['experience', 'education', 'skills', 'category'],
-// });
-// const a = {cid: 0,  status: true};
-// const newClients = profile.clients.filter(el => el.cid !== a.cid);
-// newClients.push(a);
-// await this.profileRepository.update({ id: id }, { clients: newClients });
-
-// const zalupa = clents[{}].find(el => el.cid === userid)
-// setstate(zalupa.status)
