@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InviteTalentEntity } from 'src/entities/inviteTalent.entity';
 import { InviteTalentDto } from 'src/modules/inviteTalent/dto/inviteTalent.dto';
@@ -18,9 +18,22 @@ export class InviteTalentService {
       newMessage.userId = InviteTalentDto.userId;
       newMessage.jobTitle = InviteTalentDto.jobTitle;
       const invitation = await this.inviteTalentRepository.save(newMessage);
+      console.log(invitation);
       return invitation;
     } catch (e) {
       console.log(e);
     }
+  }
+
+  async getInviteMessageByProfile(userId: number) {
+    const offer = await this.inviteTalentRepository.find({
+      where: {
+        userId: userId,
+      },
+    });
+    if (offer) {
+      return offer;
+    }
+    throw new NotFoundException(userId);
   }
 }

@@ -47,7 +47,7 @@ export class ProfileService {
   async getProfileSettings(id: number) {
     const profile = await this.profileRepository.findOne({
       where: {
-        userId: id,
+        id: id,
       },
       relations: ['experience', 'education', 'skills', 'category'],
     });
