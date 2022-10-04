@@ -16,6 +16,7 @@ export class InviteTalentService {
       const newMessage = new InviteTalentEntity();
       newMessage.message = InviteTalentDto.message;
       newMessage.userId = InviteTalentDto.userId;
+      newMessage.profileId = InviteTalentDto.profileId;
       newMessage.jobTitle = InviteTalentDto.jobTitle;
       const invitation = await this.inviteTalentRepository.save(newMessage);
       console.log(invitation);
