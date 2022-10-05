@@ -1,4 +1,4 @@
-import { ConsoleLogger, Injectable, NotFoundException } from '@nestjs/common';
+import { ConsoleLogger, HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { CategoryEntity } from 'src/entities/category.entity';
@@ -101,23 +101,42 @@ export class ProfileService {
   }
 
   async saveProfile(profileDto: ProfileDto) {
-    try {
-      const newProfile = new ProfileEntity();
-      newProfile.photo = profileDto.photo;
-      newProfile.position = profileDto.position;
-      newProfile.price = profileDto.price;
-      newProfile.englishLevel = profileDto.englishLevel;
-      newProfile.description = profileDto.description;
-      newProfile.category = profileDto.category;
-      newProfile.education = profileDto.education;
-      newProfile.experience = profileDto.experience;
-      newProfile.skills = profileDto.skills;
-      newProfile.userId = profileDto.userId;
-      const profile = await this.profileRepository.save(newProfile);
+    const findedInfo = await this.profileRepository.findOne({
+      where: {
+        userId: profileDto.userId,
+      },
+    });
+    if (findedInfo) {
+      findedInfo.photo = profileDto.photo;
+      findedInfo.position = profileDto.position;
+      findedInfo.price = profileDto.price;
+      findedInfo.englishLevel = profileDto.englishLevel;
+      findedInfo.description = profileDto.description;
+      findedInfo.category = profileDto.category;
+      findedInfo.education = profileDto.education;
+      findedInfo.experience = profileDto.experience;
+      findedInfo.skills = profileDto.skills;
+      const profile = await this.profileRepository.save(findedInfo);
       console.log(profile);
-      return profile;
-    } catch (error) {
-      console.log(error);
+    } else {
+      try {
+        const newProfile = new ProfileEntity();
+        newProfile.photo = profileDto.photo;
+        newProfile.position = profileDto.position;
+        newProfile.price = profileDto.price;
+        newProfile.englishLevel = profileDto.englishLevel;
+        newProfile.description = profileDto.description;
+        newProfile.category = profileDto.category;
+        newProfile.education = profileDto.education;
+        newProfile.experience = profileDto.experience;
+        newProfile.skills = profileDto.skills;
+        newProfile.userId = profileDto.userId;
+        const profile = await this.profileRepository.save(newProfile);
+        console.log(profile);
+        return profile;
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 }

@@ -27,7 +27,7 @@ export class InviteTalentService {
   }
 
   async getInviteMessageByProfile(userId: number) {
-    const offer = await this.inviteTalentRepository.find({
+    const offer = await this.inviteTalentRepository.findOne({
       where: {
         userId: userId,
       },
