@@ -20,7 +20,7 @@ import { StatusEntity } from './status.entity';
 export class ProfileEntity {
   @PrimaryGeneratedColumn()
   @JoinColumn()
-  @OneToMany(() => StatusEntity, (status) => status.profileId, { cascade: true })
+  @OneToMany(() => StatusEntity, (status) => status.freelancerId, { cascade: true })
   id: number;
 
   @Column({ type: 'longtext' })

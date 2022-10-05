@@ -14,5 +14,5 @@ export class StatusEntity {
 
   @ManyToOne(() => ProfileEntity, (profile) => profile.id)
   @Column({ type: 'integer', unique: false })
-  profileId: number;
+  freelancerId: number;
 }

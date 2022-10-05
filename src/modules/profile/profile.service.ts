@@ -43,17 +43,17 @@ export class ProfileService {
     const { saved, clientId } = save;
     const profile = await this.statusRepository
       .createQueryBuilder('StatusUpdating')
-      .leftJoin('StatusUpdating.profileId', 'profile')
+      .leftJoin('StatusUpdating.freelancerId', 'profile')
       .where('StatusUpdating.clientId = :id', { id: clientId })
-      .andHaving('StatusUpdating.profileId = :userId', { userId: id })
+      .andHaving('StatusUpdating.freelancerId = :userId', { userId: id })
       .getOne();
 
     if (profile) {
-      await this.statusRepository.update({ profileId: id, clientId: clientId }, { saved: saved });
+      await this.statusRepository.update({ freelancerId: id, clientId: clientId }, { saved: saved });
       return save;
     } else {
       const status = new StatusEntity();
-      status.profileId = id;
+      status.freelancerId = id;
       status.clientId = clientId;
       status.saved = saved;
       await this.statusRepository.save(status);
@@ -76,8 +76,8 @@ export class ProfileService {
         .getOne();
       const status = await this.statusRepository
         .createQueryBuilder('Status')
-        .leftJoin(`Status.profileId`, 'profile')
-        .where('Status.profileId = :id', { id: id })
+        .leftJoin(`Status.freelancerId`, 'profile')
+        .where('Status.freelancerId = :id', { id: id })
         .andHaving('Status.clientId = :clientId', { clientId: clientId })
         .getOne();
       return {
