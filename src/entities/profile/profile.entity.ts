@@ -29,6 +29,9 @@ export class ProfileEntity {
   @Column({ type: 'integer' })
   price: number;
 
+  @Column({ type: 'boolean', default: false })
+  saved: boolean;
+
   @Column({
     type: 'enum',
     enum: ['Pre_intermediate', 'Intermediate', 'Upper_intermediate'],

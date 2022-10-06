@@ -8,7 +8,16 @@ export class Chat {
   @Column()
   email: string;
 
-  @Column({ unique: true })
+  @Column({ default: 0 })
+  userId: number;
+
+  @Column({ nullable: true })
+  linkJob: string;
+
+  @Column({ nullable: true })
+  name: string;
+
+  @Column({ unique: false })
   text: string;
 
   @CreateDateColumn()

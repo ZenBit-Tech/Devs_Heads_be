@@ -21,6 +21,17 @@ export class ProposalPostService {
     throw new NotFoundException(userId);
   }
 
+  async getProposalClient(userId: number) {
+    const proposalByClient = await this.proposalPostRepository.findOne({
+      where: { userIdClient: userId },
+    });
+    console.log(proposalByClient);
+    if (proposalByClient) {
+      return proposalByClient;
+    }
+    throw new NotFoundException(userId);
+  }
+
   async saveProposalPost(proposalPostDto: ProposalPostDto) {
     try {
       const newMessage = new ProposalPostEntity();
@@ -29,7 +40,9 @@ export class ProposalPostService {
       newMessage.message = proposalPostDto.message;
       newMessage.jobPost = proposalPostDto.jobPost;
       newMessage.userId = proposalPostDto.userId;
+      newMessage.userIdClient = proposalPostDto.userIdClient;
       const message = await this.proposalPostRepository.save(newMessage);
+      console.log(message);
       return message;
     } catch (error) {
       console.log(error);

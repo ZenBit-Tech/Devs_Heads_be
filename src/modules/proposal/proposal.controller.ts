@@ -11,6 +11,11 @@ export class ProposalPostController {
     return this.proposalPostService.saveProposalPost(proposalPostDto);
   }
 
+  @Get('/proposal/:userIdClient')
+  getProposalClient(@Param('userIdClient') userIdClient: number) {
+    return this.proposalPostService.getProposalClient(userIdClient);
+  }
+
   @Get('/proposal/:userId/:jobId')
   getProposalPost(@Param('userId') userId: number, @Param('jobId') jobId: number) {
     return this.proposalPostService.getProposalPost(userId, jobId);

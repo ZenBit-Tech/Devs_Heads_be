@@ -7,6 +7,7 @@ import { ChatDto } from './dto/chat.dto';
 @Injectable()
 export class ChatService {
   constructor(@InjectRepository(Chat) private chatRepository: Repository<Chat>) {}
+  cleintToUser = {};
 
   async createMessage(message: ChatDto): Promise<Chat> {
     try {
@@ -18,5 +19,13 @@ export class ChatService {
 
   async getMessages(): Promise<Chat[]> {
     return await this.chatRepository.find();
+  }
+
+  async identify(email: string, clientId: string) {
+    this.cleintToUser[clientId] = email;
+    return Object.values(this.cleintToUser);
+  }
+  async getClientEmail(clientId: string) {
+    return this.cleintToUser[clientId];
   }
 }

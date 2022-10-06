@@ -18,6 +18,9 @@ export class ProposalPostEntity {
   @Column({ type: 'integer' })
   price: number;
 
+  @Column({ type: 'integer' })
+  userIdClient: number;
+
   @Column({ type: 'varchar', length: 5000 })
   message: string;
 }
