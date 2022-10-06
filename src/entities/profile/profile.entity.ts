@@ -14,13 +14,13 @@ import { EducationEntity } from './education.entity';
 import { ExperienceEntity } from './experience.entity';
 import { SkillsEntity } from '../skills.entity';
 import { User } from '../user.entity';
-import { StatusEntity } from './status.entity';
+import { SaveProfileEntity } from './status.entity';
 
 @Entity('profile')
 export class ProfileEntity {
   @PrimaryGeneratedColumn()
   @JoinColumn()
-  @OneToMany(() => StatusEntity, (status) => status.freelancerId)
+  @OneToMany(() => SaveProfileEntity, (status) => status.freelancerId)
   id: number;
 
   @Column({ type: 'longtext' })

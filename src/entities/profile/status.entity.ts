@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ProfileEntity } from './profile.entity';
 
-@Entity('status')
-export class StatusEntity {
+@Entity('saveProfileFreelancer')
+export class SaveProfileEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
