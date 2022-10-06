@@ -33,7 +33,7 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   googleAuthRedirect(@Req() req, @Res() res) {
     this.authService.googleSignUp(req);
-    res.redirect(`http://localhost:3001/role-selection/${req.user.email}`);
+    res.redirect(`${process.env.GOOGLE_AUTH}/${req.user.email}`);
   }
 
   @Post('forgot-password')

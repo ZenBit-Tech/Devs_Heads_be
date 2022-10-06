@@ -12,6 +12,9 @@ import { JobPostModule } from './modules/jobPost/jobPost.module';
 import { ProposalPostModule } from './modules/proposal/proposal.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { InviteTalentModule } from './modules/inviteTalent/inviteTalent.module';
+import { ClientSettingsModule } from './modules/clientSettings/clientSettings.module';
+
+
 
 @Module({
   imports: [
@@ -24,6 +27,7 @@ import { InviteTalentModule } from './modules/inviteTalent/inviteTalent.module';
         ProposalPostModule,
         InviteTalentModule,
         ChatModule,
+        ClientSettingsModule,
       ],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
