@@ -7,7 +7,7 @@ import { SkillsEntity } from 'src/entities/skills.entity';
 import { ProfileEntity } from 'src/entities/profile/profile.entity';
 import { StatusEntity } from 'src/entities/profile/status.entity';
 import { User } from 'src/entities/user.entity';
-import { StatusDto } from './dto/status.dto';
+import { SavedProfileDto } from './dto/status.dto';
 
 @Controller('profile')
 export class ProfileController {
@@ -110,7 +110,7 @@ export class ProfileController {
   updateSingleProfile(
     @Param('id') id: number,
     @Body() saved: { saved: boolean; clientId: number },
-  ): Promise<StatusEntity[] | StatusDto> {
+  ): Promise<StatusEntity[] | SavedProfileDto> {
     return this.profileService.updateSingleProfile(Number(id), saved);
   }
 

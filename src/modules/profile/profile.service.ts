@@ -7,7 +7,7 @@ import { SkillsEntity } from 'src/entities/skills.entity';
 import { ProfileDto } from './dto/profile.dto';
 import { FindUserDto } from './profile-filter.dto';
 import { User } from 'src/entities/user.entity';
-import { StatusDto } from './dto/status.dto';
+import { SavedProfileDto } from './dto/status.dto';
 import { StatusEntity } from 'src/entities/profile/status.entity';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class ProfileService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @InjectRepository(StatusEntity)
-    private statusRepository: Repository<StatusEntity>,
+    private saveProfileFreelancerRepository: Repository<StatusEntity>,
   ) {}
 
   async getAllCategories(): Promise<CategoryEntity[]> {
@@ -39,9 +39,9 @@ export class ProfileService {
     return allProfile;
   }
 
-  async updateSingleProfile(id: number, save: StatusDto): Promise<StatusEntity[] | StatusDto> {
+  async updateSingleProfile(id: number, save: SavedProfileDto): Promise<StatusEntity[] | SavedProfileDto> {
     const { saved, clientId } = save;
-    const profile = await this.statusRepository
+    const profile = await this.saveProfileFreelancerRepository
       .createQueryBuilder('StatusUpdating')
       .leftJoin('StatusUpdating.freelancerId', 'profile')
       .where('StatusUpdating.clientId = :id', { id: clientId })
@@ -49,14 +49,14 @@ export class ProfileService {
       .getOne();
 
     if (profile) {
-      await this.statusRepository.update({ freelancerId: id, clientId: clientId }, { saved: saved });
+      await this.saveProfileFreelancerRepository.update({ freelancerId: id, clientId: clientId }, { saved: saved });
       return save;
     } else {
       const status = new StatusEntity();
       status.freelancerId = id;
       status.clientId = clientId;
       status.saved = saved;
-      await this.statusRepository.save(status);
+      await this.saveProfileFreelancerRepository.save(status);
       return status;
     }
   }
@@ -77,7 +77,7 @@ export class ProfileService {
         .leftJoin(`Setting.userId`, 'profile')
         .where('Setting.userId = :userId', { userId: profile?.userId })
         .getOne();
-      const status = await this.statusRepository
+      const status = await this.saveProfileFreelancerRepository
         .createQueryBuilder('Status')
         .leftJoin(`Status.freelancerId`, 'profile')
         .where('Status.freelancerId = :id', { id: id })
