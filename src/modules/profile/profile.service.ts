@@ -39,7 +39,7 @@ export class ProfileService {
     return allProfile;
   }
 
-  async updateSingleProfile(id: number, save: StatusDto) {
+  async updateSingleProfile(id: number, save: StatusDto): Promise<StatusEntity[] | StatusDto> {
     const { saved, clientId } = save;
     const profile = await this.statusRepository
       .createQueryBuilder('StatusUpdating')
@@ -61,7 +61,10 @@ export class ProfileService {
     }
   }
 
-  async getProfileSettings(id: number, clientId: number) {
+  async getProfileSettings(
+    id: number,
+    clientId: number,
+  ): Promise<{ profile: ProfileEntity; setting: User; status: StatusEntity }> {
     const profile = await this.profileRepository.findOne({
       where: {
         id: id,
@@ -88,7 +91,7 @@ export class ProfileService {
     }
     throw new NotFoundException(id);
   }
-  async getProfile(alias: string) {
+  async getProfile(alias: string): Promise<SelectQueryBuilder<ProfileEntity>> {
     return this.profileRepository
       .createQueryBuilder(alias)
       .innerJoinAndSelect(`${alias}.skills`, 'skills')
@@ -98,17 +101,20 @@ export class ProfileService {
       .innerJoinAndSelect(`${alias}.userId`, 'user')
       .where(`${alias}.userId = :userId`, { userId: 'user.userId' });
   }
-  async querySavedTalent(alias: string, clientId: number) {
+  async querySavedTalent(alias: string, clientId: number): Promise<SelectQueryBuilder<ProfileEntity>> {
     return (await this.getProfile(alias))
       .leftJoinAndSelect(`${alias}.id`, 'status')
       .where(`status.saved = :saved`, { saved: true })
       .andHaving(`status.clientId = :clientId`, { clientId: clientId });
   }
-  async queryBuilderSkills(alias: string) {
+  async queryBuilderSkills(alias: string): Promise<SelectQueryBuilder<ProfileEntity>> {
     return this.getProfile(alias);
   }
 
-  async paginationFilter(query: FindUserDto, profile: SelectQueryBuilder<ProfileEntity>) {
+  async paginationFilter(
+    query: FindUserDto,
+    profile: SelectQueryBuilder<ProfileEntity>,
+  ): Promise<SelectQueryBuilder<ProfileEntity>> {
     const skillQuery = query.skills ? query.skills.split(',') : null;
     const search = `%${query.search}%`;
     const category = query.category;
@@ -127,7 +133,7 @@ export class ProfileService {
     return profile;
   }
 
-  async saveProfile(profileDto: ProfileDto) {
+  async saveProfile(profileDto: ProfileDto): Promise<ProfileEntity> {
     try {
       const newProfile = new ProfileEntity();
       newProfile.photo = profileDto.photo;

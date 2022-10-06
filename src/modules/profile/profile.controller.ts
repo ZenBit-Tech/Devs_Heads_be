@@ -3,6 +3,11 @@ import { CategoryEntity } from 'src/entities/category.entity';
 import { ProfileDto } from './dto/profile.dto';
 import { ProfileService } from './profile.service';
 import { FindUserDto } from './profile-filter.dto';
+import { SkillsEntity } from 'src/entities/skills.entity';
+import { ProfileEntity } from 'src/entities/profile/profile.entity';
+import { StatusEntity } from 'src/entities/profile/status.entity';
+import { User } from 'src/entities/user.entity';
+import { StatusDto } from './dto/status.dto';
 
 @Controller('profile')
 export class ProfileController {
@@ -14,17 +19,19 @@ export class ProfileController {
   }
 
   @Get('skills')
-  getAllSkills() {
+  getAllSkills(): Promise<SkillsEntity[]> {
     return this.profileService.getAllSkills();
   }
 
   @Get('allItem')
-  getAllProfile() {
+  getAllProfile(): Promise<ProfileEntity[]> {
     return this.profileService.getAllProfile();
   }
 
   @Get('filter')
-  async findAll(@Query() userQuery: FindUserDto) {
+  async findAll(
+    @Query() userQuery: FindUserDto,
+  ): Promise<{ profile: ProfileEntity[]; total: number; page: number; last_page: number; limit: number }> {
     const profileInfo = await this.profileService.queryBuilderSkills('skillsprofile');
     const filterProfile = await this.profileService.paginationFilter(userQuery, profileInfo);
 
@@ -60,7 +67,10 @@ export class ProfileController {
   }
 
   @Get(':id/savedTalent')
-  async findSavedTalent(@Param('id') id: number, @Query('page') page: string) {
+  async findSavedTalent(
+    @Param('id') id: number,
+    @Query('page') page: string,
+  ): Promise<{ profile: ProfileEntity[]; total: number; page: string; limit: number }> {
     let savedTalent = await (await this.profileService.querySavedTalent('savedtalent', id)).getMany();
 
     const Paginate = async () => {
@@ -89,17 +99,23 @@ export class ProfileController {
   }
 
   @Get(':id/:clientId')
-  getProfileSettings(@Param('id') id: number, @Param('clientId') clientId: number) {
+  getProfileSettings(
+    @Param('id') id: number,
+    @Param('clientId') clientId: number,
+  ): Promise<{ profile: ProfileEntity; setting: User; status: StatusEntity }> {
     return this.profileService.getProfileSettings(Number(id), Number(clientId));
   }
 
   @Put(':id')
-  updateSingleProfile(@Param('id') id: number, @Body() saved: { saved: boolean; clientId: number }) {
+  updateSingleProfile(
+    @Param('id') id: number,
+    @Body() saved: { saved: boolean; clientId: number },
+  ): Promise<StatusEntity[] | StatusDto> {
     return this.profileService.updateSingleProfile(Number(id), saved);
   }
 
   @Post()
-  saveProfile(@Body() profileDto: ProfileDto) {
+  saveProfile(@Body() profileDto: ProfileDto): Promise<ProfileEntity> {
     return this.profileService.saveProfile(profileDto);
   }
 }
