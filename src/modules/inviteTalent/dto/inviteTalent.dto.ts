@@ -1,6 +1,8 @@
 export class InviteTalentDto {
   message: string;
-  userId: number;
+  clientId: number;
+  freelancerId: number;
   profileId: number;
+  jobPostId: number;
   jobTitle: string;
 }

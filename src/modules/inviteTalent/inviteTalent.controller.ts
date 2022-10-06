@@ -1,10 +1,25 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Get, Param } from '@nestjs/common';
 import { InviteTalentDto } from 'src/modules/inviteTalent/dto/inviteTalent.dto';
 import { InviteTalentService } from 'src/modules/inviteTalent/inviteTalent.service';
 
 @Controller('invite-talent')
 export class InviteTalentController {
   constructor(private inviteTalentService: InviteTalentService) {}
+
+  @Get(':id')
+  getInviteMessageById(@Param('id') id: number) {
+    return this.inviteTalentService.getInviteMessageById(Number(id));
+  }
+
+  @Get('/freelancer/:id')
+  getInviteMessageByProfile(@Param('id') id: number) {
+    return this.inviteTalentService.getInviteMessageByProfile(Number(id));
+  }
+
+  @Get()
+  getAllInviteMessages() {
+    return this.inviteTalentService.getAllInviteMessages();
+  }
 
   @Post()
   saveInviteMessage(@Body() inviteTalentDto: InviteTalentDto) {
