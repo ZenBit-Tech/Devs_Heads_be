@@ -2,7 +2,7 @@ import { Body, Controller, Post, Get, Param, Put } from '@nestjs/common';
 import { OfferDto } from './dto/jobOffer.dto';
 import { OfferPostService } from './offer.service';
 
-@Controller('jobProposal')
+@Controller('jobOffer')
 export class OfferPostController {
   constructor(private offerPostService: OfferPostService) {}
 
