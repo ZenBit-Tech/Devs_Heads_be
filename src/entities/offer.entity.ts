@@ -23,7 +23,7 @@ export class OfferEntity {
   endDate: Date;
 
   @Column({ type: 'integer' })
-  @ManyToOne(() => ProfileEntity, (profile) => profile.id)
+  @ManyToOne(() => ProfileEntity, (profile) => profile.offer)
   freelancerId: number;
 
   @Column({ type: 'integer' })

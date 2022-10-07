@@ -19,7 +19,6 @@ import { OfferEntity } from '../offer.entity';
 @Entity('profile')
 export class ProfileEntity {
   @PrimaryGeneratedColumn()
-  @OneToMany(() => OfferEntity, (offer) => offer.freelancerId)
   id: number;
 
   @Column({ type: 'longtext' })
@@ -55,6 +54,9 @@ export class ProfileEntity {
 
   @OneToMany(() => ExperienceEntity, (experience) => experience.profile, { cascade: true })
   experience: ExperienceEntity[];
+
+  @OneToMany(() => OfferEntity, (profile) => profile.freelancerId)
+  offer: OfferEntity[];
 
   @Column({ type: 'integer' })
   @JoinColumn()
