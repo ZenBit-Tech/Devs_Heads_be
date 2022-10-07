@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ProfileEntity } from './profile.entity';
 
 @Entity('favourite')
-export class SaveProfileEntity {
+export class FavouriteEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

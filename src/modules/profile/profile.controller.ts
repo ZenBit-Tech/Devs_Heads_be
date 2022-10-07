@@ -5,7 +5,7 @@ import { ProfileService } from './profile.service';
 import { FindUserDto } from './profile-filter.dto';
 import { SkillsEntity } from 'src/entities/skills.entity';
 import { ProfileEntity } from 'src/entities/profile/profile.entity';
-import { SaveProfileEntity } from 'src/entities/profile/favourite.entity';
+import { FavouriteEntity } from 'src/entities/profile/favourite.entity';
 import { User } from 'src/entities/user.entity';
 import { SavedProfileDto } from './dto/status.dto';
 
@@ -102,7 +102,7 @@ export class ProfileController {
   getProfileSettings(
     @Param('id') id: number,
     @Param('clientId') clientId: number,
-  ): Promise<{ profile: ProfileEntity; setting: User; status: SaveProfileEntity }> {
+  ): Promise<{ profile: ProfileEntity; setting: User; status: FavouriteEntity }> {
     return this.profileService.getProfileSettings(Number(id), Number(clientId));
   }
 
@@ -110,7 +110,7 @@ export class ProfileController {
   updateSingleProfile(
     @Param('id') id: number,
     @Body() saved: { saved: boolean; clientId: number },
-  ): Promise<SaveProfileEntity[] | SavedProfileDto> {
+  ): Promise<FavouriteEntity[] | SavedProfileDto> {
     return this.profileService.updateSingleProfile(Number(id), saved);
   }
 
