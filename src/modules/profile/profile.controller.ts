@@ -5,7 +5,7 @@ import { ProfileService } from './profile.service';
 import { FindUserDto } from './profile-filter.dto';
 import { SkillsEntity } from 'src/entities/skills.entity';
 import { ProfileEntity } from 'src/entities/profile/profile.entity';
-import { SaveProfileEntity } from 'src/entities/profile/status.entity';
+import { SaveProfileEntity } from 'src/entities/profile/favourite.entity';
 import { User } from 'src/entities/user.entity';
 import { SavedProfileDto } from './dto/status.dto';
 

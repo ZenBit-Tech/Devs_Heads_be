@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ProfileEntity } from './profile.entity';
 
-@Entity('saveProfileFreelancer')
+@Entity('favourite')
 export class SaveProfileEntity {
   @PrimaryGeneratedColumn()
   id: number;

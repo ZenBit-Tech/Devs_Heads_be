@@ -8,7 +8,7 @@ import { ProfileDto } from './dto/profile.dto';
 import { FindUserDto } from './profile-filter.dto';
 import { User } from 'src/entities/user.entity';
 import { SavedProfileDto } from './dto/status.dto';
-import { SaveProfileEntity } from 'src/entities/profile/status.entity';
+import { SaveProfileEntity } from 'src/entities/profile/favourite.entity';
 
 @Injectable()
 export class ProfileService {
