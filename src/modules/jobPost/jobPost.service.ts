@@ -12,8 +12,6 @@ export class JobPostService {
   constructor(
     @InjectRepository(JobPostEntity)
     private jobPostRepository: Repository<JobPostEntity>,
-    @InjectRepository(OfferEntity)
-    private offerRepository: Repository<OfferEntity>,
   ) {}
 
   async getJobPost(id: number) {
