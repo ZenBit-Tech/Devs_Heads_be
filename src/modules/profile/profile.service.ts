@@ -8,7 +8,7 @@ import { ProfileDto } from './dto/profile.dto';
 import { FindUserDto } from './profile-filter.dto';
 import { User } from 'src/entities/user.entity';
 import { SavedProfileDto } from './dto/status.dto';
-import { FavouriteEntity } from 'src/entities/profile/favourite.entity';
+import { SaveFreelancerEntity } from 'src/entities/profile/favourite.entity';
 
 @Injectable()
 export class ProfileService {
@@ -21,8 +21,8 @@ export class ProfileService {
     private skillsRepository: Repository<SkillsEntity>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    @InjectRepository(FavouriteEntity)
-    private FreelancerRepository: Repository<FavouriteEntity>,
+    @InjectRepository(SaveFreelancerEntity)
+    private saveProfileFreelancerRepository: Repository<SaveFreelancerEntity>,
   ) {}
 
   async getAllCategories(): Promise<CategoryEntity[]> {
@@ -39,23 +39,24 @@ export class ProfileService {
     return allProfile;
   }
 
-  async updateSingleProfile(id: number, save: SavedProfileDto): Promise<FavouriteEntity[] | SavedProfileDto> {
+  async updateSingleProfile(id: number, save: SavedProfileDto): Promise<SaveFreelancerEntity[] | SavedProfileDto> {
     const { saved, clientId } = save;
-    const profile = await this.FreelancerRepository.createQueryBuilder('Freelancer')
+    const profile = await this.saveProfileFreelancerRepository
+      .createQueryBuilder('Freelancer')
       .leftJoin('Freelancer.freelancerId', 'profile')
       .where('Freelancer.clientId = :id', { id: clientId })
       .andHaving('Freelancer.freelancerId = :userId', { userId: id })
       .getOne();
 
     if (profile) {
-      await this.FreelancerRepository.update({ freelancerId: id, clientId: clientId }, { saved: saved });
+      await this.saveProfileFreelancerRepository.update({ freelancerId: id, clientId: clientId }, { saved: saved });
       return save;
     } else {
-      const status = new FavouriteEntity();
+      const status = new SaveFreelancerEntity();
       status.freelancerId = id;
       status.clientId = clientId;
       status.saved = saved;
-      await this.FreelancerRepository.save(status);
+      await this.saveProfileFreelancerRepository.save(status);
       return status;
     }
   }
@@ -63,7 +64,7 @@ export class ProfileService {
   async getProfileSettings(
     id: number,
     clientId: number,
-  ): Promise<{ profile: ProfileEntity; setting: User; status: FavouriteEntity }> {
+  ): Promise<{ profile: ProfileEntity; setting: User; status: SaveFreelancerEntity }> {
     const profile = await this.profileRepository.findOne({
       where: {
         id: id,
@@ -76,7 +77,8 @@ export class ProfileService {
         .leftJoin(`Setting.userId`, 'profile')
         .where('Setting.userId = :userId', { userId: profile?.userId })
         .getOne();
-      const status = await this.FreelancerRepository.createQueryBuilder('FreelancerSaved')
+      const status = await this.saveProfileFreelancerRepository
+        .createQueryBuilder('FreelancerSaved')
         .leftJoin(`FreelancerSaved.freelancerId`, 'profile')
         .where('FreelancerSaved.freelancerId = :id', { id: id })
         .andHaving('FreelancerSaved.clientId = :clientId', { clientId: clientId })
@@ -101,9 +103,9 @@ export class ProfileService {
   }
   async querySavedTalent(alias: string, clientId: number): Promise<SelectQueryBuilder<ProfileEntity>> {
     return (await this.getProfile(alias))
-      .leftJoinAndSelect(`${alias}.id`, 'saveProfile')
-      .where(`saveProfile.saved = :saved`, { saved: true })
-      .andHaving(`saveProfile.clientId = :clientId`, { clientId: clientId });
+      .leftJoinAndSelect(`${alias}.id`, 'favourite')
+      .where(`favourite.saved = :saved`, { saved: true })
+      .andHaving(`favourite.clientId = :clientId`, { clientId: clientId });
   }
   async queryBuilderSkills(alias: string): Promise<SelectQueryBuilder<ProfileEntity>> {
     return this.getProfile(alias);

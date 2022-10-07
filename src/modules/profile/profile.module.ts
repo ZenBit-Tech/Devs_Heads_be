@@ -4,7 +4,7 @@ import { CategoryEntity } from 'src/entities/category.entity';
 import { EducationEntity } from 'src/entities/profile/education.entity';
 import { ExperienceEntity } from 'src/entities/profile/experience.entity';
 import { ProfileEntity } from 'src/entities/profile/profile.entity';
-import { FavouriteEntity } from 'src/entities/profile/favourite.entity';
+import { SaveFreelancerEntity } from 'src/entities/profile/favourite.entity';
 import { SkillsEntity } from 'src/entities/skills.entity';
 import { User } from 'src/entities/user.entity';
 import { ProfileController } from './profile.controller';
@@ -19,7 +19,7 @@ import { ProfileService } from './profile.service';
       ExperienceEntity,
       SkillsEntity,
       User,
-      FavouriteEntity,
+      SaveFreelancerEntity,
     ]),
   ],
   providers: [ProfileService],
