@@ -10,6 +10,12 @@ export class OfferEntity {
   @Column({ type: 'integer' })
   price: number;
 
+  @Column({ type: 'boolean', default: false })
+  status: boolean;
+
+  @Column({ type: 'varchar' })
+  name: string;
+
   @Column({ type: 'datetime' })
   startDate: Date;
 
@@ -17,10 +23,10 @@ export class OfferEntity {
   endDate: Date;
 
   @Column({ type: 'integer' })
-  @OneToOne(() => ProfileEntity, (profile) => profile.id, { cascade: true })
+  @ManyToOne(() => ProfileEntity, (profile) => profile.userId, { cascade: true })
   freelancerId: number;
 
   @Column({ type: 'integer' })
-  @OneToOne(() => JobPostEntity, (jopPost: JobPostEntity) => jopPost.id, { cascade: true })
+  @ManyToOne(() => JobPostEntity, (jopPost: JobPostEntity) => jopPost.id, { cascade: true })
   jopPostId: number;
 }

@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Post, Param, Patch, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Patch, Delete, Put } from '@nestjs/common';
 import { JobPostDto } from './dto/jobPost.dto';
 import { JobPostService } from './jobPost.service';
 import { UpdateJobPostDto } from './dto/update-job-post';
-import { OfferDto } from './dto/jobOffer.dto';
+import { OfferDto } from '../offer/dto/jobOffer.dto';
 
 @Controller('jobPost')
 export class JobPostController {
@@ -26,15 +26,6 @@ export class JobPostController {
   @Post()
   saveJobPost(@Body() jobPostDto: JobPostDto) {
     return this.jobPostService.saveJobPost(jobPostDto);
-  }
-
-  @Post('offer')
-  saveJobOffer(@Body() offerDto: OfferDto) {
-    return this.jobPostService.saveJobOffer(offerDto);
-  }
-  @Get('job/:id/:profile')
-  getJobOfferByProfile(@Param('id') id: number, @Param('profile') profile: number) {
-    return this.jobPostService.getJobOfferByProfile(Number(id), Number(profile));
   }
 
   @Patch(':id')

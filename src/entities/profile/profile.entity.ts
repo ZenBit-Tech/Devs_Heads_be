@@ -14,6 +14,7 @@ import { EducationEntity } from './education.entity';
 import { ExperienceEntity } from './experience.entity';
 import { SkillsEntity } from '../skills.entity';
 import { User } from '../user.entity';
+import { OfferEntity } from '../offer.entity';
 
 @Entity('profile')
 export class ProfileEntity {
@@ -57,5 +58,6 @@ export class ProfileEntity {
   @Column({ type: 'integer' })
   @JoinColumn()
   @ManyToOne(() => User, (user) => user.userId, { cascade: true })
+  @OneToMany(() => OfferEntity, (offer) => offer.freelancerId)
   userId: number;
 }
