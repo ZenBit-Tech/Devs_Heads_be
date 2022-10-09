@@ -14,10 +14,13 @@ import { EducationEntity } from './education.entity';
 import { ExperienceEntity } from './experience.entity';
 import { SkillsEntity } from '../skills.entity';
 import { User } from '../user.entity';
+import { SaveFreelancerEntity } from './favourite.entity';
 
 @Entity('profile')
 export class ProfileEntity {
   @PrimaryGeneratedColumn()
+  @JoinColumn()
+  @OneToMany(() => SaveFreelancerEntity, (favourite) => favourite.freelancerId)
   id: number;
 
   @Column({ type: 'longtext' })
@@ -28,9 +31,6 @@ export class ProfileEntity {
 
   @Column({ type: 'integer' })
   price: number;
-
-  @Column({ type: 'boolean', default: false })
-  saved: boolean;
 
   @Column({
     type: 'enum',

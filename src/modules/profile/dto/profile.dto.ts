@@ -6,6 +6,8 @@ import { SkillsEntity } from 'src/entities/skills.entity';
 export class ProfileDto {
   photo: string;
   userId: number;
+  saved: boolean;
+  clientId: number;
   position: string;
   price: number;
   englishLevel: string;
