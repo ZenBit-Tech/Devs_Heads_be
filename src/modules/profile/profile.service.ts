@@ -78,10 +78,10 @@ export class ProfileService {
         .where('setting.userId = :userId', { userId: profile?.userId })
         .getOne();
       const status = await this.saveProfileFreelancerRepository
-        .createQueryBuilder('freelancerSaved')
-        .leftJoin(`freelancerSaved.freelancerId`, 'profile')
-        .where('freelancerSaved.freelancerId = :id', { id: id })
-        .andHaving('freelancerSaved.clientId = :clientId', { clientId: clientId })
+        .createQueryBuilder('freelancersaved')
+        .leftJoin(`freelancersaved.freelancerId`, 'profile')
+        .where('freelancersaved.freelancerId = :id', { id: id })
+        .andHaving('freelancersaved.clientId = :clientId', { clientId: clientId })
         .getOne();
       return {
         profile,
