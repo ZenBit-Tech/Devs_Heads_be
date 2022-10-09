@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { CategoryEntity } from 'src/entities/category.entity';
@@ -42,10 +42,10 @@ export class ProfileService {
   async updateSingleProfile(id: number, save: SavedProfileDto): Promise<SaveFreelancerEntity[] | SavedProfileDto> {
     const { saved, clientId } = save;
     const profile = await this.saveProfileFreelancerRepository
-      .createQueryBuilder('Freelancer')
-      .leftJoin('Freelancer.freelancerId', 'profile')
-      .where('Freelancer.clientId = :id', { id: clientId })
-      .andHaving('Freelancer.freelancerId = :userId', { userId: id })
+      .createQueryBuilder('freelancer')
+      .leftJoin('freelancer.freelancerId', 'profile')
+      .where('freelancer.clientId = :id', { id: clientId })
+      .andHaving('freelancer.freelancerId = :userId', { userId: id })
       .getOne();
 
     if (profile) {
@@ -73,15 +73,15 @@ export class ProfileService {
     });
     if (profile) {
       const setting = await this.userRepository
-        .createQueryBuilder('Setting')
-        .leftJoin(`Setting.userId`, 'profile')
-        .where('Setting.userId = :userId', { userId: profile?.userId })
+        .createQueryBuilder('setting')
+        .leftJoin(`setting.userId`, 'profile')
+        .where('setting.userId = :userId', { userId: profile?.userId })
         .getOne();
       const status = await this.saveProfileFreelancerRepository
-        .createQueryBuilder('FreelancerSaved')
-        .leftJoin(`FreelancerSaved.freelancerId`, 'profile')
-        .where('FreelancerSaved.freelancerId = :id', { id: id })
-        .andHaving('FreelancerSaved.clientId = :clientId', { clientId: clientId })
+        .createQueryBuilder('freelancerSaved')
+        .leftJoin(`freelancerSaved.freelancerId`, 'profile')
+        .where('freelancerSaved.freelancerId = :id', { id: id })
+        .andHaving('freelancerSaved.clientId = :clientId', { clientId: clientId })
         .getOne();
       return {
         profile,
