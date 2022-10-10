@@ -133,7 +133,7 @@ export class ProfileService {
     return profile;
   }
 
-  async saveProfile(profileDto: ProfileDto) {
+  async saveProfile(profileDto: ProfileDto): Promise<ProfileEntity> {
     const findedInfo = await this.profileRepository.findOne({
       where: {
         userId: profileDto.userId,
@@ -150,7 +150,7 @@ export class ProfileService {
       findedInfo.experience = profileDto.experience;
       findedInfo.skills = profileDto.skills;
       const profile = await this.profileRepository.save(findedInfo);
-      console.log(profile);
+      return profile;
     } else {
       try {
         const newProfile = new ProfileEntity();

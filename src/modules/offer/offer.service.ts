@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { OfferEntity } from 'src/entities/offer.entity';
 import { OfferDto } from './dto/jobOffer.dto';
 
@@ -11,7 +11,7 @@ export class OfferPostService {
     private offerRepository: Repository<OfferEntity>,
   ) {}
 
-  async getJobOfferByProfile(id: number, freelancerId: number) {
+  async getJobOfferByProfile(id: number, freelancerId: number): Promise<OfferEntity> {
     const offer = await this.offerRepository.findOne({
       where: {
         jopPostId: id,
@@ -24,7 +24,7 @@ export class OfferPostService {
     throw new NotFoundException(id);
   }
 
-  async saveJobOffer(offerDto: OfferDto) {
+  async saveJobOffer(offerDto: OfferDto): Promise<UpdateResult | OfferEntity> {
     const existOffer = await this.offerRepository.findOne({
       where: {
         freelancerId: offerDto.freelancerId,
@@ -51,7 +51,11 @@ export class OfferPostService {
     }
   }
 
-  async updateJobOffer(jobId: number, freelancerId: number, statusOffer: { status: boolean }) {
+  async updateJobOffer(
+    jobId: number,
+    freelancerId: number,
+    statusOffer: { status: boolean },
+  ): Promise<{ status: boolean }> {
     const { status } = statusOffer;
     if (jobId && freelancerId) {
       await this.offerRepository.update({ freelancerId: freelancerId, jopPostId: jobId }, { status: status });

@@ -1,13 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { CategoryEntity } from './category.entity';
 import { OfferEntity } from './offer.entity';
 import { SkillsEntity } from './skills.entity';
