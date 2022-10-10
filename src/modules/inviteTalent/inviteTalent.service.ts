@@ -11,7 +11,7 @@ export class InviteTalentService {
     private inviteTalentRepository: Repository<InviteTalentEntity>,
   ) {}
 
-  async getInviteMessageById(id: number) {
+  async getInviteMessageById(id: number): Promise<InviteTalentEntity> {
     if (!id) {
       throw new HttpException(
         {
@@ -28,7 +28,7 @@ export class InviteTalentService {
     return message;
   }
 
-  async getInviteMessageByProfile(freelancerId: number) {
+  async getInviteMessageByProfile(freelancerId: number): Promise<InviteTalentEntity[]> {
     if (!freelancerId) {
       throw new HttpException(
         {
@@ -55,12 +55,12 @@ export class InviteTalentService {
     return messageOffer;
   }
 
-  async getAllInviteMessages() {
+  async getAllInviteMessages(): Promise<InviteTalentEntity[]> {
     const messages = await this.inviteTalentRepository.createQueryBuilder('inviteTalent').getMany();
     return messages;
   }
 
-  async saveInviteMessage(InviteTalentDto: InviteTalentDto) {
+  async saveInviteMessage(InviteTalentDto: InviteTalentDto): Promise<InviteTalentEntity> {
     try {
       const newMessage = new InviteTalentEntity();
       newMessage.message = InviteTalentDto.message;
