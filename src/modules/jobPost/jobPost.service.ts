@@ -4,8 +4,6 @@ import { Repository } from 'typeorm';
 import { JobPostEntity } from 'src/entities/jobPost.entity';
 import { JobPostDto } from './dto/jobPost.dto';
 import { UpdateJobPostDto } from './dto/update-job-post';
-import { OfferEntity } from 'src/entities/offer.entity';
-import { OfferDto } from '../offer/dto/jobOffer.dto';
 
 @Injectable()
 export class JobPostService {
@@ -64,7 +62,6 @@ export class JobPostService {
 
   async saveJobPost(jobPostDto: JobPostDto) {
     try {
-      console.log(jobPostDto);
       const newJob = new JobPostEntity();
       newJob.jobTitle = jobPostDto.jobTitle;
       newJob.jobCategory = jobPostDto.jobCategory;

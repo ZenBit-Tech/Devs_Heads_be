@@ -11,7 +11,7 @@ export class InviteTalentService {
     private inviteTalentRepository: Repository<InviteTalentEntity>,
   ) {}
 
-  async saveInviteMessage(InviteTalentDto: InviteTalentDto) {
+  async saveInviteMessage(InviteTalentDto: InviteTalentDto): Promise<InviteTalentEntity> {
     try {
       const newMessage = new InviteTalentEntity();
       newMessage.message = InviteTalentDto.message;
@@ -19,14 +19,13 @@ export class InviteTalentService {
       newMessage.profileId = InviteTalentDto.profileId;
       newMessage.jobTitle = InviteTalentDto.jobTitle;
       const invitation = await this.inviteTalentRepository.save(newMessage);
-      console.log(invitation);
       return invitation;
     } catch (e) {
       console.log(e);
     }
   }
 
-  async getInviteMessageByProfile(userId: number) {
+  async getInviteMessageByProfile(userId: number): Promise<InviteTalentEntity> {
     const offer = await this.inviteTalentRepository.findOne({
       where: {
         userId: userId,
