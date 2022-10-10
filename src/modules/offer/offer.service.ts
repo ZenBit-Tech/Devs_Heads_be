@@ -46,7 +46,6 @@ export class OfferPostService {
       newOffer.name = offerDto.name;
       newOffer.jopPostId = offerDto.jopPostId;
       const offer = await this.offerRepository.save(newOffer);
-      console.log(offer);
       return offer;
     }
   }
