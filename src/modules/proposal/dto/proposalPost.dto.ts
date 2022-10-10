@@ -3,5 +3,6 @@ export class ProposalPostDto {
   userId: number;
   jobPost: number;
   price: number;
+  clientId: number;
   message: string;
 }
