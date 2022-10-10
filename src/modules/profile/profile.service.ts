@@ -165,7 +165,6 @@ export class ProfileService {
         newProfile.skills = profileDto.skills;
         newProfile.userId = profileDto.userId;
         const profile = await this.profileRepository.save(newProfile);
-        console.log(profile);
         return profile;
       } catch (error) {
         console.log(error);
