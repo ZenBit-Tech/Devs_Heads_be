@@ -1,11 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinTable, ManyToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { CategoryEntity } from './category.entity';
+import { OfferEntity } from './offer.entity';
 import { SkillsEntity } from './skills.entity';
 import { User } from './user.entity';
 
 @Entity()
 export class JobPostEntity {
   @PrimaryGeneratedColumn()
+  @OneToMany(() => OfferEntity, (offer) => offer.jopPostId)
   id: number;
 
   @Column({ type: 'varchar', length: 255 })
