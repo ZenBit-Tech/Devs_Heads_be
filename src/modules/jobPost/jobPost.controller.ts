@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Param, Patch, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Patch, Delete, Put } from '@nestjs/common';
 import { JobPostDto } from './dto/jobPost.dto';
 import { JobPostService } from './jobPost.service';
 import { UpdateJobPostDto } from './dto/update-job-post';

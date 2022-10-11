@@ -85,7 +85,7 @@ export class AuthService {
 
   async googleSignUp(req) {
     const { googleId, email } = req.user;
-    const user = await this.usersRepository.findOneBy({ googleId });
+    const user = await this.usersRepository.findOneBy({ email });
     if (user) return this.googleSignIn(user);
     const newUser = await this.usersRepository.save({ email, googleId, password: '' });
     return this.googleSignIn(newUser);

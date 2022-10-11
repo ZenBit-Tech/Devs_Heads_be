@@ -12,6 +12,7 @@ import { JobPostModule } from './modules/jobPost/jobPost.module';
 import { ProposalPostModule } from './modules/proposal/proposal.module';
 import { ClientSettingsModule } from './modules/clientSettings/clientSettings.module';
 import { InviteTalentModule } from 'src/modules/inviteTalent/inviteTalent.module';
+import { OfferPostModule } from './modules/offer/offer.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { InviteTalentModule } from 'src/modules/inviteTalent/inviteTalent.module
         ProfileModule,
         JobPostModule,
         ProposalPostModule,
+        OfferPostModule,
         InviteTalentModule,
         ClientSettingsModule,
       ],
