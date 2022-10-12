@@ -12,6 +12,9 @@ import { JobPostModule } from './modules/jobPost/jobPost.module';
 import { ProposalPostModule } from './modules/proposal/proposal.module';
 import { ClientSettingsModule } from './modules/clientSettings/clientSettings.module';
 import { InviteTalentModule } from 'src/modules/inviteTalent/inviteTalent.module';
+import { AppGateway } from './app.gateway';
+import { ChatRoomModule } from './modules/chat-room/chat-room.module';
+import { MessageModule } from './modules/message/message.module';
 
 @Module({
   imports: [
@@ -24,6 +27,8 @@ import { InviteTalentModule } from 'src/modules/inviteTalent/inviteTalent.module
         ProposalPostModule,
         InviteTalentModule,
         ClientSettingsModule,
+        ChatRoomModule,
+        MessageModule,
       ],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
@@ -62,8 +67,10 @@ import { InviteTalentModule } from 'src/modules/inviteTalent/inviteTalent.module
     AuthModule,
     ProfileModule,
     SettingsInfoModule,
+    ChatRoomModule,
+    MessageModule,
   ],
   controllers: [AppController],
-  providers: [AppService, GoogleStrategy],
+  providers: [AppService, GoogleStrategy, AppGateway],
 })
 export class AppModule {}
