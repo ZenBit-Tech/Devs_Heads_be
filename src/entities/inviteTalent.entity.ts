@@ -10,12 +10,18 @@ export class InviteTalentEntity {
   message: string;
 
   @Column({ nullable: false, type: 'integer' })
+  clientId: number;
+
+  @Column({ nullable: false, type: 'integer' })
   @OneToOne(() => ProfileEntity, (profile) => profile.userId)
-  userId: number;
+  freelancerId: number;
 
   @Column({ nullable: false, type: 'integer' })
   @OneToOne(() => ProfileEntity, (profile) => profile.id)
   profileId: number;
+
+  @Column({ nullable: false, type: 'integer' })
+  jobPostId: number;
 
   @Column({ nullable: false, type: 'varchar', length: 255 })
   jobTitle: string;

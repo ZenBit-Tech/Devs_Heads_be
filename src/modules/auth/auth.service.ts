@@ -45,9 +45,10 @@ export class AuthService {
   }
 
   async update(@Body() authDto: Partial<UpdateDto>): Promise<User> {
-    const { email, role } = authDto;
+    const { email, role, userId } = authDto;
     const user = await this.usersRepository.findOneBy({ email });
     user.role = role;
+    user.userId = userId;
     return await this.usersRepository.save(user);
   }
 
@@ -196,7 +197,11 @@ export class AuthService {
     await this.usersRepository.update({ id: user.id }, { password: password });
   }
   async getUser() {
-    const user = await this.usersRepository.find();
+    const user = await this.usersRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.clientSetting', 'clientInfo')
+      .leftJoinAndSelect('user.profileSetting', 'profile')
+      .getMany();
     return user;
   }
 }

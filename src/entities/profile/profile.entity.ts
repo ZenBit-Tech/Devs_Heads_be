@@ -20,9 +20,11 @@ import { SaveFreelancerEntity } from './favourite.entity';
 @Entity('profile')
 export class ProfileEntity {
   @PrimaryGeneratedColumn()
-  @JoinColumn()
-  @OneToMany(() => SaveFreelancerEntity, (favourite) => favourite.freelancerId)
   id: number;
+
+  @OneToMany(() => SaveFreelancerEntity, (favourite) => favourite.freelancerId)
+  @JoinColumn()
+  profile: SaveFreelancerEntity[];
 
   @Column({ type: 'longtext' })
   photo: string;
@@ -54,9 +56,6 @@ export class ProfileEntity {
 
   @OneToMany(() => ExperienceEntity, (experience) => experience.profile, { cascade: true })
   experience: ExperienceEntity[];
-
-  @OneToMany(() => OfferEntity, (profile) => profile.freelancerId)
-  offer: OfferEntity[];
 
   @Column({ type: 'integer' })
   @JoinColumn()

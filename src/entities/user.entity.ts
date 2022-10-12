@@ -1,8 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, ManyToOne, JoinColumn, JoinTable } from 'typeorm';
 import { ForgotPassword } from './forgot-password.entity';
 import { ProfileEntity } from './profile/profile.entity';
 import { JobPostEntity } from './jobPost.entity';
 import { IsOptional } from 'class-validator';
+import { ClientSettingsEntity } from './clientSetttings.entity';
 
 @Entity({ name: 'user', schema: 'public' })
 export class User {
@@ -32,6 +33,12 @@ export class User {
   @JoinColumn()
   @ManyToOne(() => ProfileEntity, (profile) => profile.userId)
   userId: number;
+
+  @OneToOne(() => ClientSettingsEntity, (clientInfo) => clientInfo.userId)
+  clientSetting: ClientSettingsEntity;
+
+  @OneToOne(() => ProfileEntity, (profile) => profile.userId)
+  profileSetting: ProfileEntity;
 
   @Column({
     type: 'enum',

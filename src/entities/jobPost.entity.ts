@@ -7,7 +7,6 @@ import { User } from './user.entity';
 @Entity()
 export class JobPostEntity {
   @PrimaryGeneratedColumn()
-  @OneToMany(() => OfferEntity, (offer) => offer.jopPostId)
   id: number;
 
   @Column({ type: 'varchar', length: 255 })
