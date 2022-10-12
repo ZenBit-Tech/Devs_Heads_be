@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { JobPostEntity } from './jobPost.entity';
 import { ProfileEntity } from './profile/profile.entity';
 
@@ -22,11 +22,11 @@ export class OfferEntity {
   @Column({ type: 'datetime' })
   endDate: Date;
 
-  @Column({ type: 'integer' })
-  @ManyToOne(() => ProfileEntity, (profile) => profile.offer)
+  @Column({ type: 'integer', unique: false })
+  @OneToOne(() => ProfileEntity, (profile) => profile.userId)
   freelancerId: number;
 
-  @Column({ type: 'integer' })
-  @ManyToOne(() => JobPostEntity, (jopPost: JobPostEntity) => jopPost.id, { cascade: true })
+  @Column({ type: 'integer', unique: false })
+  @OneToOne(() => JobPostEntity, (jopPost: JobPostEntity) => jopPost.id, { cascade: true })
   jopPostId: number;
 }

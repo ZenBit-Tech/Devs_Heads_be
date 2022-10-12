@@ -55,9 +55,6 @@ export class ProfileEntity {
   @OneToMany(() => ExperienceEntity, (experience) => experience.profile, { cascade: true })
   experience: ExperienceEntity[];
 
-  @OneToMany(() => OfferEntity, (profile) => profile.freelancerId)
-  offer: OfferEntity[];
-
   @Column({ type: 'integer' })
   @JoinColumn()
   @ManyToOne(() => User, (user) => user.userId, { cascade: true })

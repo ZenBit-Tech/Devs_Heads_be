@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
+import { IsString, IsNotEmpty, IsEmail, isNumber } from 'class-validator';
 
 export class UpdateDto {
   @IsEmail()
@@ -10,6 +10,9 @@ export class UpdateDto {
   @IsNotEmpty()
   role: string;
   googleId: string;
+
+  @IsNotEmpty()
+  userId: number;
 }
 
 export interface TokenTypes {
