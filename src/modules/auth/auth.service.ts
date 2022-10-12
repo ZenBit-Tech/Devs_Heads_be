@@ -200,6 +200,7 @@ export class AuthService {
     const user = await this.usersRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.clientSetting', 'clientInfo')
+      .leftJoinAndSelect('user.profileSetting', 'profile')
       .getMany();
     return user;
   }

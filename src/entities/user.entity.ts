@@ -34,8 +34,11 @@ export class User {
   @ManyToOne(() => ProfileEntity, (profile) => profile.userId)
   userId: number;
 
-  @OneToMany(() => ClientSettingsEntity, (clientInfo) => clientInfo.userId)
-  clientSetting: ClientSettingsEntity[];
+  @OneToOne(() => ClientSettingsEntity, (clientInfo) => clientInfo.userId)
+  clientSetting: ClientSettingsEntity;
+
+  @OneToOne(() => ProfileEntity, (profile) => profile.userId)
+  profileSetting: ProfileEntity;
 
   @Column({
     type: 'enum',
