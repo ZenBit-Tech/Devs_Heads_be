@@ -32,8 +32,10 @@ export class User {
   @IsOptional()
   @JoinColumn()
   @ManyToOne(() => ProfileEntity, (profile) => profile.userId)
-  @OneToMany(() => ClientSettingsEntity, (clientInfo) => clientInfo.userId)
   userId: number;
+
+  @OneToMany(() => ClientSettingsEntity, (clientInfo) => clientInfo.userId)
+  clientSetting: ClientSettingsEntity[];
 
   @Column({
     type: 'enum',

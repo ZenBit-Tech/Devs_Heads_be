@@ -199,7 +199,7 @@ export class AuthService {
   async getUser() {
     const user = await this.usersRepository
       .createQueryBuilder('user')
-      .leftJoinAndSelect('user.userId', 'clientInfo')
+      .leftJoinAndSelect('user.clientSetting', 'clientInfo')
       .getMany();
     return user;
   }

@@ -12,7 +12,7 @@ export class SaveFreelancerEntity {
   @Column({ type: 'integer', default: 0, unique: false })
   clientId: number;
 
-  @ManyToOne(() => ProfileEntity, (profile) => profile.id)
+  @ManyToOne(() => ProfileEntity, (profile) => profile.profile)
   @Column({ type: 'integer', unique: false })
   freelancerId: number;
 }

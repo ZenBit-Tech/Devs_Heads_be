@@ -25,7 +25,6 @@ export class SettingsInfoService {
     currentUserSettings.firstName = settingsInfoDto.firstName;
     currentUserSettings.lastName = settingsInfoDto.lastName;
     currentUserSettings.phone = settingsInfoDto.phone;
-    currentUserSettings.userId = id;
     const profile = await this.userRepository.save(currentUserSettings);
     console.log(profile);
     return profile;
