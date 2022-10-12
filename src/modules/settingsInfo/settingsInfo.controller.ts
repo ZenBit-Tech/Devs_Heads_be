@@ -1,4 +1,5 @@
 import { Body, Controller, Post, Param, Get } from '@nestjs/common';
+import { User } from 'src/entities/user.entity';
 import { SettingsInfoDto } from './dto/settingsInfo.dto';
 import { SettingsInfoService } from './settingsInfo.service';
 
@@ -11,12 +12,12 @@ export class SettingsInfoController {
     @Param('id') id: number,
     @Body()
     settingsInfoDto: SettingsInfoDto,
-  ) {
+  ): Promise<User> {
     return this.settingsInfoService.saveUserSettings(Number(id), settingsInfoDto);
   }
 
   @Get('setting')
-  getAllSkills() {
+  getAllSettings(): Promise<User[]> {
     return this.settingsInfoService.getAllSettings();
   }
 }

@@ -25,4 +25,9 @@ export class OfferPostController {
   ): Promise<{ status: boolean }> {
     return this.offerPostService.updateJobOffer(Number(jobId), Number(freelancerId), status);
   }
+
+  @Get('job')
+  getJobOffer(): Promise<OfferEntity[]> {
+    return this.offerPostService.getJobOffer();
+  }
 }

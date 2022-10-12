@@ -103,7 +103,7 @@ export class ProfileService {
   }
   async querySavedTalent(alias: string, clientId: number): Promise<SelectQueryBuilder<ProfileEntity>> {
     return (await this.getProfile(alias))
-      .leftJoinAndSelect(`${alias}.id`, 'favourite')
+      .leftJoinAndSelect(`${alias}.profile`, 'favourite')
       .where(`favourite.saved = :saved`, { saved: true })
       .andHaving(`favourite.clientId = :clientId`, { clientId: clientId });
   }

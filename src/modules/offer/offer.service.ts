@@ -50,6 +50,11 @@ export class OfferPostService {
     }
   }
 
+  async getJobOffer(): Promise<OfferEntity[]> {
+    const allOffer = await this.offerRepository.find();
+    return allOffer;
+  }
+
   async updateJobOffer(
     jobId: number,
     freelancerId: number,
