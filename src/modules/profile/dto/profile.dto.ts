@@ -1,4 +1,5 @@
 import { CategoryEntity } from 'src/entities/category.entity';
+import { OfferEntity } from 'src/entities/offer.entity';
 import { EducationEntity } from 'src/entities/profile/education.entity';
 import { ExperienceEntity } from 'src/entities/profile/experience.entity';
 import { SkillsEntity } from 'src/entities/skills.entity';
@@ -6,6 +7,8 @@ import { SkillsEntity } from 'src/entities/skills.entity';
 export class ProfileDto {
   photo: string;
   userId: number;
+  saved: boolean;
+  clientId: number;
   position: string;
   price: number;
   englishLevel: string;
@@ -14,4 +17,5 @@ export class ProfileDto {
   education: EducationEntity[];
   experience: ExperienceEntity[];
   skills: SkillsEntity[];
+  offer: OfferEntity[];
 }

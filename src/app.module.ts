@@ -15,6 +15,7 @@ import { InviteTalentModule } from 'src/modules/inviteTalent/inviteTalent.module
 import { AppGateway } from './app.gateway';
 import { ChatRoomModule } from './modules/chat-room/chat-room.module';
 import { MessageModule } from './modules/message/message.module';
+import { OfferPostModule } from './modules/offer/offer.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { MessageModule } from './modules/message/message.module';
         ProfileModule,
         JobPostModule,
         ProposalPostModule,
+        OfferPostModule,
         InviteTalentModule,
         ClientSettingsModule,
         ChatRoomModule,
