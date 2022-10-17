@@ -18,7 +18,7 @@ export class ProposalPostEntity {
   @Column({ type: 'integer' })
   price: number;
 
-  @Column({ type: 'integer' })
+  @Column({ type: 'integer', default: 0 })
   clientId: number;
 
   @Column({ type: 'varchar', length: 5000 })

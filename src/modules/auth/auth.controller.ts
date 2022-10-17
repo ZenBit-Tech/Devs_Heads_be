@@ -15,7 +15,7 @@ export class AuthController {
     return this.authService.signUp(authDto);
   }
 
-  @Put('sign-up/update')
+  @Put('sign-up')
   signUpUpdate(@Body() authDto: AuthDto): Promise<User> {
     return this.authService.update(authDto);
   }

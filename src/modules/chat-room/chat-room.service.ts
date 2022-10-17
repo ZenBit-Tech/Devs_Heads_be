@@ -28,8 +28,8 @@ export class ChatRoomService {
   async getAll(): Promise<ChatRoom[]> {
     const chatRooms = await this.chatRoomRepository
       .createQueryBuilder('chat_room')
-      .leftJoinAndSelect('chat_room.senderId', 'user.id=senderId')
-      .leftJoinAndSelect('chat_room.receiverId', 'user.id=receiverId')
+      .leftJoinAndSelect('chat_room.senderId', 'sender', 'sender.id=senderId')
+      .leftJoinAndSelect('chat_room.receiverId', 'receiver', 'receiver.id=receiverId')
       .leftJoinAndSelect('chat_room.jobPostId', 'job_post_entity')
       .leftJoinAndSelect('chat_room.message', 'message')
       .orderBy('chat_room.createdAt', 'DESC')
@@ -40,8 +40,12 @@ export class ChatRoomService {
   async getChatRoomsByUserId(id: number): Promise<ChatRoom[]> {
     const chatInfo = await this.chatRoomRepository
       .createQueryBuilder('chat_room')
-      .leftJoinAndSelect('chat_room.senderId', 'user.id=senderId')
-      .leftJoinAndSelect('chat_room.receiverId', 'user.id=receiverId')
+      .leftJoinAndSelect('chat_room.senderId', 'sender', 'sender.id=senderId')
+      .leftJoinAndSelect('chat_room.receiverId', 'receiver', 'receiver.id=receiverId')
+      .leftJoinAndSelect('receiver.clientSetting', 'clientInfo.id=receiver.id')
+      .leftJoinAndSelect('receiver.profileSetting', 'profile.id=receiver.id')
+      .leftJoinAndSelect('sender.clientSetting', 'clientInfo.id=sender.id')
+      .leftJoinAndSelect('sender.profileSetting', 'profile.id=sender.id')
       .leftJoinAndSelect('chat_room.jobPostId', 'job_post_entity')
       .leftJoinAndSelect('chat_room.message', 'message')
       .where('chat_room.receiverId.id LIKE :id', { id })
@@ -54,8 +58,12 @@ export class ChatRoomService {
   async getChatRoomsByTwoUserId(senderId: number, receiverId: number, jobPostId: number): Promise<ChatRoom> {
     const chatInfo = await this.chatRoomRepository
       .createQueryBuilder('chat_room')
-      .leftJoinAndSelect('chat_room.senderId', 'user.id=senderId')
-      .leftJoinAndSelect('chat_room.receiverId', 'user.id=receiverId')
+      .leftJoinAndSelect('chat_room.senderId', 'sender', 'sender.id=senderId')
+      .leftJoinAndSelect('chat_room.receiverId', 'receiver', 'receiver.id=receiverId')
+      .leftJoinAndSelect('receiver.clientSetting', 'clientInfo.id=receiver.id')
+      .leftJoinAndSelect('receiver.profileSetting', 'profile.id=receiver.id')
+      .leftJoinAndSelect('sender.clientSetting', 'clientInfo.id=sender.id')
+      .leftJoinAndSelect('sender.profileSetting', 'profile.id=sender.id')
       .leftJoinAndSelect('chat_room.jobPostId', 'job_post_entity')
       .leftJoinAndSelect('chat_room.message', 'message')
       .leftJoinAndSelect('message.user', 'user')

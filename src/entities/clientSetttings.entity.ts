@@ -26,6 +26,6 @@ export class ClientSettingsEntity {
 
   @Column({ type: 'integer' })
   @JoinColumn()
-  @ManyToOne(() => User, (user) => user.userId, { cascade: true })
+  @ManyToOne(() => User, (user) => user.id)
   userId: number;
 }
