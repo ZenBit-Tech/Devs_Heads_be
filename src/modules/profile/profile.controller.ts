@@ -8,26 +8,35 @@ import { ProfileEntity } from 'src/entities/profile/profile.entity';
 import { SaveFreelancerEntity } from 'src/entities/profile/favourite.entity';
 import { User } from 'src/entities/user.entity';
 import { SavedProfileDto } from './dto/status.dto';
+import { ApiOperation, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Profile')
 @Controller('profile')
 export class ProfileController {
   constructor(private profileService: ProfileService) {}
 
+  @ApiOperation({ summary: 'Get all categories' })
+  @ApiResponse({ status: 200, type: [CategoryEntity] })
   @Get('category')
   getAllCategories(): Promise<CategoryEntity[]> {
     return this.profileService.getAllCategories();
   }
 
+  @ApiOperation({ summary: 'Get all skills' })
+  @ApiResponse({ status: 200, type: [SkillsEntity] })
   @Get('skills')
   getAllSkills(): Promise<SkillsEntity[]> {
     return this.profileService.getAllSkills();
   }
 
+  @ApiOperation({ summary: 'Get all items' })
+  @ApiResponse({ status: 200, type: [ProfileEntity] })
   @Get('allItem')
   getAllProfile(): Promise<ProfileEntity[]> {
     return this.profileService.getAllProfile();
   }
 
+  @ApiOperation({ summary: 'Filter' })
   @Get('filter')
   async findAll(
     @Query() userQuery: FindUserDto,
@@ -66,6 +75,7 @@ export class ProfileController {
     };
   }
 
+  @ApiOperation({ summary: 'Get profile saved talent' })
   @Get(':id/savedTalent')
   async findSavedTalent(
     @Param('id') id: number,
@@ -98,6 +108,7 @@ export class ProfileController {
     };
   }
 
+  @ApiOperation({ summary: 'Get profile clientId' })
   @Get(':id/:clientId')
   getProfileSettings(
     @Param('id') id: number,
@@ -106,6 +117,7 @@ export class ProfileController {
     return this.profileService.getProfileSettings(Number(id), Number(clientId));
   }
 
+  @ApiOperation({ summary: 'Update profile by Id' })
   @Put(':id')
   updateSingleProfile(
     @Param('id') id: number,
@@ -114,6 +126,8 @@ export class ProfileController {
     return this.profileService.updateSingleProfile(Number(id), saved);
   }
 
+  @ApiOperation({ summary: 'Create profile' })
+  @ApiResponse({ status: 200, type: ProfileEntity })
   @Post()
   saveProfile(@Body() profileDto: ProfileDto): Promise<ProfileEntity> {
     return this.profileService.saveProfile(profileDto);
