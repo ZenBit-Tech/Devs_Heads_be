@@ -24,6 +24,9 @@ export class ClientSettingsEntity {
   @Column({ nullable: true })
   description: string;
 
+  @Column({ type: 'longtext' })
+  photo: string;
+
   @Column({ type: 'integer' })
   @JoinColumn()
   @ManyToOne(() => User, (user) => user.userId, { cascade: true })
