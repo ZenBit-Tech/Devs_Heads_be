@@ -6,7 +6,6 @@ import {
   ManyToOne,
   ManyToMany,
   JoinTable,
-  OneToOne,
   JoinColumn,
 } from 'typeorm';
 import { CategoryEntity } from '../category.entity';
@@ -14,8 +13,8 @@ import { EducationEntity } from './education.entity';
 import { ExperienceEntity } from './experience.entity';
 import { SkillsEntity } from '../skills.entity';
 import { User } from '../user.entity';
-import { OfferEntity } from '../offer.entity';
 import { SaveFreelancerEntity } from './favourite.entity';
+import { ChatRoom } from '../chat-room.entity';
 
 @Entity('profile')
 export class ProfileEntity {
@@ -59,6 +58,6 @@ export class ProfileEntity {
 
   @Column({ type: 'integer' })
   @JoinColumn()
-  @ManyToOne(() => User, (user) => user.userId, { cascade: true })
+  @ManyToOne(() => User, (user) => user.id)
   userId: number;
 }
