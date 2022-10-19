@@ -106,6 +106,11 @@ export class ProfileController {
     return this.profileService.getProfileSettings(Number(id), Number(clientId));
   }
 
+  @Get(':id')
+  getFreelancerInfo(@Param('id') id: number) {
+    return this.profileService.getFreelancerInfo(Number(id));
+  }
+
   @Put(':id')
   updateSingleProfile(
     @Param('id') id: number,
