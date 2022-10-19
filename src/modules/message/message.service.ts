@@ -12,13 +12,17 @@ export class MessageService {
   ) {}
 
   async createMessage(data: MessageDto): Promise<Message> {
-    const message = await this.messageRepository.save({
-      text: data.text,
-      chatRoom: { id: data.chatRoomId },
-      user: { id: data.userId },
-      jobLink: data.jobLink,
-    });
-    return message;
+    try {
+      const message = await this.messageRepository.save({
+        text: data.text,
+        chatRoom: { id: data.chatRoomId },
+        user: { id: data.userId },
+        jobLink: data.jobLink,
+      });
+      return message;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async getAllByRoomId(id: number): Promise<Message[]> {

@@ -11,18 +11,26 @@ export class ChatRoomService {
     private chatRoomRepository: Repository<ChatRoom>,
   ) {}
   async createRoom(data: ChatRoomDto): Promise<ChatRoom> {
-    return await this.chatRoomRepository.save({
-      jobPostId: { id: data.jobPostId },
-      senderId: { id: data.senderId },
-      receiverId: { id: data.receiverId },
-      activeRoom: data.activeRoom,
-    });
+    try {
+      return await this.chatRoomRepository.save({
+        jobPostId: { id: data.jobPostId },
+        senderId: { id: data.senderId },
+        receiverId: { id: data.receiverId },
+        activeRoom: data.activeRoom,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async updateRoom(id: number, data: Partial<ChatRoomDto>): Promise<ChatRoom> {
-    const room = await this.chatRoomRepository.findOneBy({ id });
-    room.activeRoom = data.activeRoom;
-    return await this.chatRoomRepository.save(room);
+    try {
+      const room = await this.chatRoomRepository.findOneBy({ id });
+      room.activeRoom = data.activeRoom;
+      return await this.chatRoomRepository.save(room);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async getAll(): Promise<ChatRoom[]> {
