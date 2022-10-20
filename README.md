@@ -14,22 +14,22 @@ $ cp .env.example .env
 ```
 Do not forget to setup configuration files (.env)
 
-Enviromnet variables:
-  MYSQL_HOST - application hostname
-  MYSQL_USERNAME - name to access to database
-  MYSQL_PASSWORD - password to access to database
-  MYSQL_DATABASE - name of database
-  MYSQL_PORT - port to access in database
-  JWT_SECRET - secret key to authorization
-  GOOGLE_CLIENT_ID - id for google client
-  GOOGLE_SECRET - secret key to google authorization
-  JWT_EXPIRE_TIME - time for while authorization token will be Ok
-  SENDGRID_API_KEY - key to application for send message
-  RESET_PASSWORD_URL - constant for reset password
-  CALLBACK_URL - url for redirect
-  CLEARDB_DATABASE_URL - url for clear database
-  GOOGLE_AUTH - url for google auth
-  PORT - default port
+Enviromnet variables:<br>
+  MYSQL_HOST - application hostname<br>
+  MYSQL_USERNAME - name to access to database<br>
+  MYSQL_PASSWORD - password to access to database<br>
+  MYSQL_DATABASE - name of database<br>
+  MYSQL_PORT - port to access in database<br>
+  JWT_SECRET - secret key to authorization<br>
+  GOOGLE_CLIENT_ID - id for google client<br>
+  GOOGLE_SECRET - secret key to google authorization<br>
+  JWT_EXPIRE_TIME - time for while authorization token will be Ok<br>
+  SENDGRID_API_KEY - key to application for send message<br>
+  RESET_PASSWORD_URL - constant for reset password<br>
+  CALLBACK_URL - url for redirect<br>
+  CLEARDB_DATABASE_URL - url for clear database<br>
+  GOOGLE_AUTH - url for google auth<br>
+  PORT - default port<br>
   
 
 ## Running the app
@@ -68,104 +68,104 @@ Link for downloading documentation https://devs-heads.herokuapp.com/api/docs-jso
 
 Entities:
 
-  user
-    id - integer, primary key of entity
-    email - varchar, user email
-    password - varchar, user password
-    googleId - varchar, user googleId for google auth
-    role - enum, role for freelancer or client
-    firstName - varchar, user first name
-    lastName - varchar, user last name
-    phone - varchar, user phone
-    userId - integer, id to relations with profile entity
+  user<br>
+    id - integer, primary key of entity<br>
+    email - varchar, user email<br>
+    password - varchar, user password<br>
+    googleId - varchar, user googleId for google auth<br>
+    role - enum, role for freelancer or client<br>
+    firstName - varchar, user first name<br>
+    lastName - varchar, user last name<br>
+    phone - varchar, user phone<br>
+    userId - integer, id to relations with profile entity<br>
     
-  profile
-    id - integer, primary key of entity
-    position - varchar, user position
-    price - integer, price for work
-    englishLevel - enum, ('Pre_intermediate','Intermediate','Upper_intermediate')
-    description - varchar, description of work
-    categoryId - integer, id to relations with category entity
-    userId - integer, id to relations with user entity
-    photo - longtext, photo of profile
+  profile<br>
+    id - integer, primary key of entity<br>
+    position - varchar, user position<br>
+    price - integer, price for work<br>
+    englishLevel - enum, ('Pre_intermediate','Intermediate','Upper_intermediate')<br>
+    description - varchar, description of work<br>
+    categoryId - integer, id to relations with category entity<br>
+    userId - integer, id to relations with user entity<br>
+    photo - longtext, photo of profile<br>
 
   education
-    id - integer, primary key of entity
-    description - varchar, description of education
-    startDate - datetime, time of start education
-    endDate - datetime, time of end education
-    profileId - integer, id to relations with profile entity
+    id - integer, primary key of entity<br>
+    description - varchar, description of education<br>
+    startDate - datetime, time of start education<br>
+    endDate - datetime, time of end education<br>
+    profileId - integer, id to relations with profile entity<br>
 
   experience
-    id - integer, primary key of entity
-    description - varchar, description of experience
-    startDate - datetime, time of start experience
-    endDate - datetime, time of end experience
-    profileId - integer, id to relations with profile entity
+    id - integer, primary key of entity<br>
+    description - varchar, description of experience<br>
+    startDate - datetime, time of start experience<br>
+    endDate - datetime, time of end experience<br>
+    profileId - integer, id to relations with profile entity<br>
 
   favourite
-     id - integer, primary key of entity
-     saved - tinyint, true or false
-     clientId - integer, id of client
-     freelancerId - integer, id to relations with profile entity
+     id - integer, primary key of entity<br>
+     saved - tinyint, true or false<br>
+     clientId - integer, id of client<br>
+     freelancerId - integer, id to relations with profile entity<br>
   
   category
-    id - integer, primary key of entity
-    name - varchar, name of category
+    id - integer, primary key of entity<br>
+    name - varchar, name of category<br>
 
   clientSettings
-    id - integer, primary key of entity
-    name - varchar, name of client
-    country - varchar, client country
-    website - varchar, website of client
-    industry - varchar, client industry
-    quantity - varchar, client quantity
-    description - varchar, client description
-    userId - integer, id to relations with user entity
+    id - integer, primary key of entity<br>
+    name - varchar, name of client<br>
+    country - varchar, client country<br>
+    website - varchar, website of client<br>
+    industry - varchar, client industry<br>
+    quantity - varchar, client quantity<br>
+    description - varchar, client description<br>
+    userId - integer, id to relations with user entity<br>
 
   forgot_password
-    id - integer, primary key of entity
-    link - varchar, link for restore password
-    userId - integer, id to relations with user entity
+    id - integer, primary key of entity<br>
+    link - varchar, link for restore password<br>
+    userId - integer, id to relations with user entity<br>
   
   invite_talent
-    id - integer, primary key of entity
-    message - varchar, message for invite talent
-    clientId - integer, id of client
-    freelancerId -integer, id of freelancer
-    profileId - integer, id to relations with profile entity
-    jobPostId - integer, id of job post
-    jobTitle - varchar, title of the job
+    id - integer, primary key of entity<br>
+    message - varchar, message for invite talent<br>
+    clientId - integer, id of client<br>
+    freelancerId -integer, id of freelancer<br>
+    profileId - integer, id to relations with profile entity<br>
+    jobPostId - integer, id of job post<br>
+    jobTitle - varchar, title of the job<br>
 
   job_post
-    id - integer, primary key of entity
-    jobTitle - varchar, title of job post
-    fromHourRate - integer, time from start job
-    toHourRate - integer, time to end job
-    jobDuration - varchar, duration of the job
-    jobDescription - varchar, decriptiob of the job
-    userId - integer, id to relations with user entity
-    dateTime - timestamp, time when job posted
-    jobCategoryId - integer, id to relations with category entity
+    id - integer, primary key of entity<br>
+    jobTitle - varchar, title of job post<br>
+    fromHourRate - integer, time from start job<br>
+    toHourRate - integer, time to end job<br>
+    jobDuration - varchar, duration of the job<br>
+    jobDescription - varchar, decriptiob of the job<br>
+    userId - integer, id to relations with user entity<br>
+    dateTime - timestamp, time when job posted<br>
+    jobCategoryId - integer, id to relations with category entity<br>
 
   offer
-    id - integer, primary key of entity
-    price - integer, price of offer
-    status - tinyint, true or false
-    name - varchar, name of offer
-    startDate - datetime, start time
-    endDate - datetime, end time 
-    freelancerId - integer, id of freelancer
-    jobPostId -  - integer, id of job post
+    id - integer, primary key of entity<br>
+    price - integer, price of offer<br>
+    status - tinyint, true or false<br>
+    name - varchar, name of offer<br>
+    startDate - datetime, start time<br>
+    endDate - datetime, end time<br>
+    freelancerId - integer, id of freelancer<br>
+    jobPostId -  - integer, id of job post<br>
 
   proposal
-    id - integer, primary key of entity
-    jobPost - integer, id of job post
-    userId - integer, id of user
-    price - integer, price of proposal
-    message -varchar, message of proposal
-    clientId  - integer, id of client
+    id - integer, primary key of entity<br>
+    jobPost - integer, id of job post<br>
+    userId - integer, id of user<br>
+    price - integer, price of proposal<br>
+    message -varchar, message of proposal<br>
+    clientId  - integer, id of client<br>
 
   skills
-    id - integer, primary key of entity
-    name - varchar, name of the skill
+    id - integer, primary key of entity<br>
+    name - varchar, name of the skill<br>
