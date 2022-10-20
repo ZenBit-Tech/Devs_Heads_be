@@ -89,31 +89,31 @@ Entities:
     userId - integer, id to relations with user entity<br>
     photo - longtext, photo of profile<br>
 
-  education
+  education<br>
     id - integer, primary key of entity<br>
     description - varchar, description of education<br>
     startDate - datetime, time of start education<br>
     endDate - datetime, time of end education<br>
     profileId - integer, id to relations with profile entity<br>
 
-  experience
+  experience<br>
     id - integer, primary key of entity<br>
     description - varchar, description of experience<br>
     startDate - datetime, time of start experience<br>
     endDate - datetime, time of end experience<br>
     profileId - integer, id to relations with profile entity<br>
 
-  favourite
+  favourite<br>
      id - integer, primary key of entity<br>
      saved - tinyint, true or false<br>
      clientId - integer, id of client<br>
      freelancerId - integer, id to relations with profile entity<br>
   
-  category
+  category<br>
     id - integer, primary key of entity<br>
     name - varchar, name of category<br>
 
-  clientSettings
+  clientSettings<br>
     id - integer, primary key of entity<br>
     name - varchar, name of client<br>
     country - varchar, client country<br>
@@ -123,12 +123,12 @@ Entities:
     description - varchar, client description<br>
     userId - integer, id to relations with user entity<br>
 
-  forgot_password
+  forgot_password<br>
     id - integer, primary key of entity<br>
     link - varchar, link for restore password<br>
     userId - integer, id to relations with user entity<br>
   
-  invite_talent
+  invite_talent<br>
     id - integer, primary key of entity<br>
     message - varchar, message for invite talent<br>
     clientId - integer, id of client<br>
@@ -137,7 +137,7 @@ Entities:
     jobPostId - integer, id of job post<br>
     jobTitle - varchar, title of the job<br>
 
-  job_post
+  job_post<br>
     id - integer, primary key of entity<br>
     jobTitle - varchar, title of job post<br>
     fromHourRate - integer, time from start job<br>
@@ -148,7 +148,7 @@ Entities:
     dateTime - timestamp, time when job posted<br>
     jobCategoryId - integer, id to relations with category entity<br>
 
-  offer
+  offer<br>
     id - integer, primary key of entity<br>
     price - integer, price of offer<br>
     status - tinyint, true or false<br>
@@ -158,7 +158,7 @@ Entities:
     freelancerId - integer, id of freelancer<br>
     jobPostId -  - integer, id of job post<br>
 
-  proposal
+  proposal<br>
     id - integer, primary key of entity<br>
     jobPost - integer, id of job post<br>
     userId - integer, id of user<br>
@@ -166,6 +166,6 @@ Entities:
     message -varchar, message of proposal<br>
     clientId  - integer, id of client<br>
 
-  skills
+  skills<br>
     id - integer, primary key of entity<br>
     name - varchar, name of the skill<br>
