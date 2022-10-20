@@ -6,6 +6,7 @@ export class ClientSettingsDto {
 
   @ApiProperty({ example: 'Poland', description: 'Client country' })
   country: string;
+  photo: string;
 
   @ApiProperty({ example: 'sample of website', description: 'Client website' })
   website?: string;

@@ -24,7 +24,7 @@ export class ProposalPostEntity {
   price: number;
 
   @ApiProperty({ example: 1, description: 'clientId' })
-  @Column({ type: 'integer' })
+  @Column({ type: 'integer', default: 0 })
   clientId: number;
 
   @ApiProperty({ example: 'This is message for job post', description: 'Message for job post' })

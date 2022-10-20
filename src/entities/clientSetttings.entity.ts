@@ -32,9 +32,12 @@ export class ClientSettingsEntity {
   @Column({ nullable: true })
   description: string;
 
+  @Column({ type: 'longtext' })
+  photo: string;
+
   @ApiProperty({ example: 1, description: 'userId' })
   @Column({ type: 'integer' })
   @JoinColumn()
-  @ManyToOne(() => User, (user) => user.userId, { cascade: true })
+  @ManyToOne(() => User, (user) => user.id)
   userId: number;
 }

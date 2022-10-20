@@ -91,6 +91,16 @@ export class ProfileService {
     }
     throw new NotFoundException(id);
   }
+  async getFreelancerInfo(id: number) {
+    const profile = await this.profileRepository.findOne({
+      where: {
+        userId: id,
+      },
+      relations: ['experience', 'education', 'skills', 'category'],
+    });
+    return profile;
+  }
+
   async getProfile(alias: string): Promise<SelectQueryBuilder<ProfileEntity>> {
     return this.profileRepository
       .createQueryBuilder(alias)

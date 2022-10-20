@@ -12,6 +12,9 @@ import { JobPostModule } from './modules/jobPost/jobPost.module';
 import { ProposalPostModule } from './modules/proposal/proposal.module';
 import { ClientSettingsModule } from './modules/clientSettings/clientSettings.module';
 import { InviteTalentModule } from 'src/modules/inviteTalent/inviteTalent.module';
+import { AppGateway } from './app.gateway';
+import { ChatRoomModule } from './modules/chat-room/chat-room.module';
+import { MessageModule } from './modules/message/message.module';
 import { OfferPostModule } from './modules/offer/offer.module';
 
 @Module({
@@ -26,6 +29,8 @@ import { OfferPostModule } from './modules/offer/offer.module';
         OfferPostModule,
         InviteTalentModule,
         ClientSettingsModule,
+        ChatRoomModule,
+        MessageModule,
       ],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
@@ -64,8 +69,10 @@ import { OfferPostModule } from './modules/offer/offer.module';
     AuthModule,
     ProfileModule,
     SettingsInfoModule,
+    ChatRoomModule,
+    MessageModule,
   ],
   controllers: [AppController],
-  providers: [AppService, GoogleStrategy],
+  providers: [AppService, GoogleStrategy, AppGateway],
 })
 export class AppModule {}
