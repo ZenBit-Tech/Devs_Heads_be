@@ -32,7 +32,7 @@ export class OfferPostController {
 
   @ApiOperation({ summary: 'Update job offer by ID' })
   @ApiResponse({ status: 200, type: OfferEntity })
-  @Put(':jobId/:freelancerId')
+  @Put(':jobId/:freelancerId/:clientId')
   updateJobOffer(
     @Param('jobId') jobId: number,
     @Param('freelancerId') freelancerId: number,
