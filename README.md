@@ -1,36 +1,36 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Get Job is website for freelancers and clients that meets the needs of everyone in finding work and providing work
 
 ## Installation
 
 ```bash
 $ npm install
 ```
+## Prepearing
+
+```bash
+$ cp .env.example .env
+```
+Do not forget to setup configuration files (.env)
+
+Enviromnet variables:<br>
+  MYSQL_HOST - application hostname<br>
+  MYSQL_USERNAME - name to access to database<br>
+  MYSQL_PASSWORD - password to access to database<br>
+  MYSQL_DATABASE - name of database<br>
+  MYSQL_PORT - port to access in database<br>
+  JWT_SECRET - secret key to authorization<br>
+  GOOGLE_CLIENT_ID - id for google client<br>
+  GOOGLE_SECRET - secret key to google authorization<br>
+  JWT_EXPIRE_TIME - time for while authorization token will be Ok<br>
+  SENDGRID_API_KEY - key to application for send message<br>
+  RESET_PASSWORD_URL - constant for reset password<br>
+  CALLBACK_URL - url for redirect<br>
+  CLEARDB_DATABASE_URL - url for clear database<br>
+  GOOGLE_AUTH - url for google auth<br>
+  PORT - default port<br>
+  
 
 ## Running the app
 
@@ -57,17 +57,115 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+## REST API Documentation
 
-## Support
+Link for documentation https://devs-heads.herokuapp.com/api/docs
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Link for downloading documentation https://devs-heads.herokuapp.com/api/docs-json
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Database
 
-## License
+Entities:
 
-Nest is [MIT licensed](LICENSE).
+  user<br>
+    id - integer, primary key of entity<br>
+    email - varchar, user email<br>
+    password - varchar, user password<br>
+    googleId - varchar, user googleId for google auth<br>
+    role - enum, role for freelancer or client<br>
+    firstName - varchar, user first name<br>
+    lastName - varchar, user last name<br>
+    phone - varchar, user phone<br>
+    userId - integer, id to relations with profile entity<br>
+    
+  profile<br>
+    id - integer, primary key of entity<br>
+    position - varchar, user position<br>
+    price - integer, price for work<br>
+    englishLevel - enum, ('Pre_intermediate','Intermediate','Upper_intermediate')<br>
+    description - varchar, description of work<br>
+    categoryId - integer, id to relations with category entity<br>
+    userId - integer, id to relations with user entity<br>
+    photo - longtext, photo of profile<br>
+
+  education<br>
+    id - integer, primary key of entity<br>
+    description - varchar, description of education<br>
+    startDate - datetime, time of start education<br>
+    endDate - datetime, time of end education<br>
+    profileId - integer, id to relations with profile entity<br>
+
+  experience<br>
+    id - integer, primary key of entity<br>
+    description - varchar, description of experience<br>
+    startDate - datetime, time of start experience<br>
+    endDate - datetime, time of end experience<br>
+    profileId - integer, id to relations with profile entity<br>
+
+  favourite<br>
+     id - integer, primary key of entity<br>
+     saved - tinyint, true or false<br>
+     clientId - integer, id of client<br>
+     freelancerId - integer, id to relations with profile entity<br>
+  
+  category<br>
+    id - integer, primary key of entity<br>
+    name - varchar, name of category<br>
+
+  clientSettings<br>
+    id - integer, primary key of entity<br>
+    name - varchar, name of client<br>
+    country - varchar, client country<br>
+    website - varchar, website of client<br>
+    industry - varchar, client industry<br>
+    quantity - varchar, client quantity<br>
+    description - varchar, client description<br>
+    userId - integer, id to relations with user entity<br>
+
+  forgot_password<br>
+    id - integer, primary key of entity<br>
+    link - varchar, link for restore password<br>
+    userId - integer, id to relations with user entity<br>
+  
+  invite_talent<br>
+    id - integer, primary key of entity<br>
+    message - varchar, message for invite talent<br>
+    clientId - integer, id of client<br>
+    freelancerId -integer, id of freelancer<br>
+    profileId - integer, id to relations with profile entity<br>
+    jobPostId - integer, id of job post<br>
+    jobTitle - varchar, title of the job<br>
+
+  job_post<br>
+    id - integer, primary key of entity<br>
+    jobTitle - varchar, title of job post<br>
+    fromHourRate - integer, time from start job<br>
+    toHourRate - integer, time to end job<br>
+    jobDuration - varchar, duration of the job<br>
+    jobDescription - varchar, decriptiob of the job<br>
+    userId - integer, id to relations with user entity<br>
+    dateTime - timestamp, time when job posted<br>
+    jobCategoryId - integer, id to relations with category entity<br>
+
+  offer<br>
+    id - integer, primary key of entity<br>
+    price - integer, price of offer<br>
+    status - tinyint, true or false<br>
+    name - varchar, name of offer<br>
+    startDate - datetime, start time<br>
+    endDate - datetime, end time<br>
+    freelancerId - integer, id of freelancer<br>
+    jobPostId -  - integer, id of job post<br>
+
+  proposal<br>
+    id - integer, primary key of entity<br>
+    jobPost - integer, id of job post<br>
+    userId - integer, id of user<br>
+    price - integer, price of proposal<br>
+    message -varchar, message of proposal<br>
+    clientId  - integer, id of client<br>
+
+  skills<br>
+    id - integer, primary key of entity<br>
+    name - varchar, name of the skill<br>
