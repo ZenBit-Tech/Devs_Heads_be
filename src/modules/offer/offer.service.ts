@@ -6,7 +6,6 @@ import { OfferDto } from './dto/jobOffer.dto';
 import { UpdateOfferDto } from './dto/update.offer.dto';
 import { client, DateOrders, freelancer, Status } from './dto/offer.types';
 import { FindContractDto } from './dto/contract.offer.dto';
-import { identity } from 'rxjs';
 
 @Injectable()
 export class OfferPostService {
