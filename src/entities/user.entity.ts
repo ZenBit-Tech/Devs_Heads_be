@@ -4,6 +4,7 @@ import { ProfileEntity } from './profile/profile.entity';
 import { JobPostEntity } from './jobPost.entity';
 import { IsOptional } from 'class-validator';
 import { ClientSettingsEntity } from './clientSetttings.entity';
+import { OfferEntity } from './offer.entity';
 
 @Entity({ name: 'user', schema: 'public' })
 export class User {
@@ -39,6 +40,10 @@ export class User {
 
   @OneToOne(() => ProfileEntity, (profile) => profile.userId)
   profileSetting: ProfileEntity;
+
+  @OneToMany(() => OfferEntity, (offer) => offer.freelancerId)
+  @JoinColumn()
+  contract: OfferEntity[];
 
   @Column({
     type: 'enum',

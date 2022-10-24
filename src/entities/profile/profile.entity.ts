@@ -7,6 +7,7 @@ import {
   ManyToMany,
   JoinTable,
   JoinColumn,
+  OneToOne,
 } from 'typeorm';
 import { CategoryEntity } from '../category.entity';
 import { EducationEntity } from './education.entity';
@@ -15,11 +16,16 @@ import { SkillsEntity } from '../skills.entity';
 import { User } from '../user.entity';
 import { SaveFreelancerEntity } from './favourite.entity';
 import { ChatRoom } from '../chat-room.entity';
+import { OfferEntity } from '../offer.entity';
 
 @Entity('profile')
 export class ProfileEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @OneToMany(() => OfferEntity, (offer) => offer.freelancerId)
+  @JoinColumn()
+  offer: OfferEntity[];
 
   @OneToMany(() => SaveFreelancerEntity, (favourite) => favourite.freelancerId)
   @JoinColumn()

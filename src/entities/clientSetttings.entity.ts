@@ -1,10 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { OfferEntity } from './offer.entity';
 import { User } from './user.entity';
 
 @Entity()
 export class ClientSettingsEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @OneToMany(() => OfferEntity, (offer) => offer.clientId)
+  @JoinColumn()
+  offer: OfferEntity;
 
   @Column({ type: 'varchar', length: 255 })
   name: string;

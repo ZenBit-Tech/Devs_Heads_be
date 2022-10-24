@@ -1,9 +1,14 @@
+import { ProfileEntity } from 'src/entities/profile/profile.entity';
+
 export class OfferDto {
+  id: number;
   price: number;
   startDate: Date;
-  status?: boolean;
+  status: string;
   endDate: Date;
   freelancerId: number;
-  jopPostId: number;
+  freelancer: number;
+  clientId: number;
+  jobPostId: number;
   name: string;
 }
