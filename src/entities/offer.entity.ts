@@ -12,7 +12,6 @@ import {
 } from 'typeorm';
 import { ClientSettingsEntity } from './clientSetttings.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { JobPostEntity } from './jobPost.entity';
 import { ProfileEntity } from './profile/profile.entity';
 import { User } from './user.entity';

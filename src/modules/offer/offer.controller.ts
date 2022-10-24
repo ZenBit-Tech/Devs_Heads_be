@@ -20,7 +20,7 @@ export class OfferPostController {
   }
 
   @ApiOperation({ summary: 'Get single job offer by IDS' })
-  @ApiResponse({ status: 200, type: OfferEntity[] })
+  @ApiResponse({ status: 200, type: [OfferEntity] })
   @Get('job/:id/:freelancerId/:clientId')
   getJobOfferByProfile(
     @Param('id') id: number,
@@ -57,7 +57,7 @@ export class OfferPostController {
   }
 
   @ApiOperation({ summary: 'Get all status' })
-  @ApiResponse({ status: 200, type: OfferEntity[] })
+  @ApiResponse({ status: 200, type: [OfferEntity] })
   @Get('offer/:userId/:role')
   getOfferAccepted(
     @Param('userId') id: string,

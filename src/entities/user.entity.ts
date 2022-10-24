@@ -52,7 +52,7 @@ export class User {
   @OneToOne(() => ProfileEntity, (profile) => profile.userId)
   profileSetting: ProfileEntity;
 
-  @ApiProperty({ type: OfferEntity[] })
+  @ApiProperty({ type: [OfferEntity] })
   @OneToMany(() => OfferEntity, (offer) => offer.freelancerId)
   @JoinColumn()
   contract: OfferEntity[];
