@@ -14,7 +14,7 @@ export class OfferPostService {
     private offerRepository: Repository<OfferEntity>,
   ) {}
 
-  async getJobOfferByProfile(id: number, freelancerId: number, clientId: number) {
+  async getJobOfferByProfile(id: number, freelancerId: number, clientId: number): Promise<OfferEntity[]> {
     const profile = await this.offerRepository
       .createQueryBuilder('getOffer')
       .where('getOffer.jobPostId = :jobId', { jobId: id })
@@ -67,7 +67,12 @@ export class OfferPostService {
     return allOffer;
   }
 
-  async updateJobOffer(jobId: number, freelancerId: number, clientId: number, statusOffer: UpdateOfferDto) {
+  async updateJobOffer(
+    jobId: number,
+    freelancerId: number,
+    clientId: number,
+    statusOffer: UpdateOfferDto,
+  ): Promise<OfferEntity[]> {
     const { status } = statusOffer;
     const existOffer = await this.offerRepository
       .createQueryBuilder('offers')
@@ -83,7 +88,7 @@ export class OfferPostService {
     throw new NotFoundException(jobId);
   }
 
-  async getOfferAccepted(userId: number, role: string, query: FindContractDto) {
+  async getOfferAccepted(userId: number, role: string, query: FindContractDto): Promise<OfferEntity[]> {
     const category = query.status;
     console.log(category);
     const date = query.date as DateOrders;
@@ -120,10 +125,10 @@ export class OfferPostService {
     }
   }
 
-  async updateExpiredStatus(updateOfferExpired: UpdateOfferDto) {
+  async updateExpiredStatus(updateOfferExpired: UpdateOfferDto): Promise<UpdateResult> {
     const { status, id } = updateOfferExpired;
     try {
-      await this.offerRepository
+      return await this.offerRepository
         .createQueryBuilder('contract')
         .update(OfferEntity)
         .set({ status: status })

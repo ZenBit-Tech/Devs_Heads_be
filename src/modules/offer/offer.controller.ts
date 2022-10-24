@@ -19,7 +19,7 @@ export class OfferPostController {
     @Param('id') id: number,
     @Param('freelancerId') freelancerId: number,
     @Param('clientId') clientId: number,
-  ) {
+  ): Promise<OfferEntity[]> {
     return this.offerPostService.getJobOfferByProfile(Number(id), Number(freelancerId), Number(clientId));
   }
 
@@ -29,7 +29,7 @@ export class OfferPostController {
     @Param('freelancerId') freelancerId: number,
     @Param('clientId') clientId: number,
     @Body() status: UpdateOfferDto,
-  ) {
+  ): Promise<OfferEntity[]> {
     return this.offerPostService.updateJobOffer(Number(jobId), Number(freelancerId), Number(clientId), status);
   }
 
@@ -39,7 +39,7 @@ export class OfferPostController {
   }
 
   @Put()
-  updateExpiredStatus(@Body() updateOfferDto: UpdateOfferDto) {
+  updateExpiredStatus(@Body() updateOfferDto: UpdateOfferDto): Promise<UpdateResult> {
     return this.offerPostService.updateExpiredStatus(updateOfferDto);
   }
 
