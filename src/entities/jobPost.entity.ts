@@ -39,7 +39,7 @@ export class JobPostEntity {
   @Column({ type: 'integer' })
   toHourRate: number;
 
-  @ApiProperty({ type: OfferEntity })
+  @ApiProperty({ type: () => OfferEntity })
   @OneToMany(() => OfferEntity, (offer) => offer.jobPostId)
   @JoinColumn()
   offer: OfferEntity;

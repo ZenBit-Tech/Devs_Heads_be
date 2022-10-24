@@ -31,7 +31,7 @@ export class OfferPostController {
   }
 
   @ApiOperation({ summary: 'Update job offer by ID' })
-  @ApiResponse({ status: 200, type: OfferEntity })
+  @ApiResponse({ status: 200, type: [OfferEntity] })
   @Put(':jobId/:freelancerId/:clientId')
   updateJobOffer(
     @Param('jobId') jobId: number,

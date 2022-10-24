@@ -26,7 +26,7 @@ export class OfferEntity {
   @Column({ type: 'integer' })
   price: number;
 
-  @ApiProperty({ example: 'expired', description: 'Offer status' })
+  @ApiProperty({ enum: Status, description: 'Offer status' })
   @Column({
     type: 'enum',
     enum: Status,
@@ -46,13 +46,11 @@ export class OfferEntity {
   @Column({ type: 'datetime' })
   endDate: Date;
 
-  @ApiProperty({ example: 1, description: 'freelancerId' })
   @Column({ type: 'integer', unique: false })
   @ManyToOne(() => JobPostEntity, (jobPost) => jobPost.id, { cascade: true })
   @JoinColumn({ name: 'jobPostId' })
   jobPostId: number;
 
-  @ApiProperty({ example: 1, description: 'jopPostId' })
   @Column({ type: 'integer', unique: false })
   @JoinColumn({ name: 'freelancerId' })
   @ManyToOne(() => ProfileEntity, (profile) => profile.offer)

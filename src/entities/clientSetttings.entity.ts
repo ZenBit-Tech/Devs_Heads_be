@@ -9,7 +9,7 @@ export class ClientSettingsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ApiProperty({ type: OfferEntity })
+  @ApiProperty({ type: () => OfferEntity })
   @OneToMany(() => OfferEntity, (offer) => offer.clientId)
   @JoinColumn()
   offer: OfferEntity;

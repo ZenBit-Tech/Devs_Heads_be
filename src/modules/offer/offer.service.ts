@@ -35,30 +35,38 @@ export class OfferPostService {
       .andHaving('getExistOffer.freelancerId = :id', { id: offerDto.freelancerId })
       .getMany();
     if (existOffer) {
-      const updateOffer = await this.offerRepository
-        .createQueryBuilder('offer')
-        .update(OfferEntity)
-        .set({
+      try {
+        const updateOffer = await this.offerRepository
+          .createQueryBuilder('offer')
+          .update(OfferEntity)
+          .set({
+            price: offerDto.price,
+            startDate: offerDto.startDate,
+            endDate: offerDto.endDate,
+            name: offerDto.name,
+          })
+          .where(`offer.freelancerId = ${offerDto.freelancerId}`)
+          .andWhere(`offer.jobPostId = ${offerDto.jobPostId}`)
+          .andWhere(`offer.clientId = ${offerDto.clientId}`)
+          .execute();
+        return updateOffer;
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        return await this.offerRepository.save({
           price: offerDto.price,
           startDate: offerDto.startDate,
           endDate: offerDto.endDate,
+          freelancerId: { id: offerDto.freelancerId },
+          clientId: offerDto.clientId,
           name: offerDto.name,
-        })
-        .where(`offer.freelancerId = ${offerDto.freelancerId}`)
-        .andWhere(`offer.jobPostId = ${offerDto.jobPostId}`)
-        .andWhere(`offer.clientId = ${offerDto.clientId}`)
-        .execute();
-      return updateOffer;
-    } else {
-      return await this.offerRepository.save({
-        price: offerDto.price,
-        startDate: offerDto.startDate,
-        endDate: offerDto.endDate,
-        freelancerId: { id: offerDto.freelancerId },
-        clientId: offerDto.clientId,
-        name: offerDto.name,
-        jobPostId: offerDto.jobPostId,
-      });
+          jobPostId: offerDto.jobPostId,
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
@@ -93,35 +101,43 @@ export class OfferPostService {
     console.log(category);
     const date = query.date as DateOrders;
     if (role === freelancer) {
-      const contract = await this.offerRepository
-        .createQueryBuilder('freelancer')
-        .leftJoinAndSelect('freelancer.jobPostId', 'job_post_entity')
-        .leftJoinAndSelect('job_post_entity.userId', 'user')
-        .leftJoinAndSelect('user.clientSetting', 'client_settings_entity')
-        .where(`freelancer.freelancerId = ${userId} AND freelancer.status  != pending`)
-        .andHaving(category ? 'freelancer.status LIKE :status AND freelancer.status  != :declined ' : 'TRUE', {
-          status: category,
-          declined: 'rejected',
-        })
-        .andHaving('client.status != :pending', { pending: 'pending' })
-        .orderBy('freelancer.startDate', date === 'ASC' ? 'ASC' : 'DESC')
-        .getMany();
-      return contract;
+      try {
+        const contract = await this.offerRepository
+          .createQueryBuilder('freelancer')
+          .leftJoinAndSelect('freelancer.jobPostId', 'job_post_entity')
+          .leftJoinAndSelect('job_post_entity.userId', 'user')
+          .leftJoinAndSelect('user.clientSetting', 'client_settings_entity')
+          .where(`freelancer.freelancerId = ${userId} AND freelancer.status  != pending`)
+          .andHaving(category ? 'freelancer.status LIKE :status AND freelancer.status  != :declined ' : 'TRUE', {
+            status: category,
+            declined: 'rejected',
+          })
+          .andHaving('client.status != :pending', { pending: 'pending' })
+          .orderBy('freelancer.startDate', date === 'ASC' ? 'ASC' : 'DESC')
+          .getMany();
+        return contract;
+      } catch (error) {
+        console.log(error);
+      }
     } else if (role === client) {
-      const contract = await this.offerRepository
-        .createQueryBuilder('client')
-        .leftJoinAndSelect('client.freelancerId', 'profile')
-        .leftJoinAndSelect('profile.userId', 'user')
-        .leftJoinAndSelect('client.jobPostId', 'job_post_entity')
-        .where(`client.clientId = ${userId}`)
-        .andHaving(category ? 'client.status LIKE :status AND client.status  != :declined' : 'TRUE', {
-          status: category,
-          declined: 'rejected',
-        })
-        .andHaving('client.status != :pending', { pending: 'pending' })
-        .orderBy('client.startDate', date === 'ASC' ? 'ASC' : 'DESC')
-        .getMany();
-      return contract;
+      try {
+        const contract = await this.offerRepository
+          .createQueryBuilder('client')
+          .leftJoinAndSelect('client.freelancerId', 'profile')
+          .leftJoinAndSelect('profile.userId', 'user')
+          .leftJoinAndSelect('client.jobPostId', 'job_post_entity')
+          .where(`client.clientId = ${userId}`)
+          .andHaving(category ? 'client.status LIKE :status AND client.status  != :declined' : 'TRUE', {
+            status: category,
+            declined: 'rejected',
+          })
+          .andHaving('client.status != :pending', { pending: 'pending' })
+          .orderBy('client.startDate', date === 'ASC' ? 'ASC' : 'DESC')
+          .getMany();
+        return contract;
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
