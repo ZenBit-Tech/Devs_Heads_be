@@ -14,28 +14,26 @@ export class OfferPostService {
     private offerRepository: Repository<OfferEntity>,
   ) {}
 
-  async getJobOfferByProfile(id: number, freelancerId: number): Promise<OfferEntity> {
-    const offer = await this.offerRepository.findOne({
-      where: {
-        jobPostId: id,
-        freelancerId: { id: freelancerId },
-      },
-    });
-    if (offer) {
-      return offer;
+  async getJobOfferByProfile(id: number, freelancerId: number, clientId: number) {
+    const profile = await this.offerRepository
+      .createQueryBuilder('getOffer')
+      .where('getOffer.jobPostId = :jobId', { jobId: id })
+      .andHaving('getOffer.clientId = :clientId', { clientId: clientId })
+      .andHaving('getOffer.freelancerId = :id', { id: freelancerId })
+      .getMany();
+    if (profile) {
+      return profile;
     }
     throw new NotFoundException(id);
   }
 
   async saveJobOffer(offerDto: OfferDto): Promise<UpdateResult | OfferEntity> {
-    const existOffer = await this.offerRepository.findOne({
-      where: {
-        freelancerId: { id: offerDto.freelancerId },
-        jobPostId: offerDto.jobPostId,
-        clientId: offerDto.clientId,
-      },
-    });
-    console.log(existOffer);
+    const existOffer = await this.offerRepository
+      .createQueryBuilder('getExistOffer')
+      .where('getExistOffer.jobPostId = :jobId', { jobId: offerDto.jobPostId })
+      .andHaving('getExistOffer.clientId = :clientId', { clientId: offerDto.clientId })
+      .andHaving('getExistOffer.freelancerId = :id', { id: offerDto.freelancerId })
+      .getMany();
     if (existOffer) {
       const updateOffer = await this.offerRepository
         .createQueryBuilder('offer')
@@ -48,6 +46,7 @@ export class OfferPostService {
         })
         .where(`offer.freelancerId = ${offerDto.freelancerId}`)
         .andWhere(`offer.jobPostId = ${offerDto.jobPostId}`)
+        .andWhere(`offer.clientId = ${offerDto.clientId}`)
         .execute();
       return updateOffer;
     } else {
@@ -68,11 +67,18 @@ export class OfferPostService {
     return allOffer;
   }
 
-  async updateJobOffer(jobId: number, freelancerId: number, statusOffer: UpdateOfferDto): Promise<{ status: string }> {
+  async updateJobOffer(jobId: number, freelancerId: number, clientId: number, statusOffer: UpdateOfferDto) {
     const { status } = statusOffer;
-    if (jobId && freelancerId) {
-      await this.offerRepository.update({ freelancerId: { id: freelancerId }, jobPostId: jobId }, { status: status });
-      return statusOffer;
+    const existOffer = await this.offerRepository
+      .createQueryBuilder('offers')
+      .where('offers.jobPostId = :jobId', { jobId: jobId })
+      .andHaving('offers.clientId = :clientId', { clientId: clientId })
+      .andHaving('offers.freelancerId = :id', { id: freelancerId })
+      .getMany();
+
+    if (existOffer) {
+      existOffer[0].status = status;
+      return await this.offerRepository.save(existOffer);
     }
     throw new NotFoundException(jobId);
   }
@@ -110,7 +116,6 @@ export class OfferPostService {
         .andHaving('client.status != :pending', { pending: 'pending' })
         .orderBy('client.startDate', date === 'ASC' ? 'ASC' : 'DESC')
         .getMany();
-      console.log(contract);
       return contract;
     }
   }

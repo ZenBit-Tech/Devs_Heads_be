@@ -1,4 +1,4 @@
-import { IsArray, IsEnum } from 'class-validator';
+import { IsArray, IsEnum, IsOptional } from 'class-validator';
 import { Status } from './offer.types';
 
 export class UpdateOfferDto {
@@ -6,5 +6,6 @@ export class UpdateOfferDto {
   status: Status;
 
   @IsArray()
+  @IsOptional()
   id: number[];
 }

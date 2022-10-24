@@ -14,18 +14,23 @@ export class OfferPostController {
   saveJobOffer(@Body() offerDto: OfferDto): Promise<UpdateResult | OfferEntity> {
     return this.offerPostService.saveJobOffer(offerDto);
   }
-  @Get('job/:id/:freelancerId')
-  getJobOfferByProfile(@Param('id') id: number, @Param('freelancerId') freelancerId: number) {
-    return this.offerPostService.getJobOfferByProfile(Number(id), Number(freelancerId));
+  @Get('job/:id/:freelancerId/:clientId')
+  getJobOfferByProfile(
+    @Param('id') id: number,
+    @Param('freelancerId') freelancerId: number,
+    @Param('clientId') clientId: number,
+  ) {
+    return this.offerPostService.getJobOfferByProfile(Number(id), Number(freelancerId), Number(clientId));
   }
 
-  @Put(':jobId/:freelancerId')
+  @Put(':jobId/:freelancerId/:clientId')
   updateJobOffer(
     @Param('jobId') jobId: number,
     @Param('freelancerId') freelancerId: number,
+    @Param('clientId') clientId: number,
     @Body() status: UpdateOfferDto,
   ) {
-    return this.offerPostService.updateJobOffer(Number(jobId), Number(freelancerId), status);
+    return this.offerPostService.updateJobOffer(Number(jobId), Number(freelancerId), Number(clientId), status);
   }
 
   @Get('job')
