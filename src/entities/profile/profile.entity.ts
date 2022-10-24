@@ -7,6 +7,7 @@ import {
   ManyToMany,
   JoinTable,
   JoinColumn,
+  OneToOne,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { CategoryEntity } from '../category.entity';
@@ -16,12 +17,17 @@ import { SkillsEntity } from '../skills.entity';
 import { User } from '../user.entity';
 import { SaveFreelancerEntity } from './favourite.entity';
 import { ChatRoom } from '../chat-room.entity';
+import { OfferEntity } from '../offer.entity';
 
 @Entity('profile')
 export class ProfileEntity {
   @ApiProperty({ example: 1, description: 'Uniq identificator' })
   @PrimaryGeneratedColumn()
   id: number;
+
+  @OneToMany(() => OfferEntity, (offer) => offer.freelancerId)
+  @JoinColumn()
+  offer: OfferEntity[];
 
   @OneToMany(() => SaveFreelancerEntity, (favourite) => favourite.freelancerId)
   @JoinColumn()

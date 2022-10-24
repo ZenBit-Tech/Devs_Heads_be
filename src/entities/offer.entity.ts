@@ -1,7 +1,20 @@
+import { Status } from 'src/modules/offer/dto/offer.types';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ClientSettingsEntity } from './clientSetttings.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { JobPostEntity } from './jobPost.entity';
 import { ProfileEntity } from './profile/profile.entity';
+import { User } from './user.entity';
 
 @Entity('offer')
 export class OfferEntity {
@@ -13,9 +26,13 @@ export class OfferEntity {
   @Column({ type: 'integer' })
   price: number;
 
-  @ApiProperty({ example: false, description: 'Offer status' })
-  @Column({ type: 'boolean', default: false })
-  status: boolean;
+  @ApiProperty({ enum: Status, description: 'Offer status' })
+  @Column({
+    type: 'enum',
+    enum: Status,
+    default: Status.PENDING,
+  })
+  status: Status;
 
   @ApiProperty({ example: 'Offer by Alex', description: 'Offer name' })
   @Column({ type: 'varchar' })
@@ -29,13 +46,17 @@ export class OfferEntity {
   @Column({ type: 'datetime' })
   endDate: Date;
 
-  @ApiProperty({ example: 1, description: 'freelancerId' })
   @Column({ type: 'integer', unique: false })
-  @OneToOne(() => ProfileEntity, (profile) => profile.userId)
-  freelancerId: number;
+  @ManyToOne(() => JobPostEntity, (jobPost) => jobPost.id, { cascade: true })
+  @JoinColumn({ name: 'jobPostId' })
+  jobPostId: number;
 
-  @ApiProperty({ example: 1, description: 'jopPostId' })
   @Column({ type: 'integer', unique: false })
-  @OneToOne(() => JobPostEntity, (jopPost: JobPostEntity) => jopPost.id, { cascade: true })
-  jopPostId: number;
+  @JoinColumn({ name: 'freelancerId' })
+  @ManyToOne(() => ProfileEntity, (profile) => profile.offer)
+  freelancerId: ProfileEntity;
+
+  @Column({ type: 'integer', unique: false })
+  @OneToOne(() => ClientSettingsEntity, (clientInfo) => clientInfo.userId)
+  clientId: number;
 }

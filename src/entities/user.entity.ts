@@ -4,6 +4,7 @@ import { ProfileEntity } from './profile/profile.entity';
 import { JobPostEntity } from './jobPost.entity';
 import { IsOptional } from 'class-validator';
 import { ClientSettingsEntity } from './clientSetttings.entity';
+import { OfferEntity } from './offer.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity({ name: 'user', schema: 'public' })
@@ -50,6 +51,11 @@ export class User {
   @ApiProperty({ type: ProfileEntity })
   @OneToOne(() => ProfileEntity, (profile) => profile.userId)
   profileSetting: ProfileEntity;
+
+  @ApiProperty({ type: [OfferEntity] })
+  @OneToMany(() => OfferEntity, (offer) => offer.freelancerId)
+  @JoinColumn()
+  contract: OfferEntity[];
 
   @ApiProperty({ example: 'freelancer', description: 'User role' })
   @Column({

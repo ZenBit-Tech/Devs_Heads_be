@@ -1,9 +1,11 @@
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinTable, ManyToMany, OneToMany, OneToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { CategoryEntity } from './category.entity';
-import { OfferEntity } from './offer.entity';
+import { JoinColumn } from 'typeorm';
 import { SkillsEntity } from './skills.entity';
 import { User } from './user.entity';
+import { OfferEntity } from './offer.entity';
+import { ClientSettingsEntity } from './clientSetttings.entity';
 
 @Entity()
 export class JobPostEntity {
@@ -24,6 +26,11 @@ export class JobPostEntity {
   @JoinTable()
   jobSkills: SkillsEntity[];
 
+  @ApiProperty({ type: ClientSettingsEntity })
+  @OneToOne(() => ClientSettingsEntity, (clientInfo) => clientInfo.userId)
+  @JoinColumn()
+  clientSetting: ClientSettingsEntity;
+
   @ApiProperty({ example: 12, description: 'From hour rate' })
   @Column({ type: 'integer' })
   fromHourRate: number;
@@ -31,6 +38,11 @@ export class JobPostEntity {
   @ApiProperty({ example: 23, description: 'TO hour rate' })
   @Column({ type: 'integer' })
   toHourRate: number;
+
+  @ApiProperty({ type: () => OfferEntity })
+  @OneToMany(() => OfferEntity, (offer) => offer.jobPostId)
+  @JoinColumn()
+  offer: OfferEntity;
 
   @ApiProperty({ example: 'short', description: 'Job duration' })
   @Column({ type: 'varchar', length: 255 })
@@ -42,6 +54,7 @@ export class JobPostEntity {
 
   @ApiProperty({ example: 1, description: 'userId' })
   @Column({ type: 'integer' })
+  @JoinColumn()
   @ManyToOne(() => User, (user) => user.id, { cascade: true })
   userId: number;
 

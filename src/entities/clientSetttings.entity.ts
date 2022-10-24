@@ -1,5 +1,6 @@
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { OfferEntity } from './offer.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from './user.entity';
 
 @Entity()
@@ -7,6 +8,11 @@ export class ClientSettingsEntity {
   @ApiProperty({ example: 1, description: 'Uniq identificator' })
   @PrimaryGeneratedColumn()
   id: number;
+
+  @ApiProperty({ type: () => OfferEntity })
+  @OneToMany(() => OfferEntity, (offer) => offer.clientId)
+  @JoinColumn()
+  offer: OfferEntity;
 
   @ApiProperty({ example: 'Adam', description: 'Client name' })
   @Column({ type: 'varchar', length: 255 })
