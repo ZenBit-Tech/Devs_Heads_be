@@ -49,6 +49,13 @@ export class OfferPostController {
     return this.offerPostService.getJobOffer();
   }
 
+  @ApiOperation({ summary: 'Update exist job offers' })
+  @ApiResponse({ status: 200, type: OfferEntity })
+  @Put('offer')
+  updateJobOfferByProfile(@Body() offerDto: OfferDto): Promise<UpdateResult | OfferEntity> {
+    return this.offerPostService.updateJobOfferByProfile(offerDto);
+  }
+
   @ApiOperation({ summary: 'Update expired status' })
   @ApiResponse({ status: 200, type: UpdateResult })
   @Put()

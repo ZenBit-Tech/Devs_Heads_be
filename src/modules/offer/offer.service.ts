@@ -26,47 +26,40 @@ export class OfferPostService {
     }
     throw new NotFoundException(id);
   }
+  async updateJobOfferByProfile(offerDto: OfferDto): Promise<UpdateResult> {
+    const updateOffer = await this.offerRepository
+      .createQueryBuilder('offer')
+      .update(OfferEntity)
+      .set({
+        price: offerDto.price,
+        startDate: offerDto.startDate,
+        endDate: offerDto.endDate,
+        name: offerDto.name,
+      })
+      .where(`offer.freelancerId = ${offerDto.freelancerId}`)
+      .andWhere(`offer.jobPostId = ${offerDto.jobPostId}`)
+      .andWhere(`offer.clientId = ${offerDto.clientId}`)
+      .execute();
+    if (updateOffer) {
+      return updateOffer;
+    } else {
+      throw new NotFoundException(offerDto.freelancerId);
+    }
+  }
 
   async saveJobOffer(offerDto: OfferDto): Promise<UpdateResult | OfferEntity> {
-    const existOffer = await this.offerRepository
-      .createQueryBuilder('getExistOffer')
-      .where('getExistOffer.jobPostId = :jobId', { jobId: offerDto.jobPostId })
-      .andHaving('getExistOffer.clientId = :clientId', { clientId: offerDto.clientId })
-      .andHaving('getExistOffer.freelancerId = :id', { id: offerDto.freelancerId })
-      .getMany();
-    if (existOffer) {
-      try {
-        const updateOffer = await this.offerRepository
-          .createQueryBuilder('offer')
-          .update(OfferEntity)
-          .set({
-            price: offerDto.price,
-            startDate: offerDto.startDate,
-            endDate: offerDto.endDate,
-            name: offerDto.name,
-          })
-          .where(`offer.freelancerId = ${offerDto.freelancerId}`)
-          .andWhere(`offer.jobPostId = ${offerDto.jobPostId}`)
-          .andWhere(`offer.clientId = ${offerDto.clientId}`)
-          .execute();
-        return updateOffer;
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      try {
-        return await this.offerRepository.save({
-          price: offerDto.price,
-          startDate: offerDto.startDate,
-          endDate: offerDto.endDate,
-          freelancerId: { id: offerDto.freelancerId },
-          clientId: offerDto.clientId,
-          name: offerDto.name,
-          jobPostId: offerDto.jobPostId,
-        });
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      return await this.offerRepository.save({
+        price: offerDto.price,
+        startDate: offerDto.startDate,
+        endDate: offerDto.endDate,
+        freelancerId: { id: offerDto.freelancerId },
+        clientId: offerDto.clientId,
+        name: offerDto.name,
+        jobPostId: offerDto.jobPostId,
+      });
+    } catch (error) {
+      console.log(error);
     }
   }
 
