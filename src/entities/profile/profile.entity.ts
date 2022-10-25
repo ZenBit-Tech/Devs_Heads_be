@@ -25,10 +25,6 @@ export class ProfileEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => OfferEntity, (offer) => offer.freelancerId)
-  @JoinColumn()
-  offer: OfferEntity[];
-
   @OneToMany(() => SaveFreelancerEntity, (favourite) => favourite.freelancerId)
   @JoinColumn()
   profile: SaveFreelancerEntity[];
