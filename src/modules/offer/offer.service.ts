@@ -100,15 +100,15 @@ export class OfferPostService {
       try {
         const contract = await this.offerRepository
           .createQueryBuilder('freelancer')
+          .leftJoinAndSelect('freelancer.clientId', 'user')
+          .leftJoinAndSelect('user.clientSetting', 'clientInfo')
           .leftJoinAndSelect('freelancer.jobPostId', 'job_post_entity')
-          .leftJoinAndSelect('job_post_entity.userId', 'user')
-          .leftJoinAndSelect('user.clientSetting', 'client_settings_entity')
           .where(`freelancer.freelancerId = ${userId}`)
           .andHaving(category ? 'freelancer.status LIKE :status AND freelancer.status  != :declined ' : 'TRUE', {
             status: category,
             declined: 'rejected',
           })
-          .andHaving('freelancer.status != :pending', { pending: 'pending' })
+          //.andHaving('freelancer.status != :pending', { pending: 'pending' })
           .orderBy('freelancer.startDate', date === 'ASC' ? 'ASC' : 'DESC')
           .getMany();
         return contract;
@@ -127,7 +127,7 @@ export class OfferPostService {
             status: category,
             declined: 'rejected',
           })
-          .andHaving('client.status != :pending', { pending: 'pending' })
+          //.andHaving('client.status != :pending', { pending: 'pending' })
           .orderBy('client.startDate', date === 'ASC' ? 'ASC' : 'DESC')
           .getMany();
         return contract;
