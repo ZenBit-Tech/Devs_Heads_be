@@ -46,17 +46,18 @@ export class OfferEntity {
   @Column({ type: 'datetime' })
   endDate: Date;
 
-  @Column({ type: 'integer', unique: false })
-  @ManyToOne(() => JobPostEntity, (jobPost) => jobPost.id, { cascade: true })
+  @Column({ type: 'integer' })
+  @ManyToOne(() => JobPostEntity)
   @JoinColumn({ name: 'jobPostId' })
-  jobPostId: number;
+  jobPostId: JobPostEntity;
 
-  @Column({ type: 'integer', unique: false })
+  @Column({ type: 'integer' })
+  @ManyToOne(() => User)
   @JoinColumn({ name: 'freelancerId' })
-  @ManyToOne(() => ProfileEntity, (profile) => profile.offer)
-  freelancerId: ProfileEntity;
+  freelancerId: User;
 
-  @Column({ type: 'integer', unique: false })
-  @OneToOne(() => ClientSettingsEntity, (clientInfo) => clientInfo.userId)
-  clientId: number;
+  @Column({ type: 'integer' })
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'freelancerId' })
+  clientId: User;
 }
