@@ -31,14 +31,14 @@ export class OfferPostController {
   }
 
   @ApiOperation({ summary: 'Update job offer by ID' })
-  @ApiResponse({ status: 200, type: [OfferEntity] })
+  @ApiResponse({ status: 200, type: UpdateResult })
   @Put(':jobId/:freelancerId/:clientId')
   updateJobOffer(
     @Param('jobId') jobId: number,
     @Param('freelancerId') freelancerId: number,
     @Param('clientId') clientId: number,
     @Body() status: UpdateOfferDto,
-  ): Promise<OfferEntity[]> {
+  ): Promise<UpdateResult> {
     return this.offerPostService.updateJobOffer(Number(jobId), Number(freelancerId), Number(clientId), status);
   }
 
@@ -57,9 +57,9 @@ export class OfferPostController {
   }
 
   @ApiOperation({ summary: 'Update expired status' })
-  @ApiResponse({ status: 200, type: UpdateResult })
+  @ApiResponse({ status: 200, type: UpdateOfferDto })
   @Put()
-  updateExpiredStatus(@Body() updateOfferDto: UpdateOfferDto): Promise<UpdateResult> {
+  updateExpiredStatus(@Body() updateOfferDto: UpdateOfferDto): Promise<UpdateOfferDto> {
     return this.offerPostService.updateExpiredStatus(updateOfferDto);
   }
 

@@ -47,16 +47,16 @@ export class OfferPostService {
     }
   }
 
-  async saveJobOffer(offerDto: OfferDto): Promise<UpdateResult | OfferEntity> {
+  async saveJobOffer(data: OfferDto): Promise<UpdateResult | OfferEntity> {
     try {
       return await this.offerRepository.save({
-        price: offerDto.price,
-        startDate: offerDto.startDate,
-        endDate: offerDto.endDate,
-        freelancerId: { id: offerDto.freelancerId },
-        clientId: offerDto.clientId,
-        name: offerDto.name,
-        jobPostId: offerDto.jobPostId,
+        price: data.price,
+        name: data.name,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        jobPostId: { id: data.jobPostId },
+        clientId: { id: data.clientId },
+        freelancerId: { id: data.freelancerId },
       });
     } catch (error) {
       console.log(error);
@@ -73,25 +73,28 @@ export class OfferPostService {
     freelancerId: number,
     clientId: number,
     statusOffer: UpdateOfferDto,
-  ): Promise<OfferEntity[]> {
+  ): Promise<UpdateResult> {
     const { status } = statusOffer;
     const existOffer = await this.offerRepository
-      .createQueryBuilder('offers')
-      .where('offers.jobPostId = :jobId', { jobId: jobId })
-      .andHaving('offers.clientId = :clientId', { clientId: clientId })
-      .andHaving('offers.freelancerId = :id', { id: freelancerId })
-      .getMany();
+      .createQueryBuilder('offer')
+      .update(OfferEntity)
+      .set({
+        status: status,
+      })
+      .where('offer.jobPostId = :jobId', { jobId: jobId })
+      .andWhere('offer.freelancerId = :id', { id: freelancerId })
+      .andWhere('offer.clientId = :clientId', { clientId: clientId })
+      .execute();
 
     if (existOffer) {
-      existOffer[0].status = status;
-      return await this.offerRepository.save(existOffer);
+      return existOffer;
+    } else {
+      throw new NotFoundException(jobId);
     }
-    throw new NotFoundException(jobId);
   }
 
   async getOfferAccepted(userId: number, role: string, query: FindContractDto): Promise<OfferEntity[]> {
     const category = query.status;
-    console.log(category);
     const date = query.date as DateOrders;
     if (role === freelancer) {
       try {
@@ -100,12 +103,12 @@ export class OfferPostService {
           .leftJoinAndSelect('freelancer.jobPostId', 'job_post_entity')
           .leftJoinAndSelect('job_post_entity.userId', 'user')
           .leftJoinAndSelect('user.clientSetting', 'client_settings_entity')
-          .where(`freelancer.freelancerId = ${userId} AND freelancer.status  != pending`)
+          .where(`freelancer.freelancerId = ${userId}`)
           .andHaving(category ? 'freelancer.status LIKE :status AND freelancer.status  != :declined ' : 'TRUE', {
             status: category,
             declined: 'rejected',
           })
-          .andHaving('client.status != :pending', { pending: 'pending' })
+          .andHaving('freelancer.status != :pending', { pending: 'pending' })
           .orderBy('freelancer.startDate', date === 'ASC' ? 'ASC' : 'DESC')
           .getMany();
         return contract;
@@ -116,8 +119,8 @@ export class OfferPostService {
       try {
         const contract = await this.offerRepository
           .createQueryBuilder('client')
-          .leftJoinAndSelect('client.freelancerId', 'profile')
-          .leftJoinAndSelect('profile.userId', 'user')
+          .leftJoinAndSelect('client.freelancerId', 'user')
+          .leftJoinAndSelect('user.profileSetting', 'profile')
           .leftJoinAndSelect('client.jobPostId', 'job_post_entity')
           .where(`client.clientId = ${userId}`)
           .andHaving(category ? 'client.status LIKE :status AND client.status  != :declined' : 'TRUE', {
@@ -134,15 +137,16 @@ export class OfferPostService {
     }
   }
 
-  async updateExpiredStatus(updateOfferExpired: UpdateOfferDto): Promise<UpdateResult> {
+  async updateExpiredStatus(updateOfferExpired: UpdateOfferDto): Promise<UpdateOfferDto> {
     const { status, id } = updateOfferExpired;
     try {
-      return await this.offerRepository
+      await this.offerRepository
         .createQueryBuilder('contract')
         .update(OfferEntity)
         .set({ status: status })
         .where({ id: In(id) })
         .execute();
+      return updateOfferExpired;
     } catch (error) {
       throw new NotFoundException(id);
     }
