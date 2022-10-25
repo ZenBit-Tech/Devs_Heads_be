@@ -4,7 +4,6 @@ import { CategoryEntity } from './category.entity';
 import { JoinColumn } from 'typeorm';
 import { SkillsEntity } from './skills.entity';
 import { User } from './user.entity';
-import { OfferEntity } from './offer.entity';
 import { ClientSettingsEntity } from './clientSetttings.entity';
 
 @Entity()
@@ -38,11 +37,6 @@ export class JobPostEntity {
   @ApiProperty({ example: 23, description: 'TO hour rate' })
   @Column({ type: 'integer' })
   toHourRate: number;
-
-  @ApiProperty({ type: () => OfferEntity })
-  @OneToMany(() => OfferEntity, (offer) => offer.jobPostId)
-  @JoinColumn()
-  offer: OfferEntity;
 
   @ApiProperty({ example: 'short', description: 'Job duration' })
   @Column({ type: 'varchar', length: 255 })

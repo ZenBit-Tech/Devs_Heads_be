@@ -1,19 +1,7 @@
 import { Status } from 'src/modules/offer/dto/offer.types';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { ClientSettingsEntity } from './clientSetttings.entity';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { JobPostEntity } from './jobPost.entity';
-import { ProfileEntity } from './profile/profile.entity';
 import { User } from './user.entity';
 
 @Entity('offer')
@@ -58,6 +46,6 @@ export class OfferEntity {
 
   @Column({ type: 'integer' })
   @ManyToOne(() => User)
-  @JoinColumn({ name: 'freelancerId' })
+  @JoinColumn({ name: 'clientId' })
   clientId: User;
 }
