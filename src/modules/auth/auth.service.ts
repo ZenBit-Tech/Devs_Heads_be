@@ -130,7 +130,10 @@ export class AuthService {
         to: email,
         from: 'silvagabis162@gmail.com',
         subject: 'Devs Heads restore password',
-        html: `<h1>Change password</h1><p>If you want to reset your password click:</p><a href="${url}">${url}</a>`,
+        html: `<h1>Restore password</h1><p>Hello!<p/><br>
+        <p>If you want to reset your password click on the link below and 
+        you will be redirect to restore password page</p><br>
+        <a href="${url}">${url}</a>`,
       };
 
       sgMail
