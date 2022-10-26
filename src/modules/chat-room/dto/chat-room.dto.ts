@@ -2,8 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber } from 'class-validator';
 
 export class ChatRoomDto {
-  @ApiProperty({ example: 'true', description: 'Status of active room or not' })
-  activeRoom: boolean;
+  @ApiProperty({ example: 'freelancer', description: 'Status for deleting chat' })
+  deletedFor?: string;
+
+  @ApiProperty({ example: 'accepted', description: 'Status of active room or not' })
+  activeRoom: string;
 
   @ApiProperty({ example: 1, description: 'Job post id' })
   @IsNumber()

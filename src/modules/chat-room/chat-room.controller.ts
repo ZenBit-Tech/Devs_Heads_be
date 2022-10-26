@@ -22,6 +22,12 @@ export class ChatRoomController {
     return this.chatRoomService.updateRoom(Number(id), data);
   }
 
+  @ApiOperation({ summary: 'Update chat room by deleting status' })
+  @Patch('delete/:id')
+  updateDeletingStatus(@Param('id') id: number, @Body() data: Partial<ChatRoomDto>): Promise<ChatRoom> {
+    return this.chatRoomService.updateDeletingStatus(Number(id), data);
+  }
+
   @ApiOperation({ summary: 'Get all chat rooms' })
   @ApiResponse({ status: 200, type: [ChatRoom] })
   @Get()
