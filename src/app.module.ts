@@ -16,6 +16,7 @@ import { AppGateway } from './app.gateway';
 import { ChatRoomModule } from './modules/chat-room/chat-room.module';
 import { MessageModule } from './modules/message/message.module';
 import { OfferPostModule } from './modules/offer/offer.module';
+import { GoogleStrategySignIn } from 'src/google.strategy.signin';
 
 @Module({
   imports: [
@@ -73,6 +74,6 @@ import { OfferPostModule } from './modules/offer/offer.module';
     MessageModule,
   ],
   controllers: [AppController],
-  providers: [AppService, GoogleStrategy, AppGateway],
+  providers: [AppService, GoogleStrategy, GoogleStrategySignIn, AppGateway],
 })
 export class AppModule {}

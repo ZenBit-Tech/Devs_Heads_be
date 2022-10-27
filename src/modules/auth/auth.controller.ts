@@ -35,10 +35,18 @@ export class AuthController {
   }
 
   @Get('redirect/sign-in')
-  @UseGuards(AuthGuard('google'))
+  @UseGuards(AuthGuard('google-signin'))
   async googleAuth(@Req() req, @Res() res) {
-    this.authService.googleSignIn(req);
-    res.redirect(`${process.env.GOOGLE_AUTH_SIGNIN}`);
+    const user = await this.authService.googleSignIn(req);
+    const data = await this.authService.getOneUser(user.userId);
+    const result = await this.authService.update(data);
+    const FREELANCER = 'freelancer';
+    console.log(result);
+    if (result.role === FREELANCER) {
+      res.redirect(`${process.env.GOOGLE_AUTH_FREELANCER}`);
+    } else {
+      res.redirect(`${process.env.GOOGLE_AUTH_CLIENT}`);
+    }
   }
 
   @ApiOperation({ summary: 'Google redirect' })
