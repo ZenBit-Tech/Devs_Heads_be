@@ -3,6 +3,7 @@ export enum Status {
   ACCEPTED = 'Accepted',
   REJECTED = 'Rejected',
   EXPIRED = 'Expired',
+  DELETED = 'Deleted',
 }
 
 export enum DateOrders {

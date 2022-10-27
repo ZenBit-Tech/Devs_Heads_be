@@ -106,9 +106,12 @@ export class OfferPostService {
           .where(`freelancer.freelancerId = ${userId}`)
           .andHaving(category ? 'freelancer.status LIKE :status AND freelancer.status  != :declined ' : 'TRUE', {
             status: category,
-            declined: 'rejected',
+            declined: Status.REJECTED,
           })
-          //.andHaving('freelancer.status != :pending', { pending: 'pending' })
+          .andHaving('freelancer.status != :pending AND freelancer.status  != :deleted', {
+            pending: Status.PENDING,
+            deleted: Status.DELETED,
+          })
           .orderBy('freelancer.startDate', date === 'ASC' ? 'ASC' : 'DESC')
           .getMany();
         return contract;
@@ -125,9 +128,12 @@ export class OfferPostService {
           .where(`client.clientId = ${userId}`)
           .andHaving(category ? 'client.status LIKE :status AND client.status  != :declined' : 'TRUE', {
             status: category,
-            declined: 'rejected',
+            declined: Status.REJECTED,
           })
-          //.andHaving('client.status != :pending', { pending: 'pending' })
+          .andHaving('client.status != :pending AND client.status  != :deleted', {
+            pending: Status.PENDING,
+            deleted: Status.DELETED,
+          })
           .orderBy('client.startDate', date === 'ASC' ? 'ASC' : 'DESC')
           .getMany();
         return contract;
