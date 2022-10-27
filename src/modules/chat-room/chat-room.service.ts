@@ -33,6 +33,16 @@ export class ChatRoomService {
     }
   }
 
+  async updateDeletingStatus(id: number, data: Partial<ChatRoomDto>): Promise<ChatRoom> {
+    try {
+      const room = await this.chatRoomRepository.findOneBy({ id });
+      room.deletedFor = data.deletedFor;
+      return await this.chatRoomRepository.save(room);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async getAll(): Promise<ChatRoom[]> {
     const chatRooms = await this.chatRoomRepository
       .createQueryBuilder('chat_room')
