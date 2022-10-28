@@ -34,14 +34,17 @@ export class AuthController {
     return this.authService.signIn(authDto);
   }
 
-  // @Get()
-  // @UseGuards(AuthGuard('google'))
-  // async googleAuth(@Req() req) {}
+  @Get('redirect/sign-in')
+  @UseGuards(AuthGuard('google-signin'))
+  async googleAuth(@Req() req, @Res() res) {
+    await this.authService.googleSignIn(req);
+    res.redirect(`${process.env.GOOGLE_AUTH_SIGNIN}/${req.user.email}`);
+  }
 
   @ApiOperation({ summary: 'Google redirect' })
   @Get('redirect')
   @UseGuards(AuthGuard('google'))
-  googleAuthRedirect(@Req() req, @Res() res) {
+  async googleAuthRedirect(@Req() req, @Res() res) {
     this.authService.googleSignUp(req);
     res.redirect(`${process.env.GOOGLE_AUTH}/${req.user.email}`);
   }

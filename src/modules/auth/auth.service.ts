@@ -46,6 +46,7 @@ export class AuthService {
 
   async update(@Body() authDto: Partial<UpdateDto>): Promise<User> {
     const { email, role, userId } = authDto;
+    console.log('authUpdate', authDto);
     const user = await this.usersRepository.findOneBy({ email });
     user.role = role;
     user.userId = userId;
@@ -87,9 +88,12 @@ export class AuthService {
   async googleSignUp(req) {
     const { googleId, email } = req.user;
     const user = await this.usersRepository.findOneBy({ email });
-    if (user) return this.googleSignIn(user);
-    const newUser = await this.usersRepository.save({ email, googleId, password: '' });
-    return this.googleSignIn(newUser);
+    if (user) {
+      return this.googleSignIn(user);
+    } else {
+      const newUser = await this.usersRepository.save({ email, googleId, password: '' });
+      return this.googleSignIn(newUser);
+    }
   }
   async googleSignIn(user) {
     return {
@@ -104,6 +108,12 @@ export class AuthService {
       ),
       userId: user.id,
     };
+  }
+
+  async getOneUser(req): Promise<User> {
+    const { email } = req.user;
+    const user = await this.usersRepository.findOneBy({ email });
+    return user;
   }
 
   async forgotPassword({ email }: ForgotPasswordDto) {
