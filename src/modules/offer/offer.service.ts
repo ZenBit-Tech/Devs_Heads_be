@@ -54,6 +54,7 @@ export class OfferPostService {
         name: data.name,
         startDate: data.startDate,
         endDate: data.endDate,
+        created_at: data.created_at,
         jobPostId: { id: data.jobPostId },
         clientId: { id: data.clientId },
         freelancerId: { id: data.freelancerId },

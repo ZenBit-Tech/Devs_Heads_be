@@ -1,5 +1,5 @@
 import { Status } from 'src/modules/offer/dto/offer.types';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { JobPostEntity } from './jobPost.entity';
 import { User } from './user.entity';
@@ -33,6 +33,10 @@ export class OfferEntity {
   @ApiProperty({ example: '2022-01-01-T12:00:00.000Z', description: 'Offer end date' })
   @Column({ type: 'datetime' })
   endDate: Date;
+
+  @ApiProperty({ example: '2022-01-01-T12:00:00.000Z', description: 'When created' })
+  @CreateDateColumn()
+  created_at: Date;
 
   @Column({ type: 'integer' })
   @ManyToOne(() => JobPostEntity)

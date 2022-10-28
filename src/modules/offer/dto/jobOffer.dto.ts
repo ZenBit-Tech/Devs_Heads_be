@@ -27,4 +27,7 @@ export class OfferDto {
 
   @ApiProperty({ example: 'Offer by Alex', description: 'Offer name' })
   name: string;
+
+  @ApiProperty({ example: '2022-01-01-T12:00:00.000Z', description: 'date Time' })
+  created_at: Date;
 }
