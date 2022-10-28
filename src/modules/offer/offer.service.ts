@@ -54,6 +54,7 @@ export class OfferPostService {
         name: data.name,
         startDate: data.startDate,
         endDate: data.endDate,
+        created_at: data.created_at,
         jobPostId: { id: data.jobPostId },
         clientId: { id: data.clientId },
         freelancerId: { id: data.freelancerId },
@@ -104,11 +105,17 @@ export class OfferPostService {
           .leftJoinAndSelect('user.clientSetting', 'clientInfo')
           .leftJoinAndSelect('freelancer.jobPostId', 'job_post_entity')
           .where(`freelancer.freelancerId = ${userId}`)
-          .andHaving(category ? 'freelancer.status LIKE :status AND freelancer.status  != :declined ' : 'TRUE', {
+          .andHaving(category ? 'freelancer.status LIKE :status' : 'TRUE', {
             status: category,
-            declined: 'rejected',
           })
-          //.andHaving('freelancer.status != :pending', { pending: 'pending' })
+          .andHaving(
+            'freelancer.status != :pending AND freelancer.status  != :deleted AND freelancer.status  != :declined ',
+            {
+              pending: Status.PENDING,
+              deleted: Status.DELETED,
+              declined: Status.REJECTED,
+            },
+          )
           .orderBy('freelancer.startDate', date === 'ASC' ? 'ASC' : 'DESC')
           .getMany();
         return contract;
@@ -123,11 +130,14 @@ export class OfferPostService {
           .leftJoinAndSelect('user.profileSetting', 'profile')
           .leftJoinAndSelect('client.jobPostId', 'job_post_entity')
           .where(`client.clientId = ${userId}`)
-          .andHaving(category ? 'client.status LIKE :status AND client.status  != :declined' : 'TRUE', {
+          .andHaving(category ? 'client.status LIKE :status' : 'TRUE', {
             status: category,
-            declined: 'rejected',
           })
-          //.andHaving('client.status != :pending', { pending: 'pending' })
+          .andHaving('client.status != :pending AND client.status  != :deleted AND client.status  != :declined', {
+            pending: Status.PENDING,
+            deleted: Status.DELETED,
+            declined: Status.REJECTED,
+          })
           .orderBy('client.startDate', date === 'ASC' ? 'ASC' : 'DESC')
           .getMany();
         return contract;

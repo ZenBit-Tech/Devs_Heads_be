@@ -1,8 +1,11 @@
 export enum Status {
   PENDING = 'Pending',
   ACCEPTED = 'Accepted',
+  ACCEPT = 'In Process',
+  ENDED = 'Ended',
   REJECTED = 'Rejected',
   EXPIRED = 'Expired',
+  DELETED = 'Deleted',
 }
 
 export enum DateOrders {
