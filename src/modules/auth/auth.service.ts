@@ -112,7 +112,6 @@ export class AuthService {
 
   async getOneUser(req): Promise<User> {
     const { email } = req.user;
-    console.log('getOneUser', email);
     const user = await this.usersRepository.findOneBy({ email });
     return user;
   }
