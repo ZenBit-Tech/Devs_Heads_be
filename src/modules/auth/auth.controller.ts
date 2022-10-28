@@ -37,11 +37,12 @@ export class AuthController {
   @Get('redirect/sign-in')
   @UseGuards(AuthGuard('google-signin'))
   async googleAuth(@Req() req, @Res() res) {
-    const user = await this.authService.googleSignIn(req);
-    const data = await this.authService.getOneUser(user.userId);
+    await this.authService.googleSignIn(req);
+    const data = await this.authService.getOneUser(req);
+    console.log('data', data);
     const result = await this.authService.update(data);
+    console.log('result', result);
     const FREELANCER = 'freelancer';
-    console.log(result);
     if (result.role === FREELANCER) {
       res.redirect(`${process.env.GOOGLE_AUTH_FREELANCER}`);
     } else {

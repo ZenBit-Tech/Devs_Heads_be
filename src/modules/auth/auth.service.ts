@@ -46,6 +46,7 @@ export class AuthService {
 
   async update(@Body() authDto: Partial<UpdateDto>): Promise<User> {
     const { email, role, userId } = authDto;
+    console.log('authUpdate', authDto);
     const user = await this.usersRepository.findOneBy({ email });
     user.role = role;
     user.userId = userId;
@@ -109,8 +110,10 @@ export class AuthService {
     };
   }
 
-  async getOneUser(userId) {
-    const user = await this.usersRepository.findOneBy({ userId });
+  async getOneUser(req): Promise<User> {
+    const { email } = req.user;
+    console.log('getOneUser', email);
+    const user = await this.usersRepository.findOneBy({ email });
     return user;
   }
 
